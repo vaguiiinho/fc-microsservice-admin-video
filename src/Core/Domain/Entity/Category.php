@@ -3,7 +3,7 @@
 namespace Core\Domain\Entity;
 
 use Core\Domain\Entity\Traits\MethodsMagicsTraid;
-use Core\Domain\Exception\EntityValidationExcepition;
+use Core\Domain\Exception\EntityValidationException;
 
 class Category
 {
@@ -39,15 +39,15 @@ class Category
     public function validate()
     {
         if (empty($this->name)) {
-            throw new EntityValidationExcepition("nome invalido");
+            throw new EntityValidationException("nome invalido");
         }
 
         if (strlen($this->name) > 255 || strlen($this->name) <= 2) {
-            throw new EntityValidationExcepition("nome invalido");
+            throw new EntityValidationException("nome invalido");
         }
 
         if ($this->description != '' && (strlen($this->description) > 255 || strlen($this->description) < 3)) {
-            throw new EntityValidationExcepition("descrição invalido");
+            throw new EntityValidationException("descrição invalido");
         }
     }
 }

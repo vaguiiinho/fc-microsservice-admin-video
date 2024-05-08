@@ -4,6 +4,6 @@ namespace Core\Domain\Exception;
 
 use Exception;
 
-class EntityValidationExcepition extends Exception
+class EntityValidationException extends Exception
 {
 }

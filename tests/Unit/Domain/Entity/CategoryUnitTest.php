@@ -3,7 +3,7 @@
 namespace Tests\Unit\Domain\Entity;
 
 use Core\Domain\Entity\Category;
-use Core\Domain\Exception\EntityValidationExcepition;
+use Core\Domain\Exception\EntityValidationException;
 use PHPUnit\Framework\TestCase;
 use Throwable;
 
@@ -23,7 +23,7 @@ class CategoryUnitTest extends TestCase
         $this->assertTrue($category->isActive);
     }
 
-    public function testActiveted()
+    public function testActivated()
     {
         $category = new Category(
             name: 'New cat',
@@ -80,7 +80,7 @@ class CategoryUnitTest extends TestCase
             );
             $this->assertTrue(false);
         } catch (Throwable $th) {
-            $this->assertInstanceOf(EntityValidationExcepition::class, $th);
+            $this->assertInstanceOf(EntityValidationException::class, $th);
         }
     }
 }
