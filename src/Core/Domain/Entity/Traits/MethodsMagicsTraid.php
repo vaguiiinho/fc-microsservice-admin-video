@@ -18,4 +18,8 @@ trait MethodsMagicsTraid
     public function id() {
         return (string) $this->id; 
     }
+
+    public function createdAt() {
+        return $this->createdAt->format('Y-m-d H:i:s'); 
+    }
 }
