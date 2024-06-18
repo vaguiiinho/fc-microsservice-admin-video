@@ -20,8 +20,8 @@ class Category
         protected DateTime|string $createdAt = '',
         protected string $updatedAt = ''
     ) {
-        $this->id = $this->id ?  new Uuid($this->id) : Uuid::random();
-        $this->createdAt = $this->createdAt? new DateTime($this->createdAt) : new DateTime();
+        $this->id = $this->id ? new Uuid($this->id) : Uuid::random();
+        $this->createdAt = $this->createdAt ? new DateTime($this->createdAt) : new DateTime();
         $this->validate();
     }
 
