@@ -4,6 +4,11 @@ namespace Core\UseCase\Category;
 
 use Core\Domain\Entity\Category;
 use Core\Domain\Repository\CategoryRepositoryInterface;
+use Core\UseCase\DTO\Category\{
+    CreateCategoryInputDto,
+    CreateCategoryOutputDto
+};
+
 
 class CreateCategoryUseCase
 {
@@ -11,16 +16,24 @@ class CreateCategoryUseCase
 
     public function __construct(CategoryRepositoryInterface $repository)
     {
-        $this->$repository = $repository;
+        $this->repository = $repository;
     }
 
-    public function execute()
+    public function execute(CreateCategoryInputDto $input): CreateCategoryOutputDto
     {
+        $category = new Category(
+            name: $input->name,
+            description: $input->description,
+            isActive: $input->isActive
+        );
 
-        // $category = new Category(
-        //     name : 'name cat'
-        // );
+        $output = $this->repository->insert($category);
 
-        // $this->repository->insert($category);
+        return new CreateCategoryOutputDto(
+            id: $category->id(),
+            name: $category->name,
+            description: $category->description,
+            is_active: $category->isActive
+        );
     }
 }
