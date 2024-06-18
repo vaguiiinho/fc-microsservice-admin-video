@@ -1,8 +1,8 @@
 <?php
 
-namespace Core\UseCase\DTO\Category;
+namespace Core\UseCase\DTO\Category\CreateCategory;
 
-class CreateCategoryInputDto
+class CategoryCreateInputDto
 {
     public function __construct(
         public string $name,
