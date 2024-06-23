@@ -4,13 +4,16 @@ namespace Tests\Unit\UseCase\Category;
 
 use Core\Domain\Entity\Category;
 use Core\Domain\Repository\CategoryRepositoryInterface;
+use Core\UseCase\Category\ListCategoryUseCase;
+use Core\UseCase\DTO\Category\ListCategory\CategoryInputDto;
+use Core\UseCase\DTO\Category\ListCategory\CategoryOutputDto;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use stdClass;
 
 
-class CreateCategoryUseCaseUnitTest extends TestCase
+class ListCategoryUseCaseUnitTest extends TestCase
 {
 
     public function testGetById()
@@ -21,6 +24,8 @@ class CreateCategoryUseCaseUnitTest extends TestCase
             $id,
             'name cat'
         ]);
+
+        $this->mockEntity->shouldReceive('id')->andReturn($id);
 
         $this->mockRepo = Mockery::mock(stdClass::class, CategoryRepositoryInterface::class);
         $this->mockRepo->shouldReceive('findById')
