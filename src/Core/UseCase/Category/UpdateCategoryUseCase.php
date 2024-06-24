@@ -21,13 +21,14 @@ class UpdateCategoryUseCase
     {
         $category = $this->repository->findById($input->id);
 
+        
         $category->update(
             name: $input->name,
             description: $input->description ?? $category->description,
         );
-
+        
         $response = $this->repository->update($category);
-
+        
         return new CategoryUpdateOutputDto(
             id: $response->id(),
             name: $response->name,

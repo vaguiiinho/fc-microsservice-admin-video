@@ -25,8 +25,14 @@ class UpdateCategoryUseCaseUnitTest extends TestCase
             $id, $categoryName , $categoryDescription
         ]);
 
+        $this->mockEntityUpdate = Mockery::mock(Category::class, [
+            $id, 'new name', 'new desc'
+        ]);
+
 
         $this->mockEntity->shouldReceive('id')->andReturn($id);
+        $this->mockEntityUpdate->shouldReceive('id')->andReturn($id);
+
         $this->mockEntity->shouldReceive('update');
 
         $this->mockRepo = Mockery::mock(stdClass::class, CategoryRepositoryInterface::class);
@@ -37,7 +43,7 @@ class UpdateCategoryUseCaseUnitTest extends TestCase
 
         $this->mockRepo->shouldReceive('update')
             ->times(1)
-            ->andReturn($this->mockEntity);
+            ->andReturn($this->mockEntityUpdate);
 
 
 
@@ -50,5 +56,7 @@ class UpdateCategoryUseCaseUnitTest extends TestCase
         $responseUseCase = $useCase->execute($this->mockInputDto);
 
         $this->assertInstanceOf(CategoryUpdateOutputDto::class, $responseUseCase);
+        $this->assertEquals('new name', $responseUseCase->name);
+        $this->assertEquals('new desc', $responseUseCase->description);
     }
 }
