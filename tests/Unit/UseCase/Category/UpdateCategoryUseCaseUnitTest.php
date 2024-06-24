@@ -4,11 +4,7 @@ namespace Tests\Unit\UseCase\Category;
 
 use Core\Domain\Entity\Category;
 use Core\Domain\Repository\CategoryRepositoryInterface;
-use Core\Domain\Repository\PaginationInterface;
-use Core\UseCase\Category\ListCategoriesUseCase;
 use Core\UseCase\Category\UpdateCategoryUseCase;
-use Core\UseCase\DTO\Category\ListCategories\ListCategoriesInputDto;
-use Core\UseCase\DTO\Category\ListCategories\ListCategoriesOutputDto;
 use Core\UseCase\DTO\Category\UpdateCategory\CategoryUpdateInputDto;
 use Core\UseCase\DTO\Category\UpdateCategory\CategoryUpdateOutputDto;
 use Mockery;
