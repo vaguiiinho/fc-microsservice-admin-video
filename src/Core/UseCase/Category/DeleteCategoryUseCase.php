@@ -3,8 +3,10 @@
 namespace Core\UseCase\Category;
 
 use Core\Domain\Repository\CategoryRepositoryInterface;
-use Core\UseCase\DTO\Category\DeleteCategory\CategoryDeleteInputDto;
-use Core\UseCase\DTO\Category\DeleteCategory\CategoryDeleteOutputDto;
+use Core\UseCase\DTO\Category\DeleteCategory\{
+    CategoryDeleteInputDto,
+    CategoryDeleteOutputDto
+};
 
 
 class DeleteCategoryUseCase
@@ -20,7 +22,7 @@ class DeleteCategoryUseCase
     public function execute(CategoryDeleteInputDto $input): CategoryDeleteOutputDto
     {
         $response = $this->repository->delete($input->id);
-        
+
         return new CategoryDeleteOutputDto(
             success: $response
         );

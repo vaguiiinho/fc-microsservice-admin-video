@@ -2,11 +2,12 @@
 
 namespace Tests\Unit\UseCase\Category;
 
-use Core\Domain\Entity\Category;
 use Core\Domain\Repository\CategoryRepositoryInterface;
 use Core\UseCase\Category\DeleteCategoryUseCase;
-use Core\UseCase\DTO\Category\DeleteCategory\CategoryDeleteInputDto;
-use Core\UseCase\DTO\Category\DeleteCategory\CategoryDeleteOutputDto;
+use Core\UseCase\DTO\Category\DeleteCategory\{
+    CategoryDeleteInputDto,
+    CategoryDeleteOutputDto
+};
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
@@ -29,7 +30,7 @@ class DeleteCategoryUseCaseUnitTest extends TestCase
         $useCase = new DeleteCategoryUseCase($this->mockRepo);
         $responseUseCase = $useCase->execute($this->mockInputDto);
 
-        $this->assertInstanceOf(CategoryDeleteOutputDto::class,$responseUseCase);
+        $this->assertInstanceOf(CategoryDeleteOutputDto::class, $responseUseCase);
         $this->assertTrue($responseUseCase->success);
     }
     public function testDeleteFalse()
@@ -46,7 +47,7 @@ class DeleteCategoryUseCaseUnitTest extends TestCase
         $useCase = new DeleteCategoryUseCase($this->mockRepo);
         $responseUseCase = $useCase->execute($this->mockInputDto);
 
-        $this->assertInstanceOf(CategoryDeleteOutputDto::class,$responseUseCase);
+        $this->assertInstanceOf(CategoryDeleteOutputDto::class, $responseUseCase);
         $this->assertFalse($responseUseCase->success);
     }
 

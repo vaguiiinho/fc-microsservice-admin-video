@@ -5,8 +5,10 @@ namespace Tests\Unit\UseCase\Category;
 use Core\Domain\Entity\Category;
 use Core\Domain\Repository\CategoryRepositoryInterface;
 use Core\UseCase\Category\UpdateCategoryUseCase;
-use Core\UseCase\DTO\Category\UpdateCategory\CategoryUpdateInputDto;
-use Core\UseCase\DTO\Category\UpdateCategory\CategoryUpdateOutputDto;
+use Core\UseCase\DTO\Category\UpdateCategory\{
+    CategoryUpdateInputDto,
+    CategoryUpdateOutputDto
+};
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
@@ -22,15 +24,20 @@ class UpdateCategoryUseCaseUnitTest extends TestCase
         $categoryDescription = 'Desc';
 
         $this->mockEntity = Mockery::mock(Category::class, [
-            $id, $categoryName , $categoryDescription
+            $id,
+            $categoryName,
+            $categoryDescription
         ]);
 
         $this->mockEntityUpdate = Mockery::mock(Category::class, [
-            $id, 'new name', 'new desc'
+            $id,
+            'new name',
+            'new desc'
         ]);
 
 
         $this->mockEntityUpdate->shouldReceive('id')->andReturn($id);
+        $this->mockEntityUpdate->shouldReceive('createdAt')->andReturn(date('Y-m-d H:i:s'));
 
         $this->mockEntity->shouldReceive('update');
 

@@ -3,8 +3,10 @@
 namespace Core\UseCase\Category;
 
 use Core\Domain\Repository\CategoryRepositoryInterface;
-use Core\UseCase\DTO\Category\UpdateCategory\CategoryUpdateInputDto;
-use Core\UseCase\DTO\Category\UpdateCategory\CategoryUpdateOutputDto;
+use Core\UseCase\DTO\Category\UpdateCategory\{
+    CategoryUpdateInputDto,
+    CategoryUpdateOutputDto
+};
 
 
 class UpdateCategoryUseCase
@@ -21,19 +23,20 @@ class UpdateCategoryUseCase
     {
         $category = $this->repository->findById($input->id);
 
-        
+
         $category->update(
             name: $input->name,
             description: $input->description ?? $category->description,
         );
-        
+
         $response = $this->repository->update($category);
-        
+
         return new CategoryUpdateOutputDto(
             id: $response->id(),
             name: $response->name,
             description: $response->description,
-            is_active: $response->isActive
+            is_active: $response->isActive,
+            created_at: $response->createdAt()
         );
     }
 }

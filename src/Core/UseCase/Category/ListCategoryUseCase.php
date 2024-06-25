@@ -27,7 +27,8 @@ class ListCategoryUseCase
             id: $response->id(),
             name: $response->name,
             description: $response->description,
-            is_active: $response->isActive
+            is_active: $response->isActive,
+            created_at: $response->createdAt()
         );
     }
 }
