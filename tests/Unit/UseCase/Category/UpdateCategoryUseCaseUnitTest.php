@@ -30,7 +30,6 @@ class UpdateCategoryUseCaseUnitTest extends TestCase
         ]);
 
 
-        $this->mockEntity->shouldReceive('id')->andReturn($id);
         $this->mockEntityUpdate->shouldReceive('id')->andReturn($id);
 
         $this->mockEntity->shouldReceive('update');
