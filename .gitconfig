@@ -2,4 +2,4 @@
 	email = avanlendario@gmail.com
 	name = vaguiiinho
 [credential]
-	helper = "!f() { /var/www/.vscode-server/bin/5437499feb04f7a586f677b155b039bc2b3669eb/node /tmp/vscode-remote-containers-3e959e3c-fea5-4d75-b93c-0f4a753f309c.js git-credential-helper $*; }; f"
+	helper = "!f() { /var/www/.vscode-server/bin/5437499feb04f7a586f677b155b039bc2b3669eb/node /tmp/vscode-remote-containers-d51bbd40-906f-46af-ae2a-157e55017ca1.js git-credential-helper $*; }; f"
