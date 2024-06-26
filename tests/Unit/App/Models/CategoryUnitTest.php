@@ -10,12 +10,6 @@ use PHPUnit\Framework\TestCase;
 
 class CategoryUnitTest extends TestCase
 {
-    /**
-     * A basic unit test example.
-     *
-     * @return void
-     */
-
     protected function model(): Model
     {
         return new Category();
@@ -31,5 +25,39 @@ class CategoryUnitTest extends TestCase
         $traitsUsed = array_keys(class_uses($this->model()));
 
         $this->assertEquals($traitsNeeds, $traitsUsed);
+    }
+
+    public function testFillable()
+    {
+        $expected = [
+            'id',
+            'name',
+            'description',
+            'is_active',
+        ];
+
+        $fillable = $this->model()->getFillable();
+
+        $this->assertEquals($expected, $fillable);
+        
+    }
+
+    public function testIncrementingIsFalse()
+    {
+        $model = $this->model();
+        $this->assertFalse($model->incrementing);
+    }
+
+    public function testCasts()
+    {
+        $expectedCasts = [
+            'id' =>'string',
+            'is_active' => 'boolean',
+            'deleted_at' => 'datetime',
+        ];
+
+        $casts = $this->model()->getCasts();
+
+        $this->assertEquals($expectedCasts, $casts);
     }
 }
