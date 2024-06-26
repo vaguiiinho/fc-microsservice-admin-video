@@ -3,6 +3,7 @@
 namespace Tests\Feature\App\Repositories\Eloquent;
 
 use App\Models\Category as ModelsCategory;
+use App\Repositories\Eloquent\CategoryEloquentRepository;
 use Core\Domain\Entity\Category as EntityCategory;
 use Core\Domain\Repository\CategoryRepositoryInterface;
 use Illuminate\Foundation\Testing\RefreshDatabase;
