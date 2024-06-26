@@ -4,7 +4,7 @@ namespace Core\Domain\Entity\Traits;
 
 use Exception;
 
-trait MethodsMagicsTraid
+trait MethodsMagicsTrait
 {
     public function __get($property)
     {
