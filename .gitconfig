@@ -1,5 +1,0 @@
-[user]
-	email = avanlendario@gmail.com
-	name = vaguiiinho
-[credential]
-	helper = "!f() { /var/www/.vscode-server/bin/5437499feb04f7a586f677b155b039bc2b3669eb/node /tmp/vscode-remote-containers-87df768b-8fbc-4d8d-8be3-1108af4cbb7a.js git-credential-helper $*; }; f"
