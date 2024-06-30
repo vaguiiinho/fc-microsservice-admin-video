@@ -7,7 +7,6 @@ use App\Models\Category as ModelsCategory;
 use App\Repositories\Eloquent\CategoryEloquentRepository;
 use Core\Domain\Entity\Category as EntityCategory;
 use Core\Domain\Repository\CategoryRepositoryInterface;
-use Illuminate\Database\Eloquent\Model;
 use Tests\TestCase;
 use Throwable;
 
@@ -18,7 +17,7 @@ class CategoryEloquentRepositoryTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         $this->repository = new CategoryEloquentRepository(new ModelsCategory());
     }
 
@@ -26,7 +25,7 @@ class CategoryEloquentRepositoryTest extends TestCase
     {
 
         $entity = new EntityCategory(name: 'test');
-        
+
         $response = $this->repository->insert($entity);
 
         $this->assertInstanceOf(CategoryRepositoryInterface::class, $this->repository);
@@ -38,7 +37,7 @@ class CategoryEloquentRepositoryTest extends TestCase
 
     public function testFindById()
     {
-        $category = Model::factory()->create();
+        $category = ModelsCategory::factory()->create();
 
         $response = $this->repository->findById($category->id);
 
@@ -48,8 +47,6 @@ class CategoryEloquentRepositoryTest extends TestCase
     }
     public function testFindByIdNotFound()
     {
-        $response = $this->repository->findById('fake');
-
         try {
             $this->repository->findById('fake');
             $this->assertTrue(false);
