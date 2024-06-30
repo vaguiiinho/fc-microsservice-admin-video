@@ -23,5 +23,6 @@ yarn-error.log
 .config/
 .local/
 .redhat
+.gitconfig
 
 
