@@ -26,13 +26,13 @@ class CategoryEloquentRepository implements CategoryRepositoryInterface
             'description' => $entity->description,
             'is_active' => $entity->isActive,
             'created_at' => $entity->createdAt(),
-            ]);
+        ]);
 
-       return $this->toCategory($response);
+        return $this->toCategory($response);
     }
 
 
-    public function findById(string $id):EntityCategory
+    public function findById(string $id): EntityCategory
     {
         if (!$category = $this->model->find($id)) {
             throw new NotFoundException();
@@ -42,11 +42,19 @@ class CategoryEloquentRepository implements CategoryRepositoryInterface
     }
     public function findAll(string $filter = '', $order = 'DESC'): array
     {
-        return[];
+        $categories = $this->model
+            ->where(function ($query) use ($filter) {
+                if ($filter) {
+                    $query->where('name', 'LIKE', "%{$filter}%");
+                }
+            })
+            ->orderBy('id', $order)
+            ->get();
+        return $categories->toArray();
     }
     public function paginate(string $filter = '', $order = 'DESC', int $page = 1, int $totalPage = 15): PaginationInterface
     {
-        
+
         return new PaginationPresenter;
     }
     public function update(EntityCategory $category): EntityCategory
