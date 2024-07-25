@@ -7,6 +7,7 @@ use App\Models\Category as ModelsCategory;
 use App\Repositories\Eloquent\CategoryEloquentRepository;
 use Core\Domain\Entity\Category as EntityCategory;
 use Core\Domain\Repository\CategoryRepositoryInterface;
+use Core\Domain\Repository\PaginationInterface;
 use Tests\TestCase;
 use Throwable;
 
@@ -62,5 +63,15 @@ class CategoryEloquentRepositoryTest extends TestCase
         $response = $this->repository->findAll();
 
         $this->assertEquals(count($categories), count($response));
+    }
+
+    public function testPaginate()
+    {
+        ModelsCategory::factory()->count(20)->create();
+
+        $response = $this->repository->paginate();
+
+        $this->assertInstanceOf(PaginationInterface::class, $response);
+        $this->assertCount(15, $response->items());
     }
 }
