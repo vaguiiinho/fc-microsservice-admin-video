@@ -63,11 +63,22 @@ class CategoryEloquentRepository implements CategoryRepositoryInterface
 
         return new PaginationPresenter($paginator);
     }
-    public function update(EntityCategory $category): EntityCategory
+    public function update(EntityCategory $entityCategory): EntityCategory
     {
-        return new EntityCategory(
-            name: $category->name,
-        );
+        if (!$category = $this->model->find($entityCategory->id)) {
+            throw new NotFoundException('Category not found');
+        }
+
+        $category->update([
+            'name' => $entityCategory->name,
+            'description' => $entityCategory->description,
+            'is_active' => $entityCategory->isActive,
+            'created_at' => $entityCategory->createdAt(),
+        ]);
+
+        $category->refresh();
+
+        return $this->toCategory($category);
     }
     public function delete(string $id): bool
     {

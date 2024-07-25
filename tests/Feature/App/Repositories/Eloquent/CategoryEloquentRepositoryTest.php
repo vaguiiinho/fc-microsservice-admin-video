@@ -104,6 +104,6 @@ class CategoryEloquentRepositoryTest extends TestCase
 
         $this->assertInstanceOf(EntityCategory::class, $response);
         $this->assertEquals($entity->id, $response->id());
-        $this->assertEquals($entity->name, $response->name);
+        $this->assertEquals('updated', $response->name);
     }
 }
