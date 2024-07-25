@@ -20,6 +20,7 @@ class CategoryEloquentRepositoryTest extends TestCase
         parent::setUp();
 
         $this->repository = new CategoryEloquentRepository(new ModelsCategory());
+        $this->assertInstanceOf(CategoryRepositoryInterface::class, $this->repository);
     }
 
     public function testInsert()
@@ -29,7 +30,7 @@ class CategoryEloquentRepositoryTest extends TestCase
 
         $response = $this->repository->insert($entity);
 
-        $this->assertInstanceOf(CategoryRepositoryInterface::class, $this->repository);
+        
         $this->assertInstanceOf(EntityCategory::class, $response);
         $this->assertDatabaseHas('categories', [
             'name' => $entity->name
@@ -42,7 +43,6 @@ class CategoryEloquentRepositoryTest extends TestCase
 
         $response = $this->repository->findById($category->id);
 
-        $this->assertInstanceOf(CategoryRepositoryInterface::class, $this->repository);
         $this->assertInstanceOf(EntityCategory::class, $response);
         $this->assertEquals($category->id, $response->id());
     }
@@ -81,5 +81,29 @@ class CategoryEloquentRepositoryTest extends TestCase
 
         $this->assertInstanceOf(PaginationInterface::class, $response);
         $this->assertCount(0, $response->items());
+    }
+
+    public function testUpdateIdNotFound()
+    {
+        try {
+            $category = new EntityCategory(name: 'test');
+            $this->repository->update($category);
+            $this->assertTrue(false);
+        } catch (Throwable $th) {
+            $this->assertInstanceOf(NotFoundException::class, $th);
+        }
+    }
+
+    public function testUpdate()
+    {
+        $category = ModelsCategory::factory()->create();
+
+        $entity = new EntityCategory(id: $category->id, name: 'updated');
+
+        $response = $this->repository->update($entity);
+
+        $this->assertInstanceOf(EntityCategory::class, $response);
+        $this->assertEquals($entity->id, $response->id());
+        $this->assertEquals($entity->name, $response->name);
     }
 }
