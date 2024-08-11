@@ -20,11 +20,12 @@ class CategoryControllerUnitTest extends TestCase
         $mockDtoOutput = Mockery::mock(ListCategoriesOutputDto::class, [[], 1, 1, 1, 1, 1, 1, 1]);
 
         $mockUseCase = Mockery::mock(ListCategoriesUseCase::class);
-        $mockUseCase->shouldReceive('execute')->andReturn( $mockDtoOutput);
+        $mockUseCase->shouldReceive('execute')->andReturn($mockDtoOutput);
 
         $controller = new CategoryController();
-        $controller->index($mockRequest, $mockUseCase);
-
-        $this->assertTrue(true);
+        $response =  $controller->index($mockRequest, $mockUseCase);
+        
+        $this->assertIsObject($response->resource);
+        $this->assertArrayHasKey('meta', $response->additional);
     }
 }

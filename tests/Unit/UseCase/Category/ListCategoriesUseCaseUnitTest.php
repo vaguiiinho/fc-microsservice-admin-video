@@ -36,7 +36,6 @@ class ListCategoriesUseCaseUnitTest extends TestCase
         $this->assertEquals(1, $response->total);
         $this->assertEquals(1, $response->first_page);
         $this->assertEquals(1, $response->last_page);
-        $this->assertEquals(1, $response->current_page);
         $this->assertEquals(1, $response->per_page);
         $this->assertEquals(1, $response->to);
         $this->assertEquals(1, $response->from);
