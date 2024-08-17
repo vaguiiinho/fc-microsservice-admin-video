@@ -6,8 +6,11 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Models\Category as ModelsCategory;
 use App\Repositories\Eloquent\CategoryEloquentRepository;
-use Core\UseCase\Category\CreateCategoryUseCase;
-use Core\UseCase\Category\ListCategoriesUseCase;
+use Core\UseCase\Category\{
+    CreateCategoryUseCase,
+    ListCategoriesUseCase,
+    ListCategoryUseCase
+};
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -51,5 +54,17 @@ class CategoryControllerTest extends TestCase
 
         $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertEquals(Response::HTTP_CREATED, $response->status());
+    }
+
+    public function test_show() {
+        $category = ModelsCategory::factory()->create();
+        
+        $response = $this->controller->show(
+            useCase: new ListCategoryUseCase($this->repository),
+            id: $category->id,
+        );
+        
+        $this->assertInstanceOf(JsonResponse::class, $response);
+        $this->assertEquals(Response::HTTP_OK, $response->status());
     }
 }
