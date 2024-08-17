@@ -12,9 +12,11 @@ use Core\UseCase\Category\{
     CreateCategoryUseCase,
     ListCategoriesUseCase,
     ListCategoryUseCase,
-    UpdateCategoryUseCase
+    UpdateCategoryUseCase,
+    DeleteCategoryUseCase
 };
 use Core\UseCase\DTO\Category\CreateCategory\CategoryCreateInputDto;
+use Core\UseCase\DTO\Category\DeleteCategory\CategoryDeleteInputDto;
 use Core\UseCase\DTO\Category\ListCategories\ListCategoriesInputDto;
 use Core\UseCase\DTO\Category\ListCategory\CategoryInputDto;
 use Core\UseCase\DTO\Category\UpdateCategory\CategoryUpdateInputDto;
@@ -85,5 +87,12 @@ class CategoryController extends Controller
         );
 
         return (new CategoryResource(collect($response)))->response();
+    }
+
+    public function destroy(DeleteCategoryUseCase $useCase, $id)
+    {
+        $useCase->execute(new CategoryDeleteInputDto($id));
+
+        return response()->noContent();
     }
 }

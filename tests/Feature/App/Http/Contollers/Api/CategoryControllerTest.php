@@ -13,7 +13,8 @@ use Core\UseCase\Category\{
     CreateCategoryUseCase,
     ListCategoriesUseCase,
     ListCategoryUseCase,
-    UpdateCategoryUseCase
+    UpdateCategoryUseCase,
+    DeleteCategoryUseCase
 };
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -92,5 +93,17 @@ class CategoryControllerTest extends TestCase
 
         $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertEquals(Response::HTTP_OK, $response->status());
+    }
+
+    public function test_delete()
+    {
+        $category = ModelsCategory::factory()->create();
+
+        $response = $this->controller->destroy(
+            useCase: new DeleteCategoryUseCase($this->repository),
+            id: $category->id
+        );
+
+        $this->assertEquals(Response::HTTP_NO_CONTENT, $response->status());
     }
 }
