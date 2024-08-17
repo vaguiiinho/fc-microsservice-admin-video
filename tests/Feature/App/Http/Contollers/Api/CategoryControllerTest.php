@@ -3,13 +3,17 @@
 namespace Tests\Feature\App\Http\Contollers\Api;
 
 use App\Http\Controllers\Api\CategoryController;
-use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\{
+    StoreCategoryRequest,
+    UpdateCategoryRequest
+};
 use App\Models\Category as ModelsCategory;
 use App\Repositories\Eloquent\CategoryEloquentRepository;
 use Core\UseCase\Category\{
     CreateCategoryUseCase,
     ListCategoriesUseCase,
-    ListCategoryUseCase
+    ListCategoryUseCase,
+    UpdateCategoryUseCase
 };
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -56,14 +60,36 @@ class CategoryControllerTest extends TestCase
         $this->assertEquals(Response::HTTP_CREATED, $response->status());
     }
 
-    public function test_show() {
+    public function test_show()
+    {
         $category = ModelsCategory::factory()->create();
-        
+
         $response = $this->controller->show(
             useCase: new ListCategoryUseCase($this->repository),
             id: $category->id,
         );
-        
+
+        $this->assertInstanceOf(JsonResponse::class, $response);
+        $this->assertEquals(Response::HTTP_OK, $response->status());
+    }
+
+    public function test_update()
+    {
+        $category = ModelsCategory::factory()->create();
+
+        $request = new UpdateCategoryRequest();
+        $request->headers->set('Content-Type', 'application/json');
+
+        $request->setJson(new ParameterBag([
+            'name' => 'Updated',
+        ]));
+
+        $response = $this->controller->update(
+            request: $request,
+            useCase: new UpdateCategoryUseCase($this->repository),
+            id: $category->id
+        );
+
         $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertEquals(Response::HTTP_OK, $response->status());
     }
