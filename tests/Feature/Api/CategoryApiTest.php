@@ -25,7 +25,7 @@ class CategoryApiTest extends TestCase
         Category::factory()->count(30)->create();
 
         $response = $this->getJson($this->endpoint);
-        
+
         $response->assertStatus(200);
         $response->assertJsonStructure([
             'data' => [
@@ -48,7 +48,7 @@ class CategoryApiTest extends TestCase
         Category::factory()->count(30)->create();
 
         $response = $this->getJson("$this->endpoint?page=2");
-        
+
         $response->assertStatus(200);
         $this->assertEquals(2, $response['meta']['current_page']);
         $this->assertEquals(30, $response['meta']['total']);
@@ -59,5 +59,22 @@ class CategoryApiTest extends TestCase
         $response = $this->getJson("$this->endpoint/fake_value");
         $response->assertStatus(Response::HTTP_NOT_FOUND);
         $response->assertJson(['message' => 'Category not found']);
+    }
+
+    public function test_list_category()
+    {
+        $category = Category::factory()->create();
+        $response = $this->getJson("$this->endpoint/$category->id");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonStructure([
+            'data' => [
+                'id',
+                'name',
+                'description'
+            ]
+        ]);
+
+        $this->assertEquals($category->id, $response['data']['id']);
     }
 }
