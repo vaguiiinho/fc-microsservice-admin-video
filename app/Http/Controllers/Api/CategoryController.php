@@ -54,6 +54,7 @@ class CategoryController extends Controller
     public function store(StoreCategoryRequest $request, CreateCategoryUseCase $useCase)
     {
 
+        dd('CategoryController -> store');
         $response = $useCase->execute(
             input: new CategoryCreateInputDto(
                 name: $request->name,
@@ -62,7 +63,7 @@ class CategoryController extends Controller
             )
         );
 
-        return (new CategoryResource(collect($response)))
+        return (new CategoryResource($response))
             ->response()
             ->setStatusCode(Response::HTTP_CREATED);
     }
