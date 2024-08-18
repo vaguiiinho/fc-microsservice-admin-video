@@ -41,6 +41,7 @@ class CategoryController extends Controller
             ->additional([
                 'meta' => [
                     'total' => (int) $response->total,
+                    'current_page' => $response->current_page,
                     'first_page' => $response->first_page,
                     'last_page' => $response->last_page,
                     'per_page' => $response->per_page,

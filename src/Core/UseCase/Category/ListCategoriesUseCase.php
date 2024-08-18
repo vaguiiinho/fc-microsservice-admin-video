@@ -29,6 +29,7 @@ class ListCategoriesUseCase
         return new ListCategoriesOutputDto(
             items: $response->items(),
             total: $response->total(),
+            current_page: $response->currentPage(),
             first_page: $response->firstPage(),
             last_page: $response->lastPage(),
             per_page: $response->perPage(),
