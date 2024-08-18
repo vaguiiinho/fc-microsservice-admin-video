@@ -84,7 +84,8 @@ class CategoryApiTest extends TestCase
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
         $response->assertJsonStructure([
             'message',
-            'errors' => ['name']]);
+            'errors' => ['name']
+        ]);
     }
 
     public function test_store_category()
@@ -116,8 +117,56 @@ class CategoryApiTest extends TestCase
         $this->assertEquals($desc, $response['data']['description']);
         $this->assertEquals(false, $response['data']['is_active']);
         $this->assertDatabaseHas('categories', [
-            'id'=> $response['data']['id'],
+            'id' => $response['data']['id'],
             'is_active' => false,
+        ]);
+    }
+
+    public function test_notfound_update()
+    {
+        $data = [
+            'name' => 'Updated Name',
+        ];
+
+        $response = $this->putJson("$this->endpoint/fake_value", $data);
+
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
+    }
+
+    public function test_validations_update()
+    {
+        $category = Category::factory()->create();
+        $response = $this->putJson("$this->endpoint/$category->id", []);
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+        $response->assertJsonStructure([
+            'message',
+            'errors' => ['name']
+        ]);
+    }
+
+    public function test_update_category()
+    {
+        $category = Category::factory()->create();
+        $data = [
+            'name' => 'Updated Name',
+        ];
+
+        $response = $this->putJson("$this->endpoint/$category->id", $data);
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonStructure([
+            'data' => [
+                'id',
+                'name',
+                'description',
+                'is_active',
+                'created_at'
+            ]
+        ]);
+        $this->assertEquals('Updated Name', $response['data']['name']);
+        $this->assertDatabaseHas('categories', [
+            'id' => $category->id,
+            'name' => 'Updated Name',
         ]);
     }
 }
