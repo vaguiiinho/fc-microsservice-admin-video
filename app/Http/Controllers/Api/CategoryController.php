@@ -54,7 +54,6 @@ class CategoryController extends Controller
     public function store(StoreCategoryRequest $request, CreateCategoryUseCase $useCase)
     {
 
-        dd('CategoryController -> store');
         $response = $useCase->execute(
             input: new CategoryCreateInputDto(
                 name: $request->name,
