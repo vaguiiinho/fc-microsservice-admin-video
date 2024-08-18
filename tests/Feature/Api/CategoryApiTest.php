@@ -169,4 +169,23 @@ class CategoryApiTest extends TestCase
             'name' => 'Updated Name',
         ]);
     }
+
+    public function test_notfound_delete()
+    {
+        $response = $this->deleteJson("$this->endpoint/fake_value");
+
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
+    }
+
+    public function test_delete_category()
+    {
+        $category = Category::factory()->create();
+
+        $response = $this->deleteJson("$this->endpoint/$category->id");
+
+        $response->assertStatus(Response::HTTP_NO_CONTENT);
+        $this->assertSoftDeleted('categories', [
+            'id' => $category->id,
+        ]);
+    }
 }
