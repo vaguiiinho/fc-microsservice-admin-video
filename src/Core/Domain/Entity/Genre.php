@@ -9,7 +9,7 @@ use DateTime;
 class Genre
 {
     use MethodsMagicsTrait;
-    
+
     public function __construct(
         protected string $name,
         protected ?Uuid $id = null,
@@ -18,5 +18,15 @@ class Genre
     ) {
         $this->id = $this->id ?? Uuid::random();
         $this->createdAt = $this->createdAt ?? new DateTime();
+    }
+
+    public function activate(): void
+    {
+        $this->isActive = true;
+    }
+
+    public function deactivate(): void
+    {
+        $this->isActive = false;
     }
 }
