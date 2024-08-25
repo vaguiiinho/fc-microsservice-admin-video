@@ -14,12 +14,30 @@ class GenreUnitTest extends TestCase
     public function testAttributes()
     {
         $uuid = (string) Uuid::uuid4();
+        $date = date('Y-m-d H:i:s');
+
         $genre = new Genre(
             id: new ValueObjectUuid($uuid),
             name: 'New genre',
-            isActive: true,
-            createAt: new DateTime(date('Y-m-d H:i:s')),
+            isActive: false,
+            createdAt: new DateTime($date),
         );
 
+        $this->assertEquals($uuid, $genre->id());
+        $this->assertEquals('New genre', $genre->name);
+        $this->assertTrue($genre->isActive);
+        $this->assertEquals($date, $genre->createdAt());
+    }
+
+    public function testAttributesCreated()
+    {
+        $genre = new Genre(
+            name: 'New genre',
+        );
+
+        $this->assertNotEmpty($genre);
+        $this->assertEquals('New genre', $genre->name);
+        $this->assertTrue($genre->isActive);
+        $this->assertNotEmpty($genre->createdAt());
     }
 }
