@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\UseCase\DTO\Genre\ListGenres;
+namespace Core\UseCase\DTO\Genre\List;
 
 class ListGenresInputDto
 {
