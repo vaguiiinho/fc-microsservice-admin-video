@@ -13,6 +13,7 @@ use Core\UseCase\Genre\ListGenreUseCase;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
+use stdClass;
 
 class ListGenreUseCaseUnitTest extends TestCase
 {
@@ -29,7 +30,7 @@ class ListGenreUseCaseUnitTest extends TestCase
         $mockEntity->shouldReceive('id')->andReturn($uuid);
         $mockEntity->shouldReceive('createdAt')->andReturn(date('Y-m-d H:i:s'));
 
-        $mockRepository = Mockery::mock(GenreRepositoryInterface::class);
+        $mockRepository = Mockery::mock(stdClass::class, GenreRepositoryInterface::class);
 
         $mockRepository->shouldReceive('findById')
             ->times(1)
