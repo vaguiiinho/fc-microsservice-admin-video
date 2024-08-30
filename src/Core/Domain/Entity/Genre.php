@@ -11,6 +11,8 @@ class Genre
 {
     use MethodsMagicsTrait;
 
+    protected array $categoriesId = [];
+
     public function __construct(
         protected string $name,
         protected ?Uuid $id = null,
@@ -32,7 +34,7 @@ class Genre
         $this->isActive = false;
     }
 
-    public function update(string $name): void
+    public function update(string $name)
     {
         $this->name = $name;
         $this->validate();
@@ -42,5 +44,10 @@ class Genre
     {
         DomainValidation::strMaxLength($this->name);
         DomainValidation::strMinLength($this->name);
+    }
+
+    public function addCategory(string $categoryId)
+    {
+        array_push($this->categoriesId, $categoryId);
     }
 }

@@ -111,4 +111,26 @@ class GenreUnitTest extends TestCase
             name: 'a',
         );
     }
+
+    public function testAddCategoryToGenre()
+    {
+        $categoryId = (string) Uuid::uuid4();
+
+        $genre = new Genre(
+            name: 'New genre',
+        );
+
+        $this->assertIsArray($genre->categoriesId);
+        $this->assertCount(0, $genre->categoriesId);
+
+        $genre->addCategory(
+            categoryId: $categoryId
+        );
+
+        $genre->addCategory(
+            categoryId: $categoryId
+        );
+
+        $this->assertCount(2, $genre->categoriesId);
+    }
 }
