@@ -26,7 +26,7 @@ class GenreUnitTest extends TestCase
 
         $this->assertEquals($uuid, $genre->id());
         $this->assertEquals('New genre', $genre->name);
-        $this->assertTrue($genre->isActive);
+        $this->assertFalse($genre->isActive);
         $this->assertEquals($date, $genre->createdAt());
     }
 

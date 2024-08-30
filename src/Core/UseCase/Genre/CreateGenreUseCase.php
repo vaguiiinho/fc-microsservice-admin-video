@@ -44,26 +44,33 @@ class CreateGenreUseCase
 
             $genreDb = $this->repository->insert($genre);
 
+            $this->transaction->commit();
             return new CreateGenreOutputDto(
                 id: $genreDb->id(),
                 name: $genreDb->name,
                 is_active: $genreDb->isActive,
                 createdAt: $genreDb->createdAt()
             );
-
-            $this->transaction->commit();
         } catch (Throwable $th) {
+            
             $this->transaction->rollback();
             throw $th;
         }
     }
 
-    public function validateCategoriesId(array $categoryId = [])
+    public function validateCategoriesId(array $categoriesId = [])
     {
-        $categoriesDb = $this->categoryRepository->getIdsListIds($categoryId);
+        $categoriesDb = $this->categoryRepository->getIdsListIds($categoriesId);
 
-        if (count($categoriesDb) !== count($categoryId)) {
-            throw new NotFoundException('categories not found');
+        $arrayDiff = array_diff($categoriesId, $categoriesDb);
+
+        if (count($arrayDiff)) {
+            $msg = sprintf(
+                '%s %s not found',
+                count($arrayDiff) > 1 ? 'Categories' : 'Category',
+                implode(', ', $arrayDiff)
+            );
+            throw new NotFoundException($msg);
         }
     }
 }
