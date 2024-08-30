@@ -4,6 +4,7 @@ namespace Tests\Unit\Domain\Entity;
 
 use PHPUnit\Framework\TestCase;
 use Core\Domain\Entity\Genre;
+use Core\Domain\Exception\EntityValidationException;
 use Core\Domain\ValueObject\Uuid as ValueObjectUuid;
 use DateTime;
 use Ramsey\Uuid\Uuid;
@@ -41,7 +42,7 @@ class GenreUnitTest extends TestCase
         $this->assertNotEmpty($genre->createdAt());
     }
 
-    
+
     public function testGenreDeactivate()
     {
         $genre = new Genre(
@@ -49,9 +50,9 @@ class GenreUnitTest extends TestCase
         );
 
         $this->assertTrue($genre->isActive);
-        
+
         $genre->deactivate();
-    
+
         $this->assertFalse($genre->isActive);
     }
 
@@ -65,7 +66,7 @@ class GenreUnitTest extends TestCase
         $this->assertFalse($genre->isActive);
 
         $genre->Activate();
-    
+
         $this->assertTrue($genre->isActive);
     }
 
@@ -76,7 +77,7 @@ class GenreUnitTest extends TestCase
         );
 
         $this->assertEquals('New genre', $genre->name);
-        
+
         $genre->update(
             name: 'Updated genre',
         );
@@ -84,5 +85,30 @@ class GenreUnitTest extends TestCase
         $this->assertEquals('Updated genre', $genre->name);
     }
 
+    public function testEntityException()
+    {
+        $this->expectException(EntityValidationException::class);
+        new Genre(
+            name: 'a',
+        );
+    }
 
+    public function testEntityUpdateException()
+    {
+        $this->expectException(EntityValidationException::class);
+
+        $uuid = (string) Uuid::uuid4();
+        $date = date('Y-m-d H:i:s');
+
+        $genre = new Genre(
+            id: new ValueObjectUuid($uuid),
+            name: 'New genre',
+            isActive: false,
+            createdAt: new DateTime($date),
+        );
+
+        $genre->update(
+            name: 'a',
+        );
+    }
 }
