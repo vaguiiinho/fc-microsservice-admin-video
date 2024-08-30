@@ -133,4 +133,27 @@ class GenreUnitTest extends TestCase
 
         $this->assertCount(2, $genre->categoriesId);
     }
+
+    public function testRemoveCategoryFromGenre()
+    {
+        $categoryId = (string) Uuid::uuid4();
+        $categoryId2 = (string) Uuid::uuid4();
+
+        $genre = new Genre(
+            name: 'New genre',
+            categoriesId: [
+                $categoryId,
+                $categoryId2,
+            ]
+        );
+
+        $this->assertCount(2, $genre->categoriesId);
+
+        $genre->removeCategory(
+            categoryId: $categoryId
+        );
+
+        $this->assertCount(1, $genre->categoriesId);
+        $this->assertEquals($categoryId2, $genre->categoriesId[1]);
+    }
 }

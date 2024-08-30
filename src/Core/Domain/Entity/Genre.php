@@ -11,12 +11,13 @@ class Genre
 {
     use MethodsMagicsTrait;
 
-    protected array $categoriesId = [];
+
 
     public function __construct(
         protected string $name,
         protected ?Uuid $id = null,
         protected bool $isActive = true,
+        protected array $categoriesId = [],
         protected ?DateTime $createdAt = null
     ) {
         $this->id = $this->id ?? Uuid::random();
@@ -49,5 +50,10 @@ class Genre
     public function addCategory(string $categoryId)
     {
         array_push($this->categoriesId, $categoryId);
+    }
+
+    public function removeCategory(string $categoryId)
+    {
+        unset($this->categoriesId[array_search($categoryId, $this->categoriesId)]);
     }
 }
