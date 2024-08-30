@@ -8,6 +8,7 @@ interface CategoryRepositoryInterface
 {
     public function insert(Category $category): Category;
     public function findById(string $id): Category;
+    public function getIdsListIds(array $categoryId): array;
     public function findAll(string $filter = '', $order = 'DESC'): array;
     public function paginate(
         string $filter = '',

@@ -3,7 +3,10 @@
 namespace Tests\Unit\UseCase\Genre;
 
 use Core\Domain\Entity\Genre;
-use Core\Domain\Repository\GenreRepositoryInterface;
+use Core\Domain\Repository\{
+    GenreRepositoryInterface,
+    CategoryRepositoryInterface
+};
 use Core\Domain\ValueObject\Uuid as ValueObjectUuid;
 use PHPUnit\Framework\TestCase;
 use Core\UseCase\Genre\CreateGenreUseCase;
@@ -32,6 +35,7 @@ class CreateGenreUseCaseUnitTest extends TestCase
         $mockEntity->shouldReceive('createdAt')->andReturn(date('Y-m-d H:i:s'));
 
         $mockRepository = Mockery::mock(stdClass::class, GenreRepositoryInterface::class);
+        $mockCategoryRepository = Mockery::mock(stdClass::class, CategoryRepositoryInterface::class);
         $mockTransaction = Mockery::mock(stdClass::class, TransactionInterface::class);
 
         $mockRepository->shouldReceive('insert')
@@ -41,11 +45,11 @@ class CreateGenreUseCaseUnitTest extends TestCase
             'Test Genre', [$uuid], true
         ]);    
 
-        $useCase = new CreateGenreUseCase($mockRepository, $mockTransaction);
+        $useCase = new CreateGenreUseCase($mockRepository, $mockTransaction, $mockCategoryRepository);
 
         $response = $useCase->execute($mockInput);
 
-        // $this->assertInstanceOf(CreateGenreOutputDto::class, $response);
+        $this->assertInstanceOf(CreateGenreOutputDto::class, $response);
 
         Mockery::close();
     }
