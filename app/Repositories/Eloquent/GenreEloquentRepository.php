@@ -3,11 +3,13 @@
 namespace App\Repositories\Eloquent;
 
 use App\Models\Genre as Model;
-use Core\Domain\Entity\Genre as Entity;
+use Core\Domain\Entity\Genre as EntityGenre;
 use Core\Domain\Repository\GenreRepositoryInterface;
 use Core\Domain\Repository\PaginationInterface;
+use Core\Domain\ValueObject\Uuid;
+use DateTime;
 
-class GenreEloquentRepository implements GenreRepositoryInterface 
+class GenreEloquentRepository implements GenreRepositoryInterface
 {
     protected $model;
 
@@ -16,38 +18,44 @@ class GenreEloquentRepository implements GenreRepositoryInterface
         $this->model = $model;
     }
 
-    public function insert(Entity $genre): Entity
+    public function insert(EntityGenre $genre): EntityGenre
     {
+        $register =  $this->model->create([
+            'id' => $genre->id(),
+            'name' => $genre->name,
+            'is_active' => $genre->isActive,
+            'created_at' => $genre->createdAt(),
+        ]);
 
+        return $this->toGenre($register);
     }
 
-    public function findById(string $id): Entity
-    {
+    public function findById(string $id): EntityGenre {}
 
-    }
-
-    public function findAll(string $filter = '', $order = 'DESC'): array
-    {
-
-    }
+    public function findAll(string $filter = '', $order = 'DESC'): array {}
 
     public function paginate(
         string $filter = '',
         $order = 'DESC',
         int $page = 1,
         int $totalPage = 15
-    ): PaginationInterface
+    ): PaginationInterface {}
+
+    public function update(EntityGenre $genre): EntityGenre {}
+
+    public function delete(string $id): bool {}
+
+    private function toGenre(object $object): EntityGenre
     {
+        $entity =  new EntityGenre(
+            id: new Uuid($object->id),
+            name: $object->name,
+            isActive: $object->is_active,
+            createdAt: new DateTime($object->created_at),
+        );
 
-    }
+        ((bool) $object->is_active) ? $entity->activate() : $entity->deactivate();
 
-    public function update(Entity $genre): Entity
-    {
-
-    }
-
-    public function delete(string $id): bool
-    {
-
+        return $entity;
     }
 }

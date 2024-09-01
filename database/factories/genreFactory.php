@@ -21,6 +21,7 @@ class CategoryFactory extends Factory
             'id' => (string) Str::uuid(),
             'name' => $this->faker->name(),
             'is_active' => true,
+            'created_at' => now(),
         ];
     }
 }
