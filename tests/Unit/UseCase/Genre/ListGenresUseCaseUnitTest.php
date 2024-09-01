@@ -23,11 +23,15 @@ class ListGenresUseCaseUnitTest extends TestCase
         $mockRepository = Mockery::mock(stdClass::class, GenreRepositoryInterface::class);
 
         $mockRepository->shouldReceive('paginate')
-        ->times(1)
-        ->andReturn($mockPagination);
+            ->with('test', "desc", 1, 15)
+            ->times(1)
+            ->andReturn($mockPagination);
 
         $mockDtoInput = Mockery::mock(ListGenresInputDto::class, [
-            'test', "desc", 1, 15
+            'test',
+            "desc",
+            1,
+            15
         ]);
 
 
@@ -42,15 +46,15 @@ class ListGenresUseCaseUnitTest extends TestCase
 
     protected function mockPagination(array $items = [])
     {
-        $this->mockPagination = Mockery::mock(stdClass::class, PaginationInterface::class);
-        $this->mockPagination->shouldReceive('items')->andReturn($items);
-        $this->mockPagination->shouldReceive('total')->andReturn(1);
-        $this->mockPagination->shouldReceive('firstPage')->andReturn(1);
-        $this->mockPagination->shouldReceive('lastPage')->andReturn(1);
-        $this->mockPagination->shouldReceive('currentPage')->andReturn(1);
-        $this->mockPagination->shouldReceive('perPage')->andReturn(1);
-        $this->mockPagination->shouldReceive('to')->andReturn(1);
-        $this->mockPagination->shouldReceive('from')->andReturn(1);
-        return $this->mockPagination;
+        $mockPagination = Mockery::mock(stdClass::class, PaginationInterface::class);
+        $mockPagination->shouldReceive('items')->andReturn($items);
+        $mockPagination->shouldReceive('total')->andReturn(1);
+        $mockPagination->shouldReceive('firstPage')->andReturn(1);
+        $mockPagination->shouldReceive('lastPage')->andReturn(1);
+        $mockPagination->shouldReceive('currentPage')->andReturn(1);
+        $mockPagination->shouldReceive('perPage')->andReturn(1);
+        $mockPagination->shouldReceive('to')->andReturn(1);
+        $mockPagination->shouldReceive('from')->andReturn(1);
+        return $mockPagination;
     }
 }

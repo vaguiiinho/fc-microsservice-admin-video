@@ -35,7 +35,6 @@ class UpdateGenreUseCase
     {
         $genre = $this->repository->findById($input->id);
         try {
-
             $genre->update(
                 name: $input->name,
             );

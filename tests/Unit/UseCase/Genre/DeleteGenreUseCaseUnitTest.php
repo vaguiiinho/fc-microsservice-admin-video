@@ -22,12 +22,14 @@ class DeleteGenreUseCaseUnitTest extends TestCase
     {
         $id = (string) Uuid::uuid4()->toString();
 
-       $mockRepo = Mockery::mock(stdClass::class, GenreRepositoryInterface::class);
+        $mockRepo = Mockery::mock(stdClass::class, GenreRepositoryInterface::class);
 
-       $mockRepo->shouldReceive('delete')->times(1)->andReturn(true);
+        $mockRepo->shouldReceive('delete')
+            ->with($id)
+            ->times(1)
+            ->andReturn(true);
 
-
-       $mockInputDto = Mockery::mock(DeleteGenreInputDto::class, [$id]);
+        $mockInputDto = Mockery::mock(DeleteGenreInputDto::class, [$id]);
 
         $useCase = new DeleteGenreUseCase($mockRepo);
         $responseUseCase = $useCase->execute($mockInputDto);
@@ -42,8 +44,10 @@ class DeleteGenreUseCaseUnitTest extends TestCase
 
         $mockRepo = Mockery::mock(stdClass::class, GenreRepositoryInterface::class);
 
-        $mockRepo->shouldReceive('delete')->times(1)->andReturn(false);
-
+        $mockRepo->shouldReceive('delete')
+            ->with($id)
+            ->times(1)
+            ->andReturn(false);
 
         $mockInputDto = Mockery::mock(DeleteGenreInputDto::class, [$id]);
 
@@ -57,4 +61,5 @@ class DeleteGenreUseCaseUnitTest extends TestCase
     {
         Mockery::close();
         parent::teardown();
-    }}
+    }
+}
