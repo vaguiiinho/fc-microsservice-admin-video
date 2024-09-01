@@ -75,4 +75,21 @@ class GenreEloquentRepositoryTest extends TestCase
 
         $this->assertDatabaseCount('category_genre', 4);
     }
+
+    public function testNotFoundById()
+    {
+        $this->expectException(NotFoundException::class);
+
+        $this->repository->findById('not_found_id');
+    }
+
+    public function testFindById()
+    {
+        $genre = Model::factory()->create();
+
+        $response = $this->repository->findById($genre->id);
+
+        $this->assertEquals($genre->id, $response->id);
+        $this->assertEquals($genre->name, $response->name);
+    }
 }
