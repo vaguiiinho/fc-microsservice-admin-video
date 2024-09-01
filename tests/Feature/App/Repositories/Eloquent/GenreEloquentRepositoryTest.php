@@ -14,7 +14,7 @@ use Throwable;
 class GenreEloquentRepositoryTest extends TestCase
 {
     protected $repository;
-    
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -22,11 +22,37 @@ class GenreEloquentRepositoryTest extends TestCase
         $this->repository = new GenreEloquentRepository(new Model());
     }
 
+    public function testImplementInterface()
+    {
+        $this->assertInstanceOf(GenreRepositoryInterface::class, $this->repository);
+    }
+
     public function testInsert()
     {
         $entity = new EntityGenre(name: 'New Genre');
         $response = $this->repository->insert($entity);
-        dump($response);
+
+        $this->assertEquals($entity->name, $response->name);
+        $this->assertEquals($entity->id, $response->id);
+
+        $this->assertDatabaseHas('genres', [
+            'id' => $entity->id(),
+            'name' => $entity->name,
+            'is_active' => $entity->isActive,
+        ]);
     }
 
+    public function testInsertDeactivate()
+    {
+        $entity = new EntityGenre(name: 'New Genre');
+        $entity->deactivate();
+
+        $this->repository->insert($entity);
+
+
+        $this->assertDatabaseHas('genres', [
+            'id' => $entity->id(),
+            'is_active' => false,
+        ]);
+    }
 }
