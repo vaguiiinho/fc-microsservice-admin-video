@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\App\Repositories\Eloquent;
 
+use App\Models\Category;
 use Core\Domain\Exception\NotFoundException;
 use App\Models\Genre as Model;
 use App\Repositories\Eloquent\GenreEloquentRepository;
@@ -54,5 +55,24 @@ class GenreEloquentRepositoryTest extends TestCase
             'id' => $entity->id(),
             'is_active' => false,
         ]);
+    }
+
+    public function testInsertWithRelationship()
+    {
+        $categories = Category::factory()->count(4)->create();
+
+        $genre = new EntityGenre(name: 'New Genre');
+
+        foreach ($categories as $category) {
+            $genre->addCategory($category->id);
+        }
+
+        $response = $this->repository->insert($genre);
+
+        $this->assertDatabaseHas('genres', [
+            'id' => $genre->id(),
+        ]);
+
+        $this->assertDatabaseCount('category_genre', 4);
     }
 }

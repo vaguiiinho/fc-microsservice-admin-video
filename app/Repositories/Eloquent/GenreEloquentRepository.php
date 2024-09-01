@@ -27,6 +27,10 @@ class GenreEloquentRepository implements GenreRepositoryInterface
             'created_at' => $genre->createdAt(),
         ]);
 
+        if (count($genre->categoriesId) > 0) {
+            $register->categories()->sync($genre->categoriesId);
+        }
+
         return $this->toGenre($register);
     }
 
@@ -50,7 +54,6 @@ class GenreEloquentRepository implements GenreRepositoryInterface
         $entity =  new EntityGenre(
             id: new Uuid($object->id),
             name: $object->name,
-            isActive: $object->is_active,
             createdAt: new DateTime($object->created_at),
         );
 
