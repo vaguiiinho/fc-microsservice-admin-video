@@ -23,4 +23,9 @@ class Category extends Model
         'id' => 'string',
         'is_active' => 'boolean',
     ];
+
+    public function genres()
+    {
+        return $this->belongsToMany(Genre::class);
+    }
 }
