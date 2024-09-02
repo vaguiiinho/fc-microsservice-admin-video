@@ -44,7 +44,27 @@ class GenreEloquentRepository implements GenreRepositoryInterface
         return $this->toGenre($genre);
     }
 
-    public function findAll(string $filter = '', $order = 'DESC'): array {}
+    public function findAll(string $filter = '', $order = 'DESC'): array
+    {
+        // $query = $this->model->query();
+
+        // if (!empty($filter)) {
+        //     $query->where('name', 'LIKE', "%{$filter}%");
+        // }
+
+        // $query->orderBy('id', $order);
+
+        // $genres = $query->get();
+
+        $genres = $this->model
+            ->where(function ($query) use ($filter) {
+                if ($filter) {
+                    $query->where('name', 'LIKE', "%{$filter}%");
+                }
+            })->get();
+
+        return $genres->toArray();
+    }
 
     public function paginate(
         string $filter = '',
