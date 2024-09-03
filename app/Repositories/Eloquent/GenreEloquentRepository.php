@@ -103,7 +103,14 @@ class GenreEloquentRepository implements GenreRepositoryInterface
         return $this->toGenre($genre);
     }
 
-    public function delete(string $id): bool {}
+    public function delete(string $id): bool 
+    {
+        if (!$genre = $this->model->find($id)) {
+            throw new NotFoundException("Genre {$id} not found");
+        }
+
+        return $genre->delete();
+    }
 
     private function toGenre(Model $object): EntityGenre
     {
