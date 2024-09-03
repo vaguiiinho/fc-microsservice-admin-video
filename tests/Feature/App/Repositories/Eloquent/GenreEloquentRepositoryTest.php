@@ -8,8 +8,9 @@ use App\Models\Genre as Model;
 use App\Repositories\Eloquent\GenreEloquentRepository;
 use Core\Domain\Entity\Genre as EntityGenre;
 use Core\Domain\Repository\GenreRepositoryInterface;
-use Core\Domain\ValueObject\Uuid;
+use Core\Domain\ValueObject\Uuid as UuidValueObject;
 use DateTime;
+use Ramsey\Uuid\Uuid as Uuid;
 use Tests\TestCase;
 
 class GenreEloquentRepositoryTest extends TestCase
@@ -148,7 +149,7 @@ class GenreEloquentRepositoryTest extends TestCase
         $genre = Model::factory()->create();
 
         $entity = new EntityGenre(
-            id: new Uuid($genre->id),
+            id: new UuidValueObject($genre->id),
             name: $genre->name,
             isActive: (bool) $genre->is_active,
             createdAt: new DateTime($genre->created_at),
@@ -165,5 +166,19 @@ class GenreEloquentRepositoryTest extends TestCase
         $this->assertDatabaseHas('genres', [
             'name' => $updatedName,
         ]);
+    }
+
+    public function testUpdateNotFound()
+    {
+        $this->expectException(NotFoundException::class);
+
+        $uuid = (string) Uuid::uuid4();
+
+        $entity = new EntityGenre(
+            id: new UuidValueObject($uuid),
+            name: 'genre',
+        );
+
+        $this->repository->update($entity);
     }
 }
