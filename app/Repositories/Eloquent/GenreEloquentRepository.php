@@ -3,6 +3,7 @@
 namespace App\Repositories\Eloquent;
 
 use App\Models\Genre as Model;
+use App\Repositories\Presenter\PaginationPresenter;
 use Core\Domain\Entity\Genre as EntityGenre;
 use Core\Domain\Exception\NotFoundException;
 use Core\Domain\Repository\GenreRepositoryInterface;
@@ -61,7 +62,9 @@ class GenreEloquentRepository implements GenreRepositoryInterface
                 if ($filter) {
                     $query->where('name', 'LIKE', "%{$filter}%");
                 }
-            })->get();
+            })
+            ->orderBy('name', $order)
+            ->get();
 
         return $genres->toArray();
     }
@@ -71,7 +74,19 @@ class GenreEloquentRepository implements GenreRepositoryInterface
         $order = 'DESC',
         int $page = 1,
         int $totalPage = 15
-    ): PaginationInterface {}
+    ): PaginationInterface {
+
+        $result = $this->model
+            ->where(function ($query) use ($filter) {
+                if ($filter) {
+                    $query->where('name', 'LIKE', "%{$filter}%");
+                }
+            })
+            ->orderBy('name', $order)
+            ->paginate($totalPage);
+
+        return new PaginationPresenter($result);
+    }
 
     public function update(EntityGenre $genre): EntityGenre {}
 
