@@ -88,7 +88,20 @@ class GenreEloquentRepository implements GenreRepositoryInterface
         return new PaginationPresenter($result);
     }
 
-    public function update(EntityGenre $genre): EntityGenre {}
+    public function update(EntityGenre $entity): EntityGenre
+    {
+        if (!$genre = $this->model->find($entity->id())) {
+            throw new NotFoundException("Genre {$entity->id()} not found");
+        }
+
+        $genre->update([
+            'name' => $entity->name,
+        ]);
+
+        $genre->refresh();
+
+        return $this->toGenre($genre);
+    }
 
     public function delete(string $id): bool {}
 

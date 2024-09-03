@@ -8,9 +8,9 @@ use App\Models\Genre as Model;
 use App\Repositories\Eloquent\GenreEloquentRepository;
 use Core\Domain\Entity\Genre as EntityGenre;
 use Core\Domain\Repository\GenreRepositoryInterface;
-use Core\Domain\Repository\PaginationInterface;
+use Core\Domain\ValueObject\Uuid;
+use DateTime;
 use Tests\TestCase;
-use Throwable;
 
 class GenreEloquentRepositoryTest extends TestCase
 {
@@ -141,5 +141,29 @@ class GenreEloquentRepositoryTest extends TestCase
 
         $this->assertCount(0, $response->items());
         $this->assertEquals(0, $response->total());
+    }
+
+    public function testUpdate()
+    {
+        $genre = Model::factory()->create();
+
+        $entity = new EntityGenre(
+            id: new Uuid($genre->id),
+            name: $genre->name,
+            isActive: (bool) $genre->is_active,
+            createdAt: new DateTime($genre->created_at),
+        );
+
+        $updatedName = 'name updated';
+
+        $entity->update(name: $updatedName);
+        $response =  $this->repository->update($entity);
+
+        $this->assertEquals($updatedName, $response->name);
+        $this->assertEquals($genre->id, $response->id);
+
+        $this->assertDatabaseHas('genres', [
+            'name' => $updatedName,
+        ]);
     }
 }
