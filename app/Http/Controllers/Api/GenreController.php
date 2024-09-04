@@ -21,6 +21,7 @@ use Core\UseCase\DTO\Genre\List\ListGenresInputDto;
 use Core\UseCase\DTO\Genre\List\GenreInputDto;
 use Core\UseCase\DTO\Genre\Update\UpdateGenreInputDto;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class GenreController extends Controller
 {
@@ -36,7 +37,7 @@ class GenreController extends Controller
                 filter: $request->get('filter', ''),
                 order: $request->get('order', 'DESC'),
                 page: (int) $request->get('page', 1),
-                totalPage: (int) $request->get('totalPage', 10)
+                totalPage: (int) $request->get('totalPage')
             )
         );
 
@@ -60,9 +61,19 @@ class GenreController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreGenreRequest $request, CreateGenreUseCase $useCase)
     {
-        //
+        $response = $useCase->execute(
+            input: new CreateGenreInputDto(
+                name: $request->name,
+                isActive: (bool) $request->is_active ?? true,
+                categoriesId: $request->categories_id
+            )
+        );
+
+        return (new GenreResource($response))
+            ->response()
+            ->setStatusCode(Response::HTTP_CREATED);
     }
 
     /**
