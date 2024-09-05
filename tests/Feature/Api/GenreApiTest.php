@@ -149,4 +149,35 @@ class GenreApiTest extends TestCase
             'is_active' => true,
         ]);
     }
+
+    public function test_validation_update()
+    {
+        $response = $this->putJson("$this->endpoint/fake_id", [
+            'name' => 'updated name',
+            'categories_id' => [],
+        ]);
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+
+        $response->assertJsonStructure([
+           'message',
+            'errors' => ['categories_id']
+        ]);
+    }
+
+    public function test_delete_genre_not_found()
+    {
+        $response = $this->deleteJson("$this->endpoint/fake_value");
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
+        $response->assertJson(['message' => 'Genre fake_value not found']);
+    }
+
+    public function test_delete_genre()
+    {
+        $genre = Genre::factory()->create();
+
+        $response = $this->deleteJson("$this->endpoint/$genre->id");
+
+        $response->assertStatus(Response::HTTP_NO_CONTENT);
+    }
 }
