@@ -98,9 +98,18 @@ class GenreController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateGenreRequest $request, UpdateGenreUseCase $useCase, $id)
     {
-        //
+        $response = $useCase->execute(
+            input: new UpdateGenreInputDto(
+                id: $id,
+                name: $request->name,
+                isActive: (bool) $request->is_active ?? true,
+                categoriesId: $request->categories_id
+            )
+        );
+
+        return new GenreResource($response);
     }
 
     /**

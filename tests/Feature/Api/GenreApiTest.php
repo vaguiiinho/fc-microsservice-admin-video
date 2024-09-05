@@ -106,4 +106,47 @@ class GenreApiTest extends TestCase
 
         $this->assertEquals($genre->id, $response['data']['id']);
     }
+
+    public function test_update_genre_not_found()
+    {
+        $categories = Category::factory()->count(2)->create();
+        $categoriesId = $categories->pluck('id')->toArray();
+
+        $response = $this->putJson("$this->endpoint/fake_value", [
+            'name' => 'Updated Genre',
+            'categories_id' => $categoriesId,
+        ]);
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
+        $response->assertJson(['message' => 'Genre fake_value not found']);
+    }
+
+    public function test_update_genre()
+    {
+        $genre = Genre::factory()->create();
+        $categories = Category::factory()->count(2)->create();
+        $categoriesId = $categories->pluck('id')->toArray();
+
+        $response = $this->putJson("$this->endpoint/$genre->id", [
+            'name' => 'Updated Genre',
+            'categories_id' => $categoriesId,
+        ]);
+
+        $response->assertStatus(Response::HTTP_OK);
+
+        $response->assertJsonStructure([
+            'data' => [
+                'id',
+                'name',
+                'is_active'
+            ]
+        ]);
+
+        $this->assertEquals('Updated Genre', $response['data']['name']);
+
+        $this->assertDatabaseHas('genres', [
+            'id' => $genre->id,
+            'name' => 'Updated Genre',
+            'is_active' => true,
+        ]);
+    }
 }
