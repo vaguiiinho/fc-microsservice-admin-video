@@ -7,6 +7,7 @@ use Core\Domain\ValueObject\Uuid as ValueObjectUuid;
 use DateTime;
 use PHPUnit\Framework\TestCase;
 use Core\Domain\Entity\CastMember;
+use Core\Domain\Exception\EntityValidationException;
 use Ramsey\Uuid\Uuid;
 
 class CastMemberUnitTest extends TestCase
@@ -39,6 +40,16 @@ class CastMemberUnitTest extends TestCase
         $this->assertEquals('Cast Member Name', $castMember->name);
         $this->assertEquals(CastMemberType::DIRECTOR, $castMember->type);
         $this->assertNotEmpty($castMember->createdAt());
+    }
+
+    public function testValidation()
+    {
+        $this->expectException(EntityValidationException::class);
+
+        new CastMember(
+            name: 'Ca',
+            type: CastMemberType::DIRECTOR,
+        );
     }
 
 
