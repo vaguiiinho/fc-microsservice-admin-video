@@ -29,9 +29,6 @@ class GenreApiTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'data' => [
-                '*' => ['id', 'name', 'is_active'],
-            ],
             'meta' => [
                 'total',
                 'current_page',
@@ -47,8 +44,8 @@ class GenreApiTest extends TestCase
 
     public function test_store()
     {
-       $categories =  Category::factory()->count(10)->create();
-       $categoriesId = $categories->pluck('id')->toArray();
+        $categories =  Category::factory()->count(10)->create();
+        $categoriesId = $categories->pluck('id')->toArray();
 
         $response = $this->postJson($this->endpoint, [
             'name' => 'New Category',
@@ -57,5 +54,32 @@ class GenreApiTest extends TestCase
         ]);
 
         $response->assertStatus(Response::HTTP_CREATED);
+
+        $response->assertJsonStructure([
+            'data' => [
+                'id',
+                'name',
+                'is_active',
+            ],
+        ]);
+    }
+
+    public function test_validation_store()
+    {
+        $categories =  Category::factory()->count(2)->create();
+        $categoriesId = $categories->pluck('id')->toArray();
+
+        $data = [
+            'name' => '',
+            'is_active' => false,
+            'categories_id' => $categoriesId,
+        ];
+
+        $response = $this->postJson($this->endpoint, $data);
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+        $response->assertJsonStructure([
+            'message',
+            'errors' => ['name']
+        ]);
     }
 }

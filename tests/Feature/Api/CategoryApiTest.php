@@ -58,7 +58,7 @@ class CategoryApiTest extends TestCase
         $response->assertJsonCount(10, 'data');
     }
 
-    public function test_list_category_notfound()
+    public function test_list_category_not_found()
     {
         $response = $this->getJson("$this->endpoint/fake_value");
         $response->assertStatus(Response::HTTP_NOT_FOUND);
@@ -126,7 +126,7 @@ class CategoryApiTest extends TestCase
         ]);
     }
 
-    public function test_notfound_update()
+    public function test_not_found_update()
     {
         $data = [
             'name' => 'Updated Name',
@@ -174,7 +174,7 @@ class CategoryApiTest extends TestCase
         ]);
     }
 
-    public function test_notfound_delete()
+    public function test_not_found_delete()
     {
         $response = $this->deleteJson("$this->endpoint/fake_value");
 
