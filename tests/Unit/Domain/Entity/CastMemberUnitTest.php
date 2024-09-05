@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Domain\Entity;
 
+use Core\Domain\Enum\CastMemberType;
 use Core\Domain\ValueObject\Uuid as ValueObjectUuid;
 use DateTime;
 use PHPUnit\Framework\TestCase;
@@ -17,6 +18,7 @@ class CastMemberUnitTest extends TestCase
         $castMember = new CastMember(
             id: new ValueObjectUuid($uuid),
             name: 'Cast Member Name',
+            type: CastMemberType::ACTOR,
             createAt: new DateTime(date('Y-m-d H:i:s'))
         );
     }
