@@ -52,5 +52,34 @@ class CastMemberUnitTest extends TestCase
         );
     }
 
+    public function testExceptionUpdate()
+    {
+        $this->expectException(EntityValidationException::class);
+
+        $castMember = new CastMember(
+            name: 'Cast Member Name',
+            type: CastMemberType::ACTOR,
+        );
+
+        $castMember->update(
+            name: 'Ca',
+        );
+    }
+
+    public function testUpdateEntity()
+    {
+        $castMember = new CastMember(
+            name: 'Cast Member Name',
+            type: CastMemberType::ACTOR,
+        );
+
+        $this->assertEquals('Cast Member Name', $castMember->name);
+
+        $castMember->update(
+            name: 'Updated Cast Member Name',
+        );
+
+        $this->assertEquals('Updated Cast Member Name', $castMember->name);
+    }
 
 }
