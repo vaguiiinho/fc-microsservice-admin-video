@@ -82,4 +82,28 @@ class GenreApiTest extends TestCase
             'errors' => ['name']
         ]);
     }
+
+    public function test_list_genre_not_found()
+    {
+        $response = $this->getJson("$this->endpoint/fake_value");
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
+        $response->assertJson(['message' => 'Genre fake_value not found']);
+    }
+
+    public function test_list_genre()
+    {
+        $genre = Genre::factory()->create();
+        $response = $this->getJson("$this->endpoint/$genre->id");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonStructure([
+            'data' => [
+                'id',
+                'name',
+                'is_active'
+            ]
+        ]);
+
+        $this->assertEquals($genre->id, $response['data']['id']);
+    }
 }
