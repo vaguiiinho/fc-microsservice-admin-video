@@ -2,7 +2,12 @@
 
 namespace Core\UseCase\CastMember;
 
+use Core\Domain\Entity\CastMember;
 use Core\Domain\Repository\CastMemberRepositoryInterface;
+use Core\UseCase\DTO\CastMember\Create\{
+    CreateCastMemberInputDto,
+    CreateCastMemberOutputDto
+};
 
 class CastMemberUseCase
 {
@@ -13,5 +18,8 @@ class CastMemberUseCase
         $this->repository = $repository;
     }
 
-    public function execute() {}
+    public function execute(CreateCastMemberInputDto $input): CreateCastMemberOutputDto
+    {
+        
+    }
 }

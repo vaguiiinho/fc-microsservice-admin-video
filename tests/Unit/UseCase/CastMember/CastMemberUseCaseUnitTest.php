@@ -2,14 +2,14 @@
 
 namespace Tests\Unit\UseCase\CastMember;
 
-use Core\Domain\Entity\CastMember;
-use Core\Domain\Enum\CastMemberType;
 use Core\Domain\Repository\CastMemberRepositoryInterface;
-use Core\Domain\ValueObject\Uuid as ValueObjectUuid;
 use Core\UseCase\CastMember\CastMemberUseCase;
+use Core\UseCase\DTO\CastMember\Create\{
+    CreateCastMemberInputDto,
+    CreateCastMemberOutputDto
+};
 use Mockery;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Uuid;
 use stdClass;
 
 class CastMemberUseCaseUnitTest extends TestCase
@@ -18,15 +18,19 @@ class CastMemberUseCaseUnitTest extends TestCase
     {
         // Arrange
         $mockRepository = Mockery::mock(stdClass::class, CastMemberRepositoryInterface::class);
+        $mockInputDto = Mockery::mock(CreateCastMemberInputDto::class, ['new cast member', 1]);
+
         $useCase = new CastMemberUseCase($mockRepository);
 
+
+
         // Action
-        $useCase->execute();
+        $response =   $useCase->execute($mockInputDto);
 
 
         // Assert
-        $this->assertTrue(true);
-
+        $this->assertInstanceOf(CastMemberRepositoryInterface::class, $response);
+        $this->assertInstanceOf(CreateCastMemberOutputDto::class, $response);
     }
 
     protected function tearDown(): void
@@ -34,5 +38,4 @@ class CastMemberUseCaseUnitTest extends TestCase
         Mockery::close();
         parent::tearDown();
     }
-
 }
