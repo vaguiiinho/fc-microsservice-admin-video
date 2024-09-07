@@ -2,7 +2,10 @@
 
 namespace Tests\Unit\UseCase\CastMember;
 
+use Core\Domain\Entity\CastMember;
+use Core\Domain\Enum\CastMemberType;
 use Core\Domain\Repository\CastMemberRepositoryInterface;
+use Core\Domain\ValueObject\Uuid as ValueObjectUuid;
 use Core\UseCase\CastMember\CastMemberUseCase;
 use Core\UseCase\DTO\CastMember\Create\{
     CreateCastMemberInputDto,
@@ -10,6 +13,7 @@ use Core\UseCase\DTO\CastMember\Create\{
 };
 use Mockery;
 use PHPUnit\Framework\TestCase;
+use Ramsey\Uuid\Uuid;
 use stdClass;
 
 class CastMemberUseCaseUnitTest extends TestCase
@@ -17,7 +21,22 @@ class CastMemberUseCaseUnitTest extends TestCase
     public function testCreate()
     {
         // Arrange
+        $uuid = (string) Uuid::uuid4();
+        
         $mockRepository = Mockery::mock(stdClass::class, CastMemberRepositoryInterface::class);
+
+        $mockentity = Mockery::mock(CastMember::class, [
+            'new cast member',
+            CastMemberType::ACTOR,
+        ]);
+
+        $mockentity->shouldReceive('id')->andReturn(new ValueObjectUuid($uuid));
+        $mockentity->shouldReceive('createdAt')->andReturn(Date('Y-m-d H:i:s'));
+
+        $mockRepository->shouldReceive('insert')
+            ->once()
+            ->andReturn($mockentity);
+
         $mockInputDto = Mockery::mock(CreateCastMemberInputDto::class, ['new cast member', 1]);
 
         $useCase = new CastMemberUseCase($mockRepository);
@@ -27,9 +46,7 @@ class CastMemberUseCaseUnitTest extends TestCase
         // Action
         $response =   $useCase->execute($mockInputDto);
 
-
         // Assert
-        $this->assertInstanceOf(CastMemberRepositoryInterface::class, $response);
         $this->assertInstanceOf(CreateCastMemberOutputDto::class, $response);
     }
 
