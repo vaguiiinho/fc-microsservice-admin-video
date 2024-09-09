@@ -19,8 +19,15 @@ class ListCastMemberUseCase
         $this->repository = $repository;
     }
 
-    public function execute()
+    public function execute(ListCastMemberInputDto $input): ListCastMemberOutputDto
     {
-        
+        $response = $this->repository->findById($input->id);
+
+        return new ListCastMemberOutputDto(
+            id: $response->id(),
+            name: $response->name,
+            type: $response->type->value,
+            created_at: $response->createdAt()
+        );
     }
 }
