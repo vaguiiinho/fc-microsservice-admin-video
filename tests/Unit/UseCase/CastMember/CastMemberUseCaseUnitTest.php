@@ -22,20 +22,20 @@ class CastMemberUseCaseUnitTest extends TestCase
     {
         // Arrange
         $uuid = (string) Uuid::uuid4();
-        
+
         $mockRepository = Mockery::mock(stdClass::class, CastMemberRepositoryInterface::class);
 
-        $mockentity = Mockery::mock(CastMember::class, [
+        $mockEntity = Mockery::mock(CastMember::class, [
             'new cast member',
             CastMemberType::ACTOR,
         ]);
 
-        $mockentity->shouldReceive('id')->andReturn(new ValueObjectUuid($uuid));
-        $mockentity->shouldReceive('createdAt')->andReturn(Date('Y-m-d H:i:s'));
+        $mockEntity->shouldReceive('id')->andReturn(new ValueObjectUuid($uuid));
+        $mockEntity->shouldReceive('createdAt')->andReturn(Date('Y-m-d H:i:s'));
 
         $mockRepository->shouldReceive('insert')
             ->once()
-            ->andReturn($mockentity);
+            ->andReturn($mockEntity);
 
         $mockInputDto = Mockery::mock(CreateCastMemberInputDto::class, ['new cast member', 1]);
 
@@ -45,9 +45,13 @@ class CastMemberUseCaseUnitTest extends TestCase
 
         // Action
         $response =   $useCase->execute($mockInputDto);
-
+        
         // Assert
         $this->assertInstanceOf(CreateCastMemberOutputDto::class, $response);
+        $this->assertEquals($uuid, $response->id);
+        $this->assertEquals('new cast member', $response->name);
+        $this->assertNotEmpty($response->createdAt);
+        $this->assertEquals(1, $response->type);
     }
 
     protected function tearDown(): void
