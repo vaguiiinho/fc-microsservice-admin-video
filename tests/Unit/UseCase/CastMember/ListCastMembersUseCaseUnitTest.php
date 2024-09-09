@@ -2,16 +2,16 @@
 
 namespace Tests\Unit\UseCase\CastMember;
 
-use Core\Domain\Entity\CastMember;
-use Core\Domain\Enum\CastMemberType;
 use Core\Domain\Repository\CastMemberRepositoryInterface;
-use Core\Domain\ValueObject\Uuid as ValueObjectUuid;
 use Core\UseCase\CastMember\ListCastMembersUseCase;
+use Core\UseCase\DTO\CastMember\List\{
+    ListCastMembersInputDto,
+    ListCastMembersOutputDto
+};
 use Mockery;
-use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Uuid;
 use stdClass;
 use Tests\Unit\UseCase\UseCaseTrait;
+use PHPUnit\Framework\TestCase;
 
 class ListCastMembersUseCaseUnitTest extends TestCase
 {
@@ -20,17 +20,24 @@ class ListCastMembersUseCaseUnitTest extends TestCase
     {
         // Arrange
         $mockRepository = Mockery::mock(stdClass::class, CastMemberRepositoryInterface::class);
-        $mockRepository->shouldReceive('findById')
+        $mockRepository->shouldReceive('paginate')
             ->once()
             ->andReturn($this->mockPagination());
 
         $useCase = new ListCastMembersUseCase($mockRepository);
+
+        $mockInput = Mockery::mock(ListCastMembersInputDto::class, [
+            'test',
+            "desc",
+            1,
+            15
+        ]);
         // Action
 
-        $useCase->execute();
+        $response = $useCase->execute($mockInput);
 
         // Assert
-        $this->assertTrue(true);
+        $this->assertInstanceOf(ListCastMembersOutputDto::class, $response);
 
         Mockery::close();
     }
