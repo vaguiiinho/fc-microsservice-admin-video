@@ -10,7 +10,7 @@ use Core\UseCase\DTO\CastMember\Create\{
     CreateCastMemberOutputDto
 };
 
-class CastMemberUseCase
+class CreateCastMemberUseCase
 {
     protected $repository;
 

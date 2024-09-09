@@ -6,19 +6,19 @@ use Core\Domain\Entity\CastMember;
 use Core\Domain\Enum\CastMemberType;
 use Core\Domain\Repository\CastMemberRepositoryInterface;
 use Core\Domain\ValueObject\Uuid as ValueObjectUuid;
-use Core\UseCase\CastMember\CastMemberUseCase;
-use Core\UseCase\DTO\CastMember\Create\{
-    CreateCastMemberInputDto,
-    CreateCastMemberOutputDto
+use Core\UseCase\CastMember\ListCastMemberUseCase;
+use Core\UseCase\DTO\CastMember\List\{
+    ListCastMemberInputDto,
+    ListCastMemberOutputDto
 };
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use stdClass;
 
-class CastMemberUseCaseUnitTest extends TestCase
+class ListCastMemberUseCaseUnitTest extends TestCase
 {
-    public function testCreate()
+    public function testList()
     {
         // Arrange
         $uuid = (string) Uuid::uuid4();
@@ -33,25 +33,22 @@ class CastMemberUseCaseUnitTest extends TestCase
         $mockEntity->shouldReceive('id')->andReturn(new ValueObjectUuid($uuid));
         $mockEntity->shouldReceive('createdAt')->andReturn(Date('Y-m-d H:i:s'));
 
-        $mockRepository->shouldReceive('insert')
+        $mockRepository->shouldReceive('findById')
             ->once()
+            ->with($uuid)
             ->andReturn($mockEntity);
 
-        $mockInputDto = Mockery::mock(CreateCastMemberInputDto::class, ['new cast member', 1]);
+        $mockInputDto = Mockery::mock(ListCastMemberInputDto::class, [$uuid]);
 
-        $useCase = new CastMemberUseCase($mockRepository);
+        $useCase = new ListCastMemberUseCase($mockRepository);
 
 
 
         // Action
-        $response =   $useCase->execute($mockInputDto);
-        
+        $response =   $useCase->execute();
+
         // Assert
-        $this->assertInstanceOf(CreateCastMemberOutputDto::class, $response);
-        $this->assertEquals($uuid, $response->id);
-        $this->assertEquals('new cast member', $response->name);
-        $this->assertNotEmpty($response->createdAt);
-        $this->assertEquals(1, $response->type);
+        
     }
 
     protected function tearDown(): void
