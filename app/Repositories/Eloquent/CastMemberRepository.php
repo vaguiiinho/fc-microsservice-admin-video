@@ -86,7 +86,18 @@ class CastMemberRepository implements CastMemberRepositoryInterface
 
     public function update(Entity $entity): Entity 
     {
-        
+        if (!$dataDb = $this->model->find($entity->id())) {
+            throw new NotFoundException("Cast member {$entity->id()} not found");
+        }
+
+        $dataDb->update([
+            'name' => $entity->name,
+            'type' => $entity->type->value,
+        ]);
+
+        $dataDb->refresh();
+
+        return $this->toEntity($dataDb);
     }
 
     public function delete(string $entityId): bool {}
