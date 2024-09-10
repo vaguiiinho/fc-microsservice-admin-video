@@ -69,9 +69,25 @@ class CastMemberRepository implements CastMemberRepositoryInterface
         $order = 'DESC',
         int $page = 1,
         int $totalPage = 15
-    ): PaginationInterface {}
+    ): PaginationInterface 
+    {
+        $query = $this->model->query();
 
-    public function update(Entity $entity): Entity {}
+        if (!empty($filter)) {
+            $query->where('name', 'LIKE', "%{$filter}%");
+        }
+
+        $query->orderBy('name', $order);
+
+        $paginator = $query->paginate($totalPage);
+
+        return new PaginationPresenter($paginator);
+    }
+
+    public function update(Entity $entity): Entity 
+    {
+        
+    }
 
     public function delete(string $entityId): bool {}
 

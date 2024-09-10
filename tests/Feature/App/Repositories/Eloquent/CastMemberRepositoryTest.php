@@ -71,4 +71,26 @@ class CastMemberRepositoryTest extends TestCase
 
         $this->assertCount(count($castMembers), $response);
     }
+
+    public function testPagination()
+    {
+        Model::factory()->count(20)->create();
+
+        $response = $this->repository->paginate();
+
+        $this->assertCount(15, $response->items());
+        $this->assertEquals(20, $response->total());
+    }
+
+    public function testPaginationPage2()
+    {
+        Model::factory()->count(80)->create();
+
+        $response = $this->repository->paginate(
+            totalPage: 10
+        );
+
+        $this->assertCount(10, $response->items());
+        $this->assertEquals(80, $response->total());
+    }
 }
