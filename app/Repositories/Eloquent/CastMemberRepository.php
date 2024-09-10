@@ -20,7 +20,8 @@ class CastMemberRepository implements CastMemberRepositoryInterface
         $this->model = $model;
     }
 
-    public function insert(Entity $entity): Entity {
+    public function insert(Entity $entity): Entity
+    {
         $modelDb = $this->model->create([
             'id' => $entity->id(),
             'name' => $entity->name,
@@ -30,7 +31,7 @@ class CastMemberRepository implements CastMemberRepositoryInterface
         return $this->toEntity($modelDb);
     }
 
-    public function findById(string $id): Entity 
+    public function findById(string $id): Entity
     {
         if (!$modelDb = $this->model->find($id)) {
             throw new NotFoundException("Cast member {$id} not found");
@@ -38,7 +39,30 @@ class CastMemberRepository implements CastMemberRepositoryInterface
         return $this->toEntity($modelDb);
     }
 
-    public function findAll(string $filter = '', $order = 'DESC'): array {}
+    public function findAll(string $filter = '', $order = 'DESC'): array
+    {
+        // $modelDb = $this->model
+        //     ->where(function ($query) use ($filter) {
+        //         if ($filter) {
+        //             $query->where('name', 'LIKE', "%{$filter}%");
+        //         }
+        //     })
+        //     ->orderBy('name', $order)
+        //     ->get();
+
+        // return $modelDb->toArray();
+
+        $query = $this->model->query();
+
+        if (!empty($filter)) {
+            $query->where('name', 'LIKE', "%{$filter}%");
+        }
+
+        $query->orderBy('name', $order);
+        $modelDb = $query->get();
+
+        return $modelDb->toArray();
+    }
 
     public function paginate(
         string $filter = '',

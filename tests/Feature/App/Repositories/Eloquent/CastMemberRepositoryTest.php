@@ -55,4 +55,20 @@ class CastMemberRepositoryTest extends TestCase
         $this->assertEquals($castMember->id, $response->id());
         $this->assertEquals($castMember->name, $response->name);
     }
+
+    public function testFindAllEmpty()
+    {
+        $response = $this->repository->findAll();
+
+        $this->assertCount(0, $response);
+    }
+
+    public function testFindAll()
+    {
+        $castMembers = Model::factory()->count(50)->create();
+
+        $response = $this->repository->findAll();
+
+        $this->assertCount(count($castMembers), $response);
+    }
 }
