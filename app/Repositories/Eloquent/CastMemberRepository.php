@@ -21,17 +21,21 @@ class CastMemberRepository implements CastMemberRepositoryInterface
     }
 
     public function insert(Entity $entity): Entity {
-        $response = $this->model->create([
+        $modelDb = $this->model->create([
             'id' => $entity->id(),
             'name' => $entity->name,
             'type' => $entity->type->value,
             'created_at' => $entity->createdAt(),
         ]);
-        return $this->toEntity($response);
+        return $this->toEntity($modelDb);
     }
 
-    public function findById(string $id): Entity {
-
+    public function findById(string $id): Entity 
+    {
+        if (!$modelDb = $this->model->find($id)) {
+            throw new NotFoundException("Cast member {$id} not found");
+        }
+        return $this->toEntity($modelDb);
     }
 
     public function findAll(string $filter = '', $order = 'DESC'): array {}
