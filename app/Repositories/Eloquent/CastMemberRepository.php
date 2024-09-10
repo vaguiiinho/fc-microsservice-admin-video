@@ -69,8 +69,7 @@ class CastMemberRepository implements CastMemberRepositoryInterface
         $order = 'DESC',
         int $page = 1,
         int $totalPage = 15
-    ): PaginationInterface 
-    {
+    ): PaginationInterface {
         $query = $this->model->query();
 
         if (!empty($filter)) {
@@ -84,7 +83,7 @@ class CastMemberRepository implements CastMemberRepositoryInterface
         return new PaginationPresenter($paginator);
     }
 
-    public function update(Entity $entity): Entity 
+    public function update(Entity $entity): Entity
     {
         if (!$dataDb = $this->model->find($entity->id())) {
             throw new NotFoundException("Cast member {$entity->id()} not found");
@@ -100,7 +99,14 @@ class CastMemberRepository implements CastMemberRepositoryInterface
         return $this->toEntity($dataDb);
     }
 
-    public function delete(string $entityId): bool {}
+    public function delete(string $entityId): bool
+    {
+        if (!$dataDb = $this->model->find($entityId)) {
+            throw new NotFoundException("Cast member {$entityId} not found");
+        }
+
+        return $dataDb->delete();
+    }
 
     private function toEntity(object $entity): Entity
     {
