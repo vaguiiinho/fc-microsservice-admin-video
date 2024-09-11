@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\{
+    CastMemberController,
     CategoryController,
     GenreController,
 };
@@ -10,6 +11,11 @@ Route::apiResource('/categories', CategoryController::class);
 Route::apiResource(
     name: '/genres',
     controller: GenreController::class
+);
+
+Route::apiResource(
+    name: '/cast-members',
+    controller: CastMemberController::class
 );
 
 Route::get('/', function () {
