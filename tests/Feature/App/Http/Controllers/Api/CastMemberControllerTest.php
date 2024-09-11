@@ -1,20 +1,20 @@
 <?php
 
-namespace Tests\Feature\App\Http\Contollers\Api;
+namespace Tests\Feature\App\Http\Controllers\Api;
 
-use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\CastMemberController;
 use App\Http\Requests\{
-    StoreCategoryRequest,
-    UpdateCategoryRequest
+    StoreCastMemberRequest,
+    UpdateCastMemberRequest
 };
-use App\Models\Category as ModelsCategory;
-use App\Repositories\Eloquent\CategoryEloquentRepository;
-use Core\UseCase\Category\{
-    CreateCategoryUseCase,
-    ListCategoriesUseCase,
-    ListCategoryUseCase,
-    UpdateCategoryUseCase,
-    DeleteCategoryUseCase
+use App\Models\CastMember as ModelsCastMember;
+use App\Repositories\Eloquent\CastMemberRepository;
+use Core\UseCase\CastMember\{
+    CreateCastMemberUseCase,
+    ListCastMemberUseCase,
+    UpdateCastMemberUseCase,
+    DeleteCastMemberUseCase,
+    ListCastMembersUseCase
 };
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -23,21 +23,21 @@ use Illuminate\Http\Response;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Tests\TestCase;
 
-class CategoryControllerTest extends TestCase
+class CastMemberControllerTest extends TestCase
 {
     protected $repository;
     protected $controller;
     protected function setUp(): void
     {
-        $this->repository = new CategoryEloquentRepository(new ModelsCategory);
-        $this->controller = new CategoryController();
+        $this->repository = new CastMemberRepository(new ModelsCastMember);
+        $this->controller = new CastMemberController();
         parent::setUp();
     }
 
     public function test_index()
     {
 
-        $useCase = new ListCategoriesUseCase($this->repository);
+        $useCase = new ListCastMembersUseCase($this->repository);
 
         $response = $this->controller->index(new Request, $useCase);
 
@@ -47,12 +47,13 @@ class CategoryControllerTest extends TestCase
 
     public function test_store()
     {
-        $useCase = new CreateCategoryUseCase($this->repository);
-        $request = new StoreCategoryRequest();
+        $useCase = new CreateCastMemberUseCase($this->repository);
+        $request = new StoreCastMemberRequest();
         $request->headers->set('Content-Type', 'application/json');
 
         $request->setJson(new ParameterBag([
             'name' => 'Test',
+            'type' => 1
         ]));
 
         $response = $this->controller->store($request, $useCase);
@@ -63,11 +64,11 @@ class CategoryControllerTest extends TestCase
 
     public function test_show()
     {
-        $category = ModelsCategory::factory()->create();
+        $castMember = ModelsCastMember::factory()->create();
 
         $response = $this->controller->show(
-            useCase: new ListCategoryUseCase($this->repository),
-            id: $category->id,
+            useCase: new ListCastMemberUseCase($this->repository),
+            id: $castMember->id,
         );
 
         $this->assertInstanceOf(JsonResponse::class, $response);
@@ -76,19 +77,20 @@ class CategoryControllerTest extends TestCase
 
     public function test_update()
     {
-        $category = ModelsCategory::factory()->create();
+        $castMember = ModelsCastMember::factory()->create();
 
-        $request = new UpdateCategoryRequest();
+        $request = new UpdateCastMemberRequest();
         $request->headers->set('Content-Type', 'application/json');
 
         $request->setJson(new ParameterBag([
             'name' => 'Updated',
+            'type' => 1
         ]));
 
         $response = $this->controller->update(
             request: $request,
-            useCase: new UpdateCategoryUseCase($this->repository),
-            id: $category->id
+            useCase: new UpdateCastMemberUseCase($this->repository),
+            id: $castMember->id
         );
 
         $this->assertInstanceOf(JsonResponse::class, $response);
@@ -97,11 +99,11 @@ class CategoryControllerTest extends TestCase
 
     public function test_delete()
     {
-        $category = ModelsCategory::factory()->create();
+        $castMember = ModelsCastMember::factory()->create();
 
         $response = $this->controller->destroy(
-            useCase: new DeleteCategoryUseCase($this->repository),
-            id: $category->id
+            useCase: new DeleteCastMemberUseCase($this->repository),
+            id: $castMember->id
         );
 
         $this->assertEquals(Response::HTTP_NO_CONTENT, $response->status());

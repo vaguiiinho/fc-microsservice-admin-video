@@ -5,7 +5,7 @@ namespace Core\UseCase\CastMember;
 use Core\Domain\Repository\CastMemberRepositoryInterface;
 use Core\UseCase\DTO\CastMember\List\{
     ListCastMemberInputDto,
-    ListCastMemberOutputDto
+    ListCastMemberOutputDto,
 };
 
 class ListCastMemberUseCase
@@ -17,7 +17,7 @@ class ListCastMemberUseCase
         $this->repository = $repository;
     }
 
-    public function execute(ListCastMemberInputDto $input): ListCastMemberOutputDto
+    public function execute(ListCastMemberInputDto $input)
     {
         $response = $this->repository->findById($input->id);
 
@@ -25,7 +25,7 @@ class ListCastMemberUseCase
             id: $response->id(),
             name: $response->name,
             type: $response->type->value,
-            created_at: $response->createdAt()
+            createdAt: $response->createdAt()
         );
     }
 }

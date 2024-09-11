@@ -51,7 +51,7 @@ class ListCastMemberUseCaseUnitTest extends TestCase
         $this->assertInstanceOf(ListCastMemberOutputDto::class, $response);
         $this->assertEquals($uuid, $response->id);
         $this->assertEquals('new cast member', $response->name);
-        $this->assertNotEmpty($response->created_at);
+        $this->assertNotEmpty($response->createdAt);
         $this->assertEquals(2, $response->type);
     }
 

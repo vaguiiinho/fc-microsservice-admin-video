@@ -7,8 +7,8 @@ class ListCastMemberOutputDto
     public function __construct(
         public string $id,
         public string $name,
-        public string $created_at = '',
-        public int $type
+        public int $type,
+        public string $createdAt = '',
     ) {
     }
 }

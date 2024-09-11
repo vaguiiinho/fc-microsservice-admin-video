@@ -13,7 +13,7 @@ class StoreCastMemberRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,15 @@ class StoreCastMemberRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+            ],
+            'type' => [
+                'nullable',
+                'int',
+            ],
         ];
     }
 }
