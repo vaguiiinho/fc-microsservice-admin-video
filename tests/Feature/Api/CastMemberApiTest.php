@@ -23,6 +23,7 @@ class CastMemberApiTest extends TestCase
         CastMember::factory()->count(30)->create();
 
         $response = $this->getJson($this->endPoint);
+
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonCount(15, 'data');
         $response->assertJsonStructure([
@@ -43,9 +44,21 @@ class CastMemberApiTest extends TestCase
         CastMember::factory()->count(20)->create();
 
         $response = $this->getJson("$this->endPoint/?page=2");
+
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonCount(5, 'data');
         $this->assertEquals(20, $response['meta']['total']);
         $this->assertEquals(2, $response['meta']['current_page']);
+    }
+
+    public function test_pagination_with_filter()
+    {
+        CastMember::factory()->count(20)->create();
+        CastMember::factory()->count(5)->create(['name' => 'teste']);
+
+        $response = $this->getJson("$this->endPoint/?filter=teste");
+
+        $response->assertStatus(Response::HTTP_OK);
+        $response->assertJsonCount(5, 'data');
     }
 }
