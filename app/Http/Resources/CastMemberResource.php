@@ -18,7 +18,7 @@ class CastMemberResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'type' => $this->type,
-            'created_at' => $this->createdAt,
+            'created_at' => $this->created_at,
         ];
     }
 }

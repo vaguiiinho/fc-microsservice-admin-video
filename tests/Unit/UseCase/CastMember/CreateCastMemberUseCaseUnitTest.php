@@ -50,7 +50,7 @@ class CreateCastMemberUseCaseUnitTest extends TestCase
         $this->assertInstanceOf(CreateCastMemberOutputDto::class, $response);
         $this->assertEquals($uuid, $response->id);
         $this->assertEquals('new cast member', $response->name);
-        $this->assertNotEmpty($response->createdAt);
+        $this->assertNotEmpty($response->created_at);
         $this->assertEquals(1, $response->type);
     }
 

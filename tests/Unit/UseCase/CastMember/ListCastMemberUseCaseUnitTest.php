@@ -46,12 +46,11 @@ class ListCastMemberUseCaseUnitTest extends TestCase
 
         // Action
         $response =   $useCase->execute($mockInputDto);
-
         // Assert
         $this->assertInstanceOf(ListCastMemberOutputDto::class, $response);
         $this->assertEquals($uuid, $response->id);
         $this->assertEquals('new cast member', $response->name);
-        $this->assertNotEmpty($response->createdAt);
+        $this->assertNotEmpty($response->created_at);
         $this->assertEquals(2, $response->type);
     }
 

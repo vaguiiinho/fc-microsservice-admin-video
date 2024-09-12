@@ -114,7 +114,7 @@ class CastMemberRepository implements CastMemberRepositoryInterface
             id: new Uuid($entity->id),
             name: $entity->name,
             type: CastMemberType::from($entity->type),
-            createdAt: $entity->createAt,
+            createdAt: $entity->created_at,
         );
     }
 }

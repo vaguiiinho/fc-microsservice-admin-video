@@ -9,6 +9,6 @@ class UpdateCastMemberOutputDto
         public string $id,
         public string $name,
         public int $type,
-        public string $createdAt = ''
+        public string $created_at
     ) {}
 }

@@ -32,7 +32,7 @@ class CreateCastMemberUseCase
             id: $response->id(),
             name: $response->name,
             type: $input->type,
-            createdAt: $response->createdAt()
+            created_at: $response->createdAt()
         );
     }
 }

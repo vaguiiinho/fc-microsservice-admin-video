@@ -88,8 +88,7 @@ class CastMemberController extends Controller
         $response = $useCase->execute(
             input: new ListCastMemberInputDto($id)
         );
-
-
+        
         return (new CastMemberResource($response))
             ->response();
     }

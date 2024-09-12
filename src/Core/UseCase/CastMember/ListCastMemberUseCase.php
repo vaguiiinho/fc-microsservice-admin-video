@@ -3,10 +3,8 @@
 namespace Core\UseCase\CastMember;
 
 use Core\Domain\Repository\CastMemberRepositoryInterface;
-use Core\UseCase\DTO\CastMember\List\{
-    ListCastMemberInputDto,
-    ListCastMemberOutputDto,
-};
+use Core\UseCase\DTO\CastMember\List\ListCastMemberInputDto;
+use Core\UseCase\DTO\CastMember\List\ListCastMemberOutputDto;
 
 class ListCastMemberUseCase
 {
@@ -25,7 +23,7 @@ class ListCastMemberUseCase
             id: $response->id(),
             name: $response->name,
             type: $response->type->value,
-            createdAt: $response->createdAt()
+            created_at: $response->createdAt()
         );
     }
 }
