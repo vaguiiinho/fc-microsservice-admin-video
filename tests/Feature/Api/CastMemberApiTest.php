@@ -168,4 +168,23 @@ class CastMemberApiTest extends TestCase
             'type' => 1,
         ]);
     }
+
+    public function test_delete_not_found()
+    {
+        $response = $this->deleteJson("$this->endPoint/fake_id");
+
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
+    }
+
+    public function test_delete()
+    {
+        $castMember = CastMember::factory()->create();
+
+        $response = $this->deleteJson("$this->endPoint/$castMember->id");
+
+        $response->assertStatus(Response::HTTP_NO_CONTENT);
+        $this->assertSoftDeleted('cast_members', [
+            'id' => $castMember->id,
+        ]);
+    }
 }
