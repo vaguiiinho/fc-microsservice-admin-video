@@ -45,16 +45,16 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $exception)
     {
         if ($exception instanceof NotFoundException) {
-            return $this->showerror($exception->getMessage(), Response::HTTP_NOT_FOUND);
+            return $this->showError($exception->getMessage(), Response::HTTP_NOT_FOUND);
         }
 
         if ($exception instanceof EntityValidationException) {
-            return $this->showerror($exception->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+            return $this->showError($exception->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
         return parent::render($request, $exception);
     }
 
-    protected function showerror($message, $statusCode)
+    protected function showError($message, $statusCode)
     {
         return response()->json(
             [
