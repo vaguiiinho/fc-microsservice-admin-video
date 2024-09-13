@@ -23,7 +23,7 @@ class CreateCastMemberUseCase
     {
         $castMember = new CastMember(
             name: $input->name,
-            type: $input->type == 1 ? CastMemberType::DIRECTOR : CastMemberType::ACTOR,
+            type: CastMemberType::from($input->type),
         );
 
         $response = $this->repository->insert($castMember);

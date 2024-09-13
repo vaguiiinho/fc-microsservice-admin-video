@@ -30,7 +30,7 @@ class StoreCastMemberRequest extends FormRequest
                 'max:255',
             ],
             'type' => [
-                'nullable',
+                'required',
                 'int',
             ],
         ];
