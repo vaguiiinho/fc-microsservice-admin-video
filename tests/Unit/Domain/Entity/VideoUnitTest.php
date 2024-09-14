@@ -250,12 +250,28 @@ class VideoUnitTest extends TestCase
             duration: 12,
             opened: true,
             rating: Rating::RATE12,
-            thunbFile: new Image(
+            thumbFile: new Image(
                 path: 'fsdfsd/image-filmex.png'
             )
         );
         $this->assertNotEmpty($entity->thumbFile());
         $this->assertInstanceOf(Image::class, $entity->thumbFile());
         $this->assertEquals('fsdfsd/image-filmex.png', $entity->thumbFile()->path());
+    }
+
+    public function testValueObjectImageThumHalf()
+    {
+        $entity = new Video(
+            title: 'new title',
+            description: 'description',
+            yearLaunched: 2029,
+            duration: 12,
+            opened: true,
+            rating: Rating::RATE12,
+            thumbHalf: new Image('bbbbbb/image-half.png')
+        );
+        $this->assertNotEmpty($entity->thumbHalf());
+        $this->assertInstanceOf(Image::class, $entity->thumbHalf());
+        $this->assertEquals('bbbbbb/image-half.png', $entity->thumbHalf()->path());
     }
 }

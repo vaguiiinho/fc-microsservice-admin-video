@@ -26,7 +26,8 @@ class Video
         protected ?Uuid $id = null,
         protected bool $published = false,
         protected ?DateTime $createdAt = null,
-        protected ?Image $thunbFile = null,
+        protected ?Image $thumbFile = null,
+        protected ?Image $thumbHalf = null,
     ) {
         $this->id = $this->id ?? Uuid::random();
         $this->createdAt = $this->createdAt ?? new DateTime();
@@ -70,6 +71,11 @@ class Video
 
     public function thumbFile(): ?Image
     {
-        return $this->thunbFile;
+        return $this->thumbFile;
+    }
+
+    public function thumbHalf(): ?Image
+    {
+        return $this->thumbHalf;
     }
 }
