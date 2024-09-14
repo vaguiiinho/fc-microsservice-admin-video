@@ -10,6 +10,8 @@ class Video
 {
     use MethodsMagicsTrait;
 
+    protected array $categoriesId = [];
+
     public function __construct(
         protected string $title,
         protected string $description,
@@ -22,5 +24,17 @@ class Video
     ) 
     {
         $this->id = $this->id ?? Uuid::random() ;
+    }
+
+    public function addCategory(string $categoryId): void
+    {
+        array_push($this->categoriesId, $categoryId);
+    }
+
+    public function removeCategory(string $categoryId): void
+    {
+        if (($key = array_search($categoryId, $this->categoriesId)) !== false) {
+            unset($this->categoriesId[$key]);
+        }
     }
 }

@@ -48,4 +48,66 @@ class VideoUnitTest extends TestCase
         );
         $this->assertNotEmpty($entity->id());
     }
+
+    public function testAddCategory()
+    {
+        $categoryId = (string) Uuid::uuid4();
+
+        $entity = new Video(
+            title: 'new title',
+            description: 'description',
+            yearLaunched: 2029,
+            duration: 12,
+            opened: true,
+            rating: Rating::RATE12
+        );
+        $this->assertCount(0, $entity->categoriesId);
+
+        $entity->addCategory(
+            categoryId: $categoryId
+        );
+        
+        $entity->addCategory(
+            categoryId: $categoryId
+        );
+
+        $this->assertCount(2, $entity->categoriesId);
+    }
+
+    public function testRemoveCategory()
+    {
+        $categoryId = (string) Uuid::uuid4();
+
+        $entity = new Video(
+            title: 'new title',
+            description: 'description',
+            yearLaunched: 2029,
+            duration: 12,
+            opened: true,
+            rating: Rating::RATE12
+        );
+
+        $entity->addCategory(
+            categoryId: $categoryId
+        );
+        
+        $entity->addCategory(
+            categoryId: 'teste'
+        );
+
+        $this->assertCount(2, $entity->categoriesId);
+
+       
+        $entity->removeCategory(
+            categoryId: 'fake_id'
+        );
+
+        $this->assertCount(2, $entity->categoriesId);
+
+        $entity->removeCategory(
+            categoryId: $categoryId
+        );
+
+        $this->assertCount(1, $entity->categoriesId);
+    }
 }
