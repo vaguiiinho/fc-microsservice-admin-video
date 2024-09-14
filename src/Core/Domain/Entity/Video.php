@@ -12,6 +12,7 @@ class Video
 
     protected array $categoriesId = [];
     protected array $genresId = [];
+    protected array $castMembersId = [];
 
     public function __construct(
         protected string $title,
@@ -48,6 +49,18 @@ class Video
     {
         if (($key = array_search($genreId, $this->genresId)) !== false) {
             unset($this->genresId[$key]);
+        }
+    }
+
+    public function addCastMember(string $castMemberId): void
+    {
+        array_push($this->castMembersId, $castMemberId);
+    }
+
+    public function removeCastMember(string $castMemberId): void
+    {
+        if (($key = array_search($castMemberId, $this->castMembersId)) !== false) {
+            unset($this->castMembersId[$key]);
         }
     }
 }

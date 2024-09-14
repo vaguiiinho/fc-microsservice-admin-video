@@ -173,4 +173,67 @@ class VideoUnitTest extends TestCase
 
         $this->assertCount(1, $entity->genresId);
     }
+
+    public function testAddCastMember()
+    {
+        $castMemberId = (string) Uuid::uuid4();
+
+        $entity = new Video(
+            title: 'new title',
+            description: 'description',
+            yearLaunched: 2029,
+            duration: 12,
+            opened: true,
+            rating: Rating::RATE12
+        );
+
+        $this->assertCount(0, $entity->castMembersId);
+
+        $entity->addCastMember(
+            castMemberId: $castMemberId
+        );
+        
+        $entity->addCastMember(
+            castMemberId: 'teste'
+        );
+
+        $this->assertCount(2, $entity->castMembersId);
+    }
+
+    public function testRemoveCastMember()
+    {
+        $castMemberId = (string) Uuid::uuid4();
+
+        $entity = new Video(
+            title: 'new title',
+            description: 'description',
+            yearLaunched: 2029,
+            duration: 12,
+            opened: true,
+            rating: Rating::RATE12
+        );
+
+        $entity->addCastMember(
+            castMemberId: $castMemberId
+        );
+        
+        $entity->addCastMember(
+            castMemberId: 'teste'
+        );
+
+        $this->assertCount(2, $entity->castMembersId);
+
+       
+        $entity->removeCastMember(
+            castMemberId: 'fake_id'
+        );
+
+        $this->assertCount(2, $entity->castMembersId);
+
+        $entity->removeCastMember(
+            castMemberId: $castMemberId
+        );
+
+        $this->assertCount(1, $entity->castMembersId);
+    }
 }
