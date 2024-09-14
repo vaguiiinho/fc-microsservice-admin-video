@@ -4,6 +4,7 @@ namespace Tests\Unit\Domain\Entity;
 
 use Core\Domain\Entity\Video;
 use Core\Domain\Enum\Rating;
+use Core\Domain\ValueObject\Image;
 use Core\Domain\ValueObject\Uuid as ValueObjectUuid;
 use DateTime;
 use PHPUnit\Framework\TestCase;
@@ -69,7 +70,7 @@ class VideoUnitTest extends TestCase
         $entity->addCategory(
             categoryId: $categoryId
         );
-        
+
         $entity->addCategory(
             categoryId: $categoryId
         );
@@ -93,14 +94,14 @@ class VideoUnitTest extends TestCase
         $entity->addCategory(
             categoryId: $categoryId
         );
-        
+
         $entity->addCategory(
             categoryId: 'teste'
         );
 
         $this->assertCount(2, $entity->categoriesId);
 
-       
+
         $entity->removeCategory(
             categoryId: 'fake_id'
         );
@@ -132,7 +133,7 @@ class VideoUnitTest extends TestCase
         $entity->addGenre(
             genreId: $genreId
         );
-        
+
         $entity->addGenre(
             genreId: 'teste'
         );
@@ -156,14 +157,14 @@ class VideoUnitTest extends TestCase
         $entity->addGenre(
             genreId: $genreId
         );
-        
+
         $entity->addGenre(
             genreId: 'teste'
         );
 
         $this->assertCount(2, $entity->genresId);
 
-       
+
         $entity->removeGenre(
             genreId: 'fake_id'
         );
@@ -195,7 +196,7 @@ class VideoUnitTest extends TestCase
         $entity->addCastMember(
             castMemberId: $castMemberId
         );
-        
+
         $entity->addCastMember(
             castMemberId: 'teste'
         );
@@ -219,14 +220,14 @@ class VideoUnitTest extends TestCase
         $entity->addCastMember(
             castMemberId: $castMemberId
         );
-        
+
         $entity->addCastMember(
             castMemberId: 'teste'
         );
 
         $this->assertCount(2, $entity->castMembersId);
 
-       
+
         $entity->removeCastMember(
             castMemberId: 'fake_id'
         );
@@ -238,5 +239,23 @@ class VideoUnitTest extends TestCase
         );
 
         $this->assertCount(1, $entity->castMembersId);
+    }
+
+    public function testValueObjectImage()
+    {
+        $entity = new Video(
+            title: 'new title',
+            description: 'description',
+            yearLaunched: 2029,
+            duration: 12,
+            opened: true,
+            rating: Rating::RATE12,
+            thunbFile: new Image(
+                path: 'fsdfsd/image-filmex.png'
+            )
+        );
+        $this->assertNotEmpty($entity->thumbFile());
+        $this->assertInstanceOf(Image::class, $entity->thumbFile());
+        $this->assertEquals('fsdfsd/image-filmex.png', $entity->thumbFile()->path());
     }
 }

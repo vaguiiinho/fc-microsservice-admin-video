@@ -149,7 +149,6 @@ class CastMemberApiTest extends TestCase
 
         $response = $this->putJson("$this->endPoint/$castMember->id", [
             'name' => 'Teste',
-            'type' => 1,
         ]);
 
         $response->assertStatus(Response::HTTP_OK);
@@ -165,7 +164,6 @@ class CastMemberApiTest extends TestCase
         $this->assertDatabaseHas('cast_members', [
             'id' => $castMember->id,
             'name' => 'Teste',
-            'type' => 1,
         ]);
     }
 
