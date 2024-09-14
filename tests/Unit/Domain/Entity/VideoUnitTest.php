@@ -110,4 +110,67 @@ class VideoUnitTest extends TestCase
 
         $this->assertCount(1, $entity->categoriesId);
     }
+
+    public function testAddGenre()
+    {
+        $genreId = (string) Uuid::uuid4();
+
+        $entity = new Video(
+            title: 'new title',
+            description: 'description',
+            yearLaunched: 2029,
+            duration: 12,
+            opened: true,
+            rating: Rating::RATE12
+        );
+
+        $this->assertCount(0, $entity->genresId);
+
+        $entity->addGenre(
+            genreId: $genreId
+        );
+        
+        $entity->addGenre(
+            genreId: 'teste'
+        );
+
+        $this->assertCount(2, $entity->genresId);
+    }
+
+    public function testRemoveGenre()
+    {
+        $genreId = (string) Uuid::uuid4();
+
+        $entity = new Video(
+            title: 'new title',
+            description: 'description',
+            yearLaunched: 2029,
+            duration: 12,
+            opened: true,
+            rating: Rating::RATE12
+        );
+
+        $entity->addGenre(
+            genreId: $genreId
+        );
+        
+        $entity->addGenre(
+            genreId: 'teste'
+        );
+
+        $this->assertCount(2, $entity->genresId);
+
+       
+        $entity->removeGenre(
+            genreId: 'fake_id'
+        );
+
+        $this->assertCount(2, $entity->genresId);
+
+        $entity->removeGenre(
+            genreId: $genreId
+        );
+
+        $this->assertCount(1, $entity->genresId);
+    }
 }
