@@ -2,7 +2,7 @@
 
 namespace Core\Domain\Enum;
 
-enum Rating: int
+enum Rating: string
 {
     case ER = 'ER';
     case L = 'L';

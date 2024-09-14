@@ -15,17 +15,37 @@ class VideoUnitTest extends TestCase
         $id = (string) Uuid::uuid4();
 
         $entity = new Video(
-            id: new ValueObjectUuid($id),
             title: 'new title',
             description: 'description',
             yearLaunched: 2029,
             duration: 12,
             opened: true,
+            rating: Rating::RATE12,
+            id: new ValueObjectUuid($id),
             published: true,
-            rating: Rating::RATE12
         );
 
 
-        $this->assertTrue(true);
+        $this->assertEquals('new title', $entity->title);
+        $this->assertEquals('description', $entity->description);
+        $this->assertEquals(2029, $entity->yearLaunched);
+        $this->assertEquals(12, $entity->duration);
+        $this->assertTrue($entity->opened);
+        $this->assertEquals(Rating::RATE12, $entity->rating);
+        $this->assertEquals($id, $entity->id());
+        $this->assertTrue($entity->published);
+    }
+
+    public function testId()
+    {
+        $entity = new Video(
+            title: 'new title',
+            description: 'description',
+            yearLaunched: 2029,
+            duration: 12,
+            opened: true,
+            rating: Rating::RATE12
+        );
+        $this->assertNotEmpty($entity->id());
     }
 }
