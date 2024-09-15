@@ -5,6 +5,7 @@ namespace Tests\Unit\Domain\Entity;
 use Core\Domain\Entity\Video;
 use Core\Domain\Enum\MediaStatus;
 use Core\Domain\Enum\Rating;
+use Core\Domain\Exception\EntityValidationException;
 use Core\Domain\ValueObject\{
     Image,
     Media
@@ -299,7 +300,7 @@ class VideoUnitTest extends TestCase
     {
         $trailerFile = new Media(
             filePath: 'path/trailer.mp4',
-            mediaStatus:  MediaStatus::PENDING,
+            mediaStatus: MediaStatus::PENDING,
             encodePath: 'path/encoded.extension'
         );
 
@@ -312,7 +313,7 @@ class VideoUnitTest extends TestCase
             rating: Rating::RATE12,
             trailerFile: $trailerFile
         );
-       
+
         $this->assertNotNull($entity->trailerFile());
         $this->assertInstanceOf(Media::class, $entity->trailerFile());
         $this->assertEquals('path/trailer.mp4', $entity->trailerFile()->filePath);
@@ -322,7 +323,7 @@ class VideoUnitTest extends TestCase
     {
         $videoFile = new Media(
             filePath: 'path/video.mp4',
-            mediaStatus:  MediaStatus::COMPLETED,
+            mediaStatus: MediaStatus::COMPLETED,
         );
 
         $entity = new Video(
@@ -334,9 +335,23 @@ class VideoUnitTest extends TestCase
             rating: Rating::RATE12,
             videoFile: $videoFile
         );
-       
+
         $this->assertNotNull($entity->videoFile());
         $this->assertInstanceOf(Media::class, $entity->videoFile());
         $this->assertEquals('path/video.mp4', $entity->videoFile()->filePath);
+    }
+
+    public function testValidations()
+    {
+        $this->expectException(EntityValidationException::class);
+
+        new Video(
+            title: 'ne',
+            description: 'description',
+            yearLaunched: 2029,
+            duration: 12,
+            opened: true,
+            rating: Rating::RATE12
+        );
     }
 }
