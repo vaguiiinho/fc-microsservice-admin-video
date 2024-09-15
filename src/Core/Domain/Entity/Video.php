@@ -30,6 +30,7 @@ class Video
         protected ?Image $thumbFile = null,
         protected ?Image $thumbHalf = null,
         protected ?Media $trailerFile = null,
+        protected ?Media $videoFile = null,
     ) {
         $this->id = $this->id ?? Uuid::random();
         $this->createdAt = $this->createdAt ?? new DateTime();
@@ -84,5 +85,10 @@ class Video
     public function trailerFile(): ?Media
     {
         return $this->trailerFile;
+    }
+
+    public function videoFile(): ?Media
+    {
+        return $this->videoFile;
     }
 }
