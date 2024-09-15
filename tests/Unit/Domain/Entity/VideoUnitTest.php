@@ -263,7 +263,7 @@ class VideoUnitTest extends TestCase
         $this->assertEquals('fsdfsd/image-filmex.png', $entity->thumbFile()->path());
     }
 
-    public function testValueObjectImageThumHalf()
+    public function testValueObjectImageThumbHalf()
     {
         $entity = new Video(
             title: 'new title',
@@ -294,9 +294,12 @@ class VideoUnitTest extends TestCase
             duration: 12,
             opened: true,
             rating: Rating::RATE12,
-            
+            trailerFile: $trailerFile
         );
        
+        $this->assertNotNull($entity->trailerFile());
+        $this->assertInstanceOf(Media::class, $entity->trailerFile());
+        $this->assertEquals('path/video.mp4', $entity->trailerFile()->filePath);
 
     }
 }
