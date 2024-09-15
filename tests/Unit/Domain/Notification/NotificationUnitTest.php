@@ -27,4 +27,18 @@ class NotificationUnitTest extends TestCase
         $errors = $notification->getErrors();
         $this->assertCount(1, $errors);
     }
+
+    public function testHasError()
+    {
+        $notification = new Notification();
+        $hasErrors = $notification->hasErros();
+        $this->assertFalse($hasErrors);
+
+        $notification->addErrors([
+            'context' => 'video',
+            'message' => 'video title is required'
+        ]);
+
+        $this->assertTrue($notification->hasErros());
+    }
 }

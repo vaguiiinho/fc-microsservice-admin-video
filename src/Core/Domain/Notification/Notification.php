@@ -17,4 +17,9 @@ class Notification
     {
         array_push($this->errors, $errors);
     }
+
+    public function hasErros(): bool
+    {
+        return count($this->errors) > 0;
+    }
 }
