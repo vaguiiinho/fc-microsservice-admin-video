@@ -256,12 +256,12 @@ class VideoUnitTest extends TestCase
             opened: true,
             rating: Rating::RATE12,
             thumbFile: new Image(
-                path: 'fsdfsd/image-filmex.png'
+                path: 'test/image-filme.png'
             )
         );
         $this->assertNotEmpty($entity->thumbFile());
         $this->assertInstanceOf(Image::class, $entity->thumbFile());
-        $this->assertEquals('fsdfsd/image-filmex.png', $entity->thumbFile()->path());
+        $this->assertEquals('test/image-filme.png', $entity->thumbFile()->path());
     }
 
     public function testValueObjectImageThumbHalf()

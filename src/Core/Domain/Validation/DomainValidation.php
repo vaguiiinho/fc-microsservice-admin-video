@@ -9,7 +9,7 @@ class DomainValidation
     public static function notNull(string $value, string $exceptionMessage = null)
     {
         if (empty($value)) {
-            throw new EntityValidationException($exceptionMessage ?? "Shold not be empity or null");
+            throw new EntityValidationException($exceptionMessage ?? "Should not be empty or null");
         }
     }
 

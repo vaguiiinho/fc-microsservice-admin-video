@@ -31,7 +31,7 @@ class NotificationUnitTest extends TestCase
     public function testHasError()
     {
         $notification = new Notification();
-        $hasErrors = $notification->hasErros();
+        $hasErrors = $notification->hasErrors();
         $this->assertFalse($hasErrors);
 
         $notification->addErrors([
@@ -39,7 +39,7 @@ class NotificationUnitTest extends TestCase
             'message' => 'video title is required'
         ]);
 
-        $this->assertTrue($notification->hasErros());
+        $this->assertTrue($notification->hasErrors());
     }
 
     public function testMessage()
