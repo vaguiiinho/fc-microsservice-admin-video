@@ -63,4 +63,28 @@ class NotificationUnitTest extends TestCase
             actual: $message
         );
     }
+
+    public function testMessageFilterContext()
+    {
+        $notification = new Notification();
+        $notification->addErrors([
+            'context' => 'video',
+            'message' => 'title is required'
+        ]);
+
+        $notification->addErrors([
+            'context' => 'category',
+            'message' => 'name is required'
+        ]);
+
+        $message = $notification->messages(
+            context: 'video'
+        );
+
+        $this->assertIsString($message);
+        $this->assertEquals(
+            expected: 'video: title is required,',
+            actual: $message
+        );
+    }
 }
