@@ -5,7 +5,7 @@ namespace Tests\Unit\Domain\Entity;
 use Core\Domain\Entity\Video;
 use Core\Domain\Enum\MediaStatus;
 use Core\Domain\Enum\Rating;
-use Core\Domain\Exception\EntityValidationException;
+use Core\Domain\Notification\NotificationException;
 use Core\Domain\ValueObject\{
     Image,
     Media
@@ -341,9 +341,9 @@ class VideoUnitTest extends TestCase
         $this->assertEquals('path/video.mp4', $entity->videoFile()->filePath);
     }
 
-    public function testValidations()
+    public function testException()
     {
-        $this->expectException(EntityValidationException::class);
+        $this->expectException(NotificationException::class);
 
         new Video(
             title: 'ne',
