@@ -347,7 +347,7 @@ class VideoUnitTest extends TestCase
 
         new Video(
             title: 'ne',
-            description: 'description',
+            description: 'de',
             yearLaunched: 2029,
             duration: 12,
             opened: true,

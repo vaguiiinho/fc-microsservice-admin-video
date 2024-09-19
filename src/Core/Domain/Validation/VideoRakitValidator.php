@@ -3,26 +3,27 @@
 namespace Core\Domain\Validation;
 
 use Core\Domain\Entity\Entity;
-use Illuminate\Support\Facades\Validator;
+use Rakit\Validation\Validator;
 
-class VideoLaravelValidation implements ValidatorInterface
+class VideoRakitValidator implements ValidatorInterface
 {
     public function validate(Entity $entity): void
     {
+
         $data = $this->convertEntityForArray($entity);
 
-        $validator = Validator::make($data, [
-            'title' => 'required|min:3|max:255',
+        $validation = (new Validator())->validate($data, [
+           'title' => 'required|min:3|max:255',
             'description' => 'required|min:3|max:255',
             'year_launched' => 'required|integer',
             'duration' => 'required|integer',
         ]);
 
-        if ($validator->fails()) {
-            foreach ($validator->errors()->messages() as $error) {
-                $entity->notification->addError([
+        if ($validation->fails()) {
+            foreach ($validation->errors()->all() as $error) {
+                $entity->notification->addErrors([
                     'context' => 'video',
-                    'message' => $error[0],
+                    'message' => $error,
                 ]);
             }
         }
