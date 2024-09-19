@@ -8,6 +8,6 @@ class VideoLaravelValidation implements ValidatorInterface
 {
     public function validate(Entity $entity): void
     {
-        $entity->notification->addErrors();
+        dd($entity);
     }
 }

@@ -3,6 +3,7 @@
 namespace Core\Domain\Entity;
 
 use Core\Domain\Enum\Rating;
+use Core\Domain\Factory\VideoValidator;
 use Core\Domain\Notification\NotificationException;
 use Core\Domain\ValueObject\Image;
 use Core\Domain\ValueObject\Media;
@@ -100,26 +101,7 @@ class Video extends Entity
 
     protected function validation()
     {
-        if (empty($this->title)) {
-            $this->notification->addErrors([
-                'context' => 'video',
-                'message' => 'Should not be empty or null',
-            ]);
-        }
-
-        if (strlen($this->title) < 3) {
-            $this->notification->addErrors([
-                'context' => 'video',
-                'message' => 'The value must be at least',
-            ]);
-        }
-
-        if (strlen($this->description) < 3) {
-            $this->notification->addErrors([
-                'context' => 'video',
-                'message' => 'The value must be at least',
-            ]);
-        }
+        VideoValidator::create()->validate($this);
 
         if ($this->notification->hasErrors()) {
             throw new NotificationException(
