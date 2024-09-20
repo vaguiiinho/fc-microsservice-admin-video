@@ -3,6 +3,7 @@
 namespace Core\UseCase\Video\Create;
 
 use Core\Domain\Entity\Video;
+use Core\Domain\Events\VideoCreatedEvent;
 use Core\Domain\Repository\VideoRepositoryInterface;
 use Core\UseCase\Interfaces\{
     FileStorageInterface,
@@ -30,16 +31,19 @@ class CreateVideoUseCase
         $entity = $this->createEntity($input);
 
         try {
-           $this->repository->insert($entity);
+            $this->repository->insert($entity);
+
+            if ($pathMedia = $this->storeMedia($entity->id(), $input->videoFile)) {
+                $this->eventManager->dispatch(new VideoCreatedEvent($entity));
+            }
+
             $this->transaction->commit();
+
+            return new CreateOutputVideoDTO();
         } catch (\Throwable $th) {
             $this->transaction->rollback();
             throw $th;
         }
-
-        
-
-        return new CreateOutputVideoDTO();
     }
 
     private function createEntity(CreateInputVideoDTO $input): Video
@@ -67,5 +71,17 @@ class CreateVideoUseCase
         }
 
         return $entity;
+    }
+
+    private function storeMedia(string $path, ?array $media = null): string
+    {
+        if ($media) {
+            return  $this->storage->store(
+                path: $path,
+                file: $media
+            );
+        }
+
+        return '';
     }
 }
