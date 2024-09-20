@@ -4,7 +4,12 @@ namespace Core\UseCase\Video\Create;
 
 use Core\Domain\Entity\Video;
 use Core\Domain\Events\VideoCreatedEvent;
-use Core\Domain\Repository\VideoRepositoryInterface;
+use Core\Domain\Repository\{
+    CategoryRepositoryInterface,
+    VideoRepositoryInterface,
+    GenreRepositoryInterface,
+    CastMemberRepositoryInterface,
+};
 use Core\UseCase\Interfaces\{
     FileStorageInterface,
     TransactionInterface
@@ -23,6 +28,10 @@ class CreateVideoUseCase
         protected TransactionInterface $transaction,
         protected FileStorageInterface $storage,
         protected VideoEventManagerInterface $eventManager,
+
+        protected CategoryRepositoryInterface $repositoryCategory,
+        protected GenreRepositoryInterface $repositoryGenre,
+        protected CastMemberRepositoryInterface $repositoryCastMember,
     ) {}
 
     public function exec(CreateInputVideoDTO $input): CreateOutputVideoDTO
