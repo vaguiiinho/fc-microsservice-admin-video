@@ -2,6 +2,7 @@
 
 namespace Core\UseCase\Video\Create;
 
+use Core\Domain\Entity\Video;
 use Core\Domain\Repository\VideoRepositoryInterface;
 use Core\UseCase\Interfaces\{
     FileStorageInterface,
@@ -25,9 +26,46 @@ class CreateVideoUseCase
 
     public function exec(CreateInputVideoDTO $input): CreateOutputVideoDTO
     {
+
+        $entity = $this->createEntity($input);
+
+        try {
+           $this->repository->insert($entity);
+            $this->transaction->commit();
+        } catch (\Throwable $th) {
+            $this->transaction->rollback();
+            throw $th;
+        }
+
         
-        return new CreateOutputVideoDTO(
-           
+
+        return new CreateOutputVideoDTO();
+    }
+
+    private function createEntity(CreateInputVideoDTO $input): Video
+    {
+
+        $entity =  new Video(
+            title: $input->title,
+            description: $input->description,
+            yearLaunched: $input->yearLaunched,
+            duration: $input->duration,
+            opened: $input->opened,
+            rating: $input->rating,
         );
+
+        foreach ($input->categories as $categoryId) {
+            $entity->addCategory($categoryId);
+        }
+
+        foreach ($input->genres as $genreId) {
+            $entity->addGenre($genreId);
+        }
+
+        foreach ($input->castMembers as $castMemberId) {
+            $entity->addCastMember($castMemberId);
+        }
+
+        return $entity;
     }
 }
