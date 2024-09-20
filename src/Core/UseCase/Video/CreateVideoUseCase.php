@@ -7,6 +7,7 @@ use Core\UseCase\Interfaces\{
     FileStorageInterface,
     TransactionInterface
 };
+use Core\UseCase\Video\Interfaces\VideoEventManagerInterface;
 
 class CreateVideoUseCase
 {
@@ -15,6 +16,7 @@ class CreateVideoUseCase
         protected VideoRepositoryInterface $repository,
         protected TransactionInterface $transaction,
         protected FileStorageInterface $storage,
+        protected VideoEventManagerInterface $eventManager,
     ) {
     }
 }

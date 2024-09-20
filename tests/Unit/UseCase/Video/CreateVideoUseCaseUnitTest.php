@@ -9,6 +9,7 @@ use Core\UseCase\Interfaces\{
     TransactionInterface
 };
 use Core\UseCase\Video\CreateVideoUseCase as UseCase;
+use Core\UseCase\Video\Interfaces\VideoEventManagerInterface;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -21,6 +22,7 @@ class CreateVideoUseCaseUnitTest extends TestCase
             repository: $this->createMockRepository(),
             transaction: $this->createMockTransaction(),
             storage: $this->createMockFileStorage(),
+            eventManager: $this->createMockEventManager(),
         );
     }
 
@@ -37,5 +39,10 @@ class CreateVideoUseCaseUnitTest extends TestCase
     private function createMockFileStorage()
     {
         return Mockery::mock(stdClass::class, FileStorageInterface::class);
+    }
+
+    private function createMockEventManager()
+    {
+        return Mockery::mock(stdClass::class, VideoEventManagerInterface::class);
     }
 }
