@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\UseCase\Video;
 
+use Core\Domain\Entity\Video;
 use Core\Domain\Enum\Rating;
 use Core\Domain\Repository\VideoRepositoryInterface;
 use Core\UseCase\Interfaces\{
@@ -41,7 +42,7 @@ class CreateVideoUseCaseUnitTest extends TestCase
             eventManager: $this->createMockEventManager(),
         );
 
-     $response =   $useCase->exec(
+        $response =   $useCase->exec(
             input: $this->createMockInputDto()
         );
 
@@ -50,22 +51,34 @@ class CreateVideoUseCaseUnitTest extends TestCase
 
     private function createMockRepository()
     {
-        return Mockery::mock(stdClass::class, VideoRepositoryInterface::class);
+        $mock = Mockery::mock(stdClass::class, VideoRepositoryInterface::class);
+        $mock->shouldReceive('insert')
+            // ->once()
+            ->andReturn($this->createMockEntity());
+        return $mock;
     }
 
     private function createMockTransaction()
     {
-        return Mockery::mock(stdClass::class, TransactionInterface::class);
+        $mock = Mockery::mock(stdClass::class, TransactionInterface::class);
+        $mock->shouldReceive('commit');
+        $mock->shouldReceive('rollback');
+        return $mock;
     }
 
     private function createMockFileStorage()
     {
-        return Mockery::mock(stdClass::class, FileStorageInterface::class);
+        $mock = Mockery::mock(stdClass::class, FileStorageInterface::class);
+        $mock->shouldReceive('store')
+            ->andReturn('path/file.png');
+        return $mock;
     }
 
     private function createMockEventManager()
     {
-        return Mockery::mock(stdClass::class, VideoEventManagerInterface::class);
+        $mock = Mockery::mock(stdClass::class, VideoEventManagerInterface::class);
+        $mock->shouldReceive('dispatch');
+        return $mock;
     }
 
     private function createMockInputDto()
@@ -78,5 +91,23 @@ class CreateVideoUseCaseUnitTest extends TestCase
             true,
             Rating::RATE10,
         ]);
+    }
+
+    private function createMockEntity()
+    {
+        return Mockery::mock(Video::class, [
+            'Test Video',
+            'Test Description',
+            2022,
+            120,
+            true,
+            Rating::RATE10,
+        ]);
+    }
+
+    protected function tearDown(): void
+    {
+        Mockery::close();
+        parent::tearDown();
     }
 }
