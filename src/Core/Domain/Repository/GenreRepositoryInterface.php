@@ -8,6 +8,7 @@ interface GenreRepositoryInterface
 {
     public function insert(Genre $genre): Genre;
     public function findById(string $id): Genre;
+    public function getIdsListIds(array $genreId = []): array;
     public function findAll(string $filter = '', $order = 'DESC'): array;
     public function paginate(
         string $filter = '',

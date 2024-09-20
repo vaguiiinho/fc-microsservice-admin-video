@@ -39,6 +39,14 @@ class CastMemberRepository implements CastMemberRepositoryInterface
         return $this->toEntity($modelDb);
     }
 
+    public function getIdsListIds(array $castMemberIds = []): array
+    {
+        return $this->model
+            ->whereIn('id', $castMemberIds)
+            ->pluck('id')
+            ->toArray();
+    }
+
     public function findAll(string $filter = '', $order = 'DESC'): array
     {
         // $modelDb = $this->model

@@ -45,6 +45,14 @@ class GenreEloquentRepository implements GenreRepositoryInterface
         return $this->toGenre($genre);
     }
 
+    public function getIdsListIds(array $genresId = []): array
+    {
+        return $this->model
+            ->whereIn('id', $genresId)
+            ->pluck('id')
+            ->toArray();
+    }
+
     public function findAll(string $filter = '', $order = 'DESC'): array
     {
         // $query = $this->model->query();
@@ -99,7 +107,7 @@ class GenreEloquentRepository implements GenreRepositoryInterface
         ]);
 
         if (count($entity->categoriesId) > 0) {
-            
+
             $genre->categories()->sync($entity->categoriesId);
         }
 
@@ -108,7 +116,7 @@ class GenreEloquentRepository implements GenreRepositoryInterface
         return $this->toGenre($genre);
     }
 
-    public function delete(string $id): bool 
+    public function delete(string $id): bool
     {
         if (!$genre = $this->model->find($id)) {
             throw new NotFoundException("Genre {$id} not found");
