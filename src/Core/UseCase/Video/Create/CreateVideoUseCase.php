@@ -4,6 +4,7 @@ namespace Core\UseCase\Video\Create;
 
 use Core\Domain\Entity\Video;
 use Core\Domain\Events\VideoCreatedEvent;
+use Core\Domain\Exception\NotFoundException;
 use Core\Domain\Repository\{
     CategoryRepositoryInterface,
     VideoRepositoryInterface,
@@ -67,13 +68,19 @@ class CreateVideoUseCase
             rating: $input->rating,
         );
 
+        $this->validateCategoriesId($input->categories);
+
         foreach ($input->categories as $categoryId) {
             $entity->addCategory($categoryId);
         }
 
+        $this->validateGenresId($input->genres);
+
         foreach ($input->genres as $genreId) {
             $entity->addGenre($genreId);
         }
+
+        $this->validateCastMembersId($input->castMembers);
 
         foreach ($input->castMembers as $castMemberId) {
             $entity->addCastMember($castMemberId);
@@ -92,5 +99,53 @@ class CreateVideoUseCase
         }
 
         return '';
+    }
+
+    private function validateCategoriesId(array $categoriesId = [])
+    {
+        $categoriesDb = $this->repositoryCategory->getIdsListIds($categoriesId);
+
+        $arrayDiff = array_diff($categoriesId, $categoriesDb);
+
+        if (count($arrayDiff)) {
+            $msg = sprintf(
+                '%s %s not found',
+                count($arrayDiff) > 1 ? 'Categories' : 'Category',
+                implode(', ', $arrayDiff)
+            );
+            throw new NotFoundException($msg);
+        }
+    }
+
+    private function validateGenresId(array $genresId = [])
+    {
+        $genresDb = $this->repositoryGenre->getIdsListIds($genresId);
+
+        $arrayDiff = array_diff($genresId, $genresDb);
+
+        if (count($arrayDiff)) {
+            $msg = sprintf(
+                '%s %s not found',
+                count($arrayDiff) > 1 ? 'Genres' : 'Genre',
+                implode(', ', $arrayDiff)
+            );
+            throw new NotFoundException($msg);
+        }
+    }
+
+    private function validateCastMembersId(array $castMembersId = [])
+    {
+        $castMembersDb = $this->repositoryCastMember->getIdsListIds($castMembersId);
+
+        $arrayDiff = array_diff($castMembersId, $castMembersDb);
+
+        if (count($arrayDiff)) {
+            $msg = sprintf(
+                '%s %s not found',
+                count($arrayDiff) > 1 ? 'CastMembers' : 'CastMember',
+                implode(', ', $arrayDiff)
+            );
+            throw new NotFoundException($msg);
+        }
     }
 }
