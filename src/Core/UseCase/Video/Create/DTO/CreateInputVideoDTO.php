@@ -20,6 +20,6 @@ class CreateInputVideoDTO
         public ?array $trailerFile = null,
         public ?array $thumbFile = null,
         public ?array $thumbHalf = null,
-        public?array $bannerFile = null,
+        public ?array $bannerFile = null,
     ) {}
 }
