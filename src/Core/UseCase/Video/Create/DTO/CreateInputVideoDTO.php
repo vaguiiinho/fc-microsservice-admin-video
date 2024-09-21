@@ -16,6 +16,10 @@ class CreateInputVideoDTO
         public array $categories,
         public array $genres,
         public array $castMembers,
-        public ?array $videoFile = null
+        public ?array $videoFile = null,
+        public ?array $trailerFile = null,
+        public ?array $thumbFile = null,
+        public ?array $thumbHalf = null,
+        public?array $bannerFile = null,
     ) {}
 }
