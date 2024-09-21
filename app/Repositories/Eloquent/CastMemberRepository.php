@@ -4,7 +4,8 @@ namespace App\Repositories\Eloquent;
 
 use App\Models\CastMember as Model;
 use App\Repositories\Presenter\PaginationPresenter;
-use Core\Domain\Entity\CastMember as Entity;
+use Core\Domain\Entity\CastMember;
+use Core\Domain\Entity\Entity;
 use Core\Domain\Enum\CastMemberType;
 use Core\Domain\Exception\NotFoundException;
 use Core\Domain\Repository\CastMemberRepositoryInterface;
@@ -116,9 +117,9 @@ class CastMemberRepository implements CastMemberRepositoryInterface
         return $dataDb->delete();
     }
 
-    private function toEntity(object $entity): Entity
+    private function toEntity(object $entity): CastMember
     {
-        return new Entity(
+        return new CastMember(
             id: new Uuid($entity->id),
             name: $entity->name,
             type: CastMemberType::from($entity->type),
