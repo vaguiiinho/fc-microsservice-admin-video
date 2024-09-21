@@ -3,6 +3,7 @@
 namespace Core\UseCase\Video\Create;
 
 use Core\Domain\Entity\Video;
+use Core\Domain\Enum\MediaStatus;
 use Core\Domain\Events\VideoCreatedEvent;
 use Core\Domain\Exception\NotFoundException;
 use Core\Domain\Repository\{
@@ -11,6 +12,7 @@ use Core\Domain\Repository\{
     GenreRepositoryInterface,
     CastMemberRepositoryInterface,
 };
+use Core\Domain\ValueObject\Media;
 use Core\UseCase\Interfaces\{
     FileStorageInterface,
     TransactionInterface
@@ -44,6 +46,12 @@ class CreateVideoUseCase
             $this->repository->insert($entity);
 
             if ($pathMedia = $this->storeMedia($entity->id(), $input->videoFile)) {
+                $media = new Media(
+                    filePath: $pathMedia,
+                    mediaStatus: MediaStatus::PROCESSING,
+                );
+                $entity->setVideoFile($media);
+                $this->repository->updateMedia($entity);
                 $this->eventManager->dispatch(new VideoCreatedEvent($entity));
             }
 
@@ -52,6 +60,9 @@ class CreateVideoUseCase
             return $this->output($entity);
         } catch (\Throwable $th) {
             $this->transaction->rollback();
+
+           // if (isset($pathMedia)) $this->storage->delete($pathMedia);
+
             throw $th;
         }
     }
