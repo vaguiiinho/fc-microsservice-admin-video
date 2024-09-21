@@ -99,6 +99,31 @@ class Video extends Entity
         return $this->videoFile;
     }
 
+    public function setVideoFile(Media $videoFile): void
+    {
+        $this->videoFile = $videoFile;
+    }
+
+    public function setTrailerFile(Media $trailerFile): void
+    {
+        $this->trailerFile = $trailerFile;
+    }
+
+    public function setThumbFile(Image $thumbFile): void
+    {
+        $this->thumbFile = $thumbFile;
+    }
+
+    public function setThumbHalf(Image $thumbHalf): void
+    {
+        $this->thumbHalf = $thumbHalf;
+    }
+
+    public function setBannerFile(Image $bannerFile): void
+    {
+        $this->bannerFile = $bannerFile;
+    }
+
     protected function validation()
     {
         VideoValidator::create()->validate($this);
