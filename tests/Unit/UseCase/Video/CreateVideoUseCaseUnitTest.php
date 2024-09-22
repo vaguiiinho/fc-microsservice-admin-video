@@ -41,7 +41,6 @@ class CreateVideoUseCaseUnitTest extends TestCase
         );
 
         parent::setUp();
-
     }
 
     public function test_exec_input_output()
@@ -57,8 +56,9 @@ class CreateVideoUseCaseUnitTest extends TestCase
     {
         $mock = Mockery::mock(stdClass::class, VideoRepositoryInterface::class);
         $mock->shouldReceive('insert')
-            // ->once()
+            ->once()
             ->andReturn($this->createMockEntity());
+        $mock->shouldReceive('updateMedia');
         return $mock;
     }
 
