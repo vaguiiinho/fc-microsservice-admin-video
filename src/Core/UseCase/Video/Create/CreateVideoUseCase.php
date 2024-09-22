@@ -65,6 +65,7 @@ class CreateVideoUseCase
 
     private function createEntity(CreateInputVideoDTO $input): Video
     {
+        $this->validateAllIds($input);
 
         $entity =  new Video(
             title: $input->title,
@@ -75,19 +76,13 @@ class CreateVideoUseCase
             rating: $input->rating,
         );
 
-        $this->validateCategoriesId($input->categories);
-
         foreach ($input->categories as $categoryId) {
             $entity->addCategory($categoryId);
         }
 
-        $this->validateGenresId($input->genres);
-
         foreach ($input->genres as $genreId) {
             $entity->addGenre($genreId);
         }
-
-        $this->validateCastMembersId($input->castMembers);
 
         foreach ($input->castMembers as $castMemberId) {
             $entity->addCastMember($castMemberId);
@@ -149,48 +144,38 @@ class CreateVideoUseCase
         return null;
     }
 
-    private function validateCategoriesId(array $categoriesId = [])
+    protected function validateAllIds(object $input)
     {
-        $categoriesDb = $this->repositoryCategory->getIdsListIds($categoriesId);
+        $this->validateIds(
+            ids: $input->categories,
+            repository: $this->repositoryCategory,
+            singularLabel: 'Category',
+            pluralLabel: 'Categories'
+        );
 
-        $arrayDiff = array_diff($categoriesId, $categoriesDb);
+        $this->validateIds(
+            ids: $input->genres,
+            repository: $this->repositoryGenre,
+            singularLabel: 'Genre'
+        );
 
-        if (count($arrayDiff)) {
-            $msg = sprintf(
-                '%s %s not found',
-                count($arrayDiff) > 1 ? 'Categories' : 'Category',
-                implode(', ', $arrayDiff)
-            );
-            throw new NotFoundException($msg);
-        }
+        $this->validateIds(
+            ids: $input->castMembers,
+            repository: $this->repositoryCastMember,
+            singularLabel: 'CastMember'
+        );
     }
 
-    private function validateGenresId(array $genresId = [])
+    protected function validateIds($repository, string $singularLabel, ?string $pluralLabel = null, array $ids = [])
     {
-        $genresDb = $this->repositoryGenre->getIdsListIds($genresId);
+        $idsDb = $repository->getIdsListIds($ids);
 
-        $arrayDiff = array_diff($genresId, $genresDb);
+        $arrayDiff = array_diff($ids, $idsDb);
 
         if (count($arrayDiff)) {
             $msg = sprintf(
                 '%s %s not found',
-                count($arrayDiff) > 1 ? 'Genres' : 'Genre',
-                implode(', ', $arrayDiff)
-            );
-            throw new NotFoundException($msg);
-        }
-    }
-
-    private function validateCastMembersId(array $castMembersId = [])
-    {
-        $castMembersDb = $this->repositoryCastMember->getIdsListIds($castMembersId);
-
-        $arrayDiff = array_diff($castMembersId, $castMembersDb);
-
-        if (count($arrayDiff)) {
-            $msg = sprintf(
-                '%s %s not found',
-                count($arrayDiff) > 1 ? 'CastMembers' : 'CastMember',
+                count($arrayDiff) > 1 ? $pluralLabel ?? $singularLabel . 's' : $pluralLabel,
                 implode(', ', $arrayDiff)
             );
             throw new NotFoundException($msg);
@@ -212,9 +197,9 @@ class CreateVideoUseCase
             castMembers: $entity->castMembersId,
             videoFile: $entity->videoFile()?->filePath,
             trailerFile: $entity->trailerFile()?->filePath,
-            thumbFile: $entity->thumbFile()?->filePath,
-            thumbHalf: $entity->thumbHalf()?->filePath,
-            bannerFile: $entity->bannerFile()?->filePath,
+            thumbFile: $entity->thumbFile()?->path(),
+            thumbHalf: $entity->thumbHalf()?->path(),
+            bannerFile: $entity->bannerFile()?->path(),
         );
     }
 }
