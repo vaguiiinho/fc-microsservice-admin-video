@@ -42,6 +42,7 @@ class CreateVideoUseCase
 
     public function exec(CreateInputVideoDTO $input): CreateOutputVideoDTO
     {
+        $this->validateAllIds($input);
         $this->entity = $this->createEntity($input);
 
         try {
@@ -65,8 +66,6 @@ class CreateVideoUseCase
 
     private function createEntity(CreateInputVideoDTO $input): Video
     {
-        $this->validateAllIds($input);
-
         $entity =  new Video(
             title: $input->title,
             description: $input->description,
