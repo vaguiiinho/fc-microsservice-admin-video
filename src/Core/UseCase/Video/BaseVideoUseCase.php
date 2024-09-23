@@ -15,7 +15,7 @@ use Core\UseCase\Interfaces\{
     FileStorageInterface,
     TransactionInterface
 };
-use Core\UseCase\Video\Builder\BuilderVideo;
+use Core\Domain\Builder\Video\BuilderVideo;
 use Core\UseCase\Video\Interfaces\VideoEventManagerInterface;
 
 abstract class BaseVideoUseCase
