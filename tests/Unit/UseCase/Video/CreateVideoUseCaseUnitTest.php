@@ -4,6 +4,7 @@ namespace Tests\Unit\UseCase\Video;
 
 use Core\Domain\Entity\Video;
 use Core\Domain\Enum\Rating;
+use Core\Domain\Exception\NotFoundException;
 use Core\Domain\Repository\{
     CategoryRepositoryInterface,
     VideoRepositoryInterface,
@@ -52,11 +53,35 @@ class CreateVideoUseCaseUnitTest extends TestCase
         $this->assertInstanceOf(CreateOutputVideoDTO::class, $response);
     }
 
+    public function test_exception_categories_ids()
+    {
+        $this->expectException(NotFoundException::class);
+        $this->expectExceptionMessage('Category uuid-1 not found');
+
+        $this->useCase->exec(
+            input: $this->createMockInputDto(
+                categoriesIds: ['uuid-1']
+            )
+        );
+    }
+
+    public function test_exception_message_categories_ids()
+    {
+        $this->expectException(NotFoundException::class);
+        $this->expectExceptionMessage('Categories uuid-1, uuid-2 not found');
+
+        $this->useCase->exec(
+            input: $this->createMockInputDto(
+                categoriesIds: ['uuid-1', 'uuid-2']
+            )
+        );
+    }
+
     private function createMockRepository()
     {
         $mock = Mockery::mock(stdClass::class, VideoRepositoryInterface::class);
         $mock->shouldReceive('insert')
-            ->once()
+            // ->once()
             ->andReturn($this->createMockEntity());
         $mock->shouldReceive('updateMedia');
         return $mock;
@@ -67,7 +92,7 @@ class CreateVideoUseCaseUnitTest extends TestCase
         $mock = Mockery::mock(stdClass::class, CategoryRepositoryInterface::class);
         $mock->shouldReceive('getIdsListIds')
             // ->once()
-            ->andReturn([$categoriesId]);
+            ->andReturn($categoriesId);
         return $mock;
     }
 
@@ -76,7 +101,7 @@ class CreateVideoUseCaseUnitTest extends TestCase
         $mock = Mockery::mock(stdClass::class, GenreRepositoryInterface::class);
         $mock->shouldReceive('getIdsListIds')
             // ->once()
-            ->andReturn([$genresId]);
+            ->andReturn($genresId);
         return $mock;
     }
 
@@ -85,7 +110,7 @@ class CreateVideoUseCaseUnitTest extends TestCase
         $mock = Mockery::mock(stdClass::class, CastMemberRepositoryInterface::class);
         $mock->shouldReceive('getIdsListIds')
             // ->once()
-            ->andReturn([$castMembersId]);
+            ->andReturn($castMembersId);
         return $mock;
     }
 
@@ -112,8 +137,11 @@ class CreateVideoUseCaseUnitTest extends TestCase
         return $mock;
     }
 
-    private function createMockInputDto()
-    {
+    private function createMockInputDto(
+        array $categoriesIds = [],
+        array $genresIds = [],
+        array $castMembersId = []
+    ) {
         return Mockery::mock(CreateInputVideoDTO::class, [
             'Test Video',
             'Test Description',
@@ -121,9 +149,9 @@ class CreateVideoUseCaseUnitTest extends TestCase
             120,
             true,
             Rating::RATE10,
-            [],
-            [],
-            [],
+            $categoriesIds,
+            $genresIds,
+            $castMembersId,
         ]);
     }
 

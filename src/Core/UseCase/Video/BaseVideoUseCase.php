@@ -98,13 +98,13 @@ abstract class BaseVideoUseCase
     protected function validateIds($repository, string $singularLabel, ?string $pluralLabel = null, array $ids = [])
     {
         $idsDb = $repository->getIdsListIds($ids);
-
+        
         $arrayDiff = array_diff($ids, $idsDb);
-
+        
         if (count($arrayDiff)) {
             $msg = sprintf(
                 '%s %s not found',
-                count($arrayDiff) > 1 ? $pluralLabel ?? $singularLabel . 's' : $pluralLabel,
+                count($arrayDiff) > 1 ? $pluralLabel ?? $singularLabel . 's' : $singularLabel,
                 implode(', ', $arrayDiff)
             );
             throw new NotFoundException($msg);
