@@ -37,11 +37,12 @@ abstract class BaseVideoUseCase
 
     protected function storageFiles(object $input): void
     {
-        $path = $this->builder->getEntity()->id();
+        $entity = $this->builder->getEntity();
+        $path =  $entity->id();
 
         if ($pathVideoFile = $this->storageFile($path, $input->videoFile)) {
             $this->builder->addMediaVideo($pathVideoFile, MediaStatus::PROCESSING);
-            $this->eventManager->dispatch(new VideoCreatedEvent($this->entity));
+            $this->eventManager->dispatch(new VideoCreatedEvent($entity));
         }
 
         if ($pathBannerFile = $this->storageFile($path, $input->bannerFile)) {
@@ -98,9 +99,9 @@ abstract class BaseVideoUseCase
     protected function validateIds(array $ids, $repository, string $singularLabel, ?string $pluralLabel = null)
     {
         $idsDb = $repository->getIdsListIds($ids);
-        
+
         $arrayDiff = array_diff($ids, $idsDb);
-        
+
         if (count($arrayDiff)) {
             $msg = sprintf(
                 '%s %s not found',

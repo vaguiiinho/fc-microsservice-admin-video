@@ -14,6 +14,7 @@ class CreateVideoUseCase extends BaseVideoUseCase
     public function exec(CreateInputVideoDTO $input): CreateOutputVideoDTO
     {
         $this->validateAllIds($input);
+        
         $this->builder->createEntity($input);
 
         try {
