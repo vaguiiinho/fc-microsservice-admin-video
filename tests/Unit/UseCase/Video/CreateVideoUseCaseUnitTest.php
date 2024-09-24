@@ -88,11 +88,19 @@ class CreateVideoUseCaseUnitTest extends TestCase
     {
         $response =   $this->useCase->exec(
             input: $this->createMockInputDto(
-                videoFile: ['tmp' => 'tmp/file.png'],
+                videoFile: ['tmp' => 'tmp/file.mp4'],
+                trailerFile: ['tmp' => 'tmp/file.mp4'],
+                thumbFile: ['tmp' => 'tmp/file.jpg'],
+                thumbHalf: ['tmp' => 'tmp/file.jpg'],
+                bannerFile: ['tmp' => 'tmp/file.jpg'],
             )
         );
 
         $this->assertNotNull($response->videoFile);
+        $this->assertNotNull($response->trailerFile);
+        $this->assertNotNull($response->thumbFile);
+        $this->assertNotNull($response->thumbHalf);
+        $this->assertNotNull($response->bannerFile);
     }
 
     private function createMockRepository()
