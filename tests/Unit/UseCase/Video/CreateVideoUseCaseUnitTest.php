@@ -37,6 +37,8 @@ class CreateVideoUseCaseUnitTest extends TestCase
         int $timesCallMethodCommitTransaction = 1,
         int $timesCallMethodRollbackTransaction = 0,
 
+        int $timesCallMethodStore = 0,
+
     ) {
         $this->useCase = new UseCase(
             repository: $this->createMockRepository(
@@ -47,7 +49,9 @@ class CreateVideoUseCaseUnitTest extends TestCase
                 timesCallCommit: $timesCallMethodCommitTransaction,
                 timesCallRollback: $timesCallMethodRollbackTransaction,
             ),
-            storage: $this->createMockFileStorage(),
+            storage: $this->createMockFileStorage(
+                times: $timesCallMethodStore,
+            ),
             eventManager: $this->createMockEventManager(),
             repositoryCategory: $this->createMockRepositoryCategory(),
             repositoryGenre: $this->createMockRepositoryGenre(),
@@ -110,9 +114,12 @@ class CreateVideoUseCaseUnitTest extends TestCase
         array $trailer,
         array $thumb,
         array $thumbHalf,
-        array $banner
+        array $banner,
+        int $timesStorages
     ) {
-        $this->createUseCase();
+        $this->createUseCase(
+            timesCallMethodStore: $timesStorages,
+        );
 
         $response =   $this->useCase->exec(
             input: $this->createMockInputDto(
@@ -139,28 +146,32 @@ class CreateVideoUseCaseUnitTest extends TestCase
                 'trailer' => ['value' => ['tmp' => 'tmp/file.mp4'], 'expected' => 'path/file.png'],
                 'thumb' => ['value' => ['tmp' => 'tmp/file.jpg'], 'expected' => 'path/file.png'],
                 'thumbHalf' => ['value' => ['tmp' => 'tmp/file.jpg'], 'expected' => 'path/file.png'],
-                'banner' => ['value' => ['tmp' => 'tmp/banner. PNG'], 'expected' => 'path/file.png']
+                'banner' => ['value' => ['tmp' => 'tmp/banner. PNG'], 'expected' => 'path/file.png'],
+                'timesStorages' => 5
             ],
             [
                 'video' => ['value' => ['tmp' => 'tmp/file.mp4'], 'expected' => 'path/file.png'],
                 'trailer' => ['value' => null, 'expected' => null],
                 'thumb' => ['value' => ['tmp' => 'tmp/file.jpg'], 'expected' => 'path/file.png'],
                 'thumbHalf' => ['value' => null, 'expected' => null],
-                'banner' => ['value' => ['tmp' => 'tmp/banner. PNG'], 'expected' => 'path/file.png']
+                'banner' => ['value' => ['tmp' => 'tmp/banner. PNG'], 'expected' => 'path/file.png'],
+                'timesStorages' => 3
             ],
             [
                 'video' => ['value' => null, 'expected' => null],
                 'trailer' => ['value' => null, 'expected' => null],
                 'thumb' => ['value' => ['tmp' => 'tmp/file.jpg'], 'expected' => 'path/file.png'],
                 'thumbHalf' => ['value' => null, 'expected' => null],
-                'banner' => ['value' => ['tmp' => 'tmp/banner. PNG'], 'expected' => 'path/file.png']
+                'banner' => ['value' => ['tmp' => 'tmp/banner. PNG'], 'expected' => 'path/file.png'],
+                'timesStorages' =>  2
             ],
             [
                 'video' => ['value' => null, 'expected' => null],
                 'trailer' => ['value' => null, 'expected' => null],
                 'thumb' => ['value' => null, 'expected' => null],
                 'thumbHalf' => ['value' => null, 'expected' => null],
-                'banner' => ['value' => null, 'expected' => null]
+                'banner' => ['value' => null, 'expected' => null],
+                'timesStorages' => 0
             ],
         ];
     }
@@ -215,10 +226,11 @@ class CreateVideoUseCaseUnitTest extends TestCase
         return $mock;
     }
 
-    private function createMockFileStorage()
+    private function createMockFileStorage(int $times)
     {
         $mock = Mockery::mock(stdClass::class, FileStorageInterface::class);
         $mock->shouldReceive('store')
+            ->times($times)
             ->andReturn('path/file.png');
         return $mock;
     }
