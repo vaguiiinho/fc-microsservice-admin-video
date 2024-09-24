@@ -32,7 +32,10 @@ class CreateVideoUseCaseUnitTest extends TestCase
     public function setUp(): void
     {
         $this->useCase = new UseCase(
-            repository: $this->createMockRepository(),
+            repository: $this->createMockRepository(
+                timesCallAction: 1,
+                timesCallUpdateMedia: 1
+            ),
             transaction: $this->createMockTransaction(),
             storage: $this->createMockFileStorage(),
             eventManager: $this->createMockEventManager(),
@@ -145,13 +148,16 @@ class CreateVideoUseCaseUnitTest extends TestCase
         ];
     }
 
-    private function createMockRepository()
-    {
+    private function createMockRepository(
+        int $timesCallAction,
+        int $timesCallUpdateMedia,
+    ) {
         $mock = Mockery::mock(stdClass::class, VideoRepositoryInterface::class);
         $mock->shouldReceive('insert')
-            // ->once()
+            ->times($timesCallAction)
             ->andReturn($this->createMockEntity());
-        $mock->shouldReceive('updateMedia');
+        $mock->shouldReceive('updateMedia')
+            ->times($timesCallUpdateMedia);
         return $mock;
     }
 
