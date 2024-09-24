@@ -33,14 +33,20 @@ class CreateVideoUseCaseUnitTest extends TestCase
     protected function createUseCase(
         int $timesCallMethodActionRepository = 1,
         int $timesCallUpdateMediaRepository = 1,
-        int $timesCallMethodDispatch = 1
+
+        int $timesCallMethodCommitTransaction = 1,
+        int $timesCallMethodRollbackTransaction = 0,
+
     ) {
         $this->useCase = new UseCase(
             repository: $this->createMockRepository(
                 timesCallAction: $timesCallMethodActionRepository,
-                timesCallUpdateMedia: $timesCallUpdateMediaRepository
+                timesCallUpdateMedia: $timesCallUpdateMediaRepository,
             ),
-            transaction: $this->createMockTransaction(),
+            transaction: $this->createMockTransaction(
+                timesCallCommit: $timesCallMethodCommitTransaction,
+                timesCallRollback: $timesCallMethodRollbackTransaction,
+            ),
             storage: $this->createMockFileStorage(),
             eventManager: $this->createMockEventManager(),
             repositoryCategory: $this->createMockRepositoryCategory(),
@@ -69,7 +75,8 @@ class CreateVideoUseCaseUnitTest extends TestCase
     ) {
         $this->createUseCase(
             timesCallMethodActionRepository: 0,
-            timesCallUpdateMediaRepository: 0
+            timesCallUpdateMediaRepository: 0,
+            timesCallMethodCommitTransaction: 0,
         );
 
         $this->expectException(NotFoundException::class);
@@ -106,7 +113,7 @@ class CreateVideoUseCaseUnitTest extends TestCase
         array $banner
     ) {
         $this->createUseCase();
-        
+
         $response =   $this->useCase->exec(
             input: $this->createMockInputDto(
                 videoFile: $video['value'],
@@ -198,11 +205,13 @@ class CreateVideoUseCaseUnitTest extends TestCase
         return $mock;
     }
 
-    private function createMockTransaction()
-    {
+    private function createMockTransaction(
+        int $timesCallCommit,
+        int $timesCallRollback
+    ) {
         $mock = Mockery::mock(stdClass::class, TransactionInterface::class);
-        $mock->shouldReceive('commit');
-        $mock->shouldReceive('rollback');
+        $mock->shouldReceive('commit')->times($timesCallCommit);
+        $mock->shouldReceive('rollback')->times($timesCallRollback);
         return $mock;
     }
 
