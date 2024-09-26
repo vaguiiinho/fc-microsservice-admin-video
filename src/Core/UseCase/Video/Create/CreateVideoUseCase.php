@@ -2,6 +2,10 @@
 
 namespace Core\UseCase\Video\Create;
 
+use Core\Domain\Builder\Video\{
+    BuilderVideo,
+    Builder
+};
 use Core\UseCase\Video\BaseVideoUseCase;
 use Core\UseCase\Video\Create\DTO\{
     CreateInputVideoDTO,
@@ -14,7 +18,7 @@ class CreateVideoUseCase extends BaseVideoUseCase
     public function exec(CreateInputVideoDTO $input): CreateOutputVideoDTO
     {
         $this->validateAllIds($input);
-        
+
         $this->builder->createEntity($input);
 
         try {
@@ -34,6 +38,11 @@ class CreateVideoUseCase extends BaseVideoUseCase
 
             throw $th;
         }
+    }
+
+    protected function getBuilder(): Builder
+    {
+        return new BuilderVideo;
     }
 
     private function output(): CreateOutputVideoDTO
