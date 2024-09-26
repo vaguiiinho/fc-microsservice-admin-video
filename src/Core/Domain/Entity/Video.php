@@ -37,6 +37,13 @@ class Video extends Entity
         $this->createdAt = $this->createdAt ?? new DateTime();
         $this->validation();
     }
+    public function update(string $title, string $description): void
+    {
+        $this->title = $title;
+        $this->description = $description;
+        
+        $this->validation();
+    }
 
     public function addCategory(string $categoryId): void
     {
