@@ -2,14 +2,12 @@
 
 namespace Tests\Unit\UseCase\Video;
 
-use Core\Domain\Entity\Video as Entity;
-use Core\Domain\Enum\Rating;
+
 use Core\Domain\Repository\VideoRepositoryInterface;
-use Core\Domain\ValueObject\Uuid;
-use Core\UseCase\Video\ListAll\ListVideosUseCase;
-use Core\UseCase\Video\List\DTO\{
-    ListVideoInputDto,
-    ListVideoOutputDto
+use Core\UseCase\Video\Paginate\ListVideosUseCase;
+use Core\UseCase\Video\Paginate\DTO\{
+    PaginateVideosInputDto,
+    PaginateVideosOutputDto
 };
 use Mockery;
 use PHPUnit\Framework\TestCase;
@@ -24,20 +22,22 @@ class ListVideosUseCaseUnitTest extends TestCase
         // Arrange
 
         $useCase = new ListVideosUseCase(
-            repository: $this->mockRepository()  
+            repository: $this->mockRepository()
         );
 
         // Act
-       
+        $response = $useCase->exec(
+            input: $this->mockInputDto()
+        );
 
 
         // Assert
-        $this->assertTrue(true);
+        $this->assertInstanceOf(PaginateVideosOutputDto::class, $response);
     }
 
     private function mockRepository()
     {
-        $mockRepository = Mockery::mock(VideoRepositoryInterface::class);
+        $mockRepository = Mockery::mock(stdClass::class, VideoRepositoryInterface::class);
 
         $mockRepository->shouldReceive('paginate')
             ->once()
@@ -46,6 +46,16 @@ class ListVideosUseCaseUnitTest extends TestCase
             );
 
         return $mockRepository;
+    }
+
+    private function mockInputDto()
+    {
+        return Mockery::mock(PaginateVideosInputDto::class, [
+            '',
+            'DESC',
+            1,
+            15,
+        ]);
     }
 
     protected function tearDown(): void
