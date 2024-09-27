@@ -2,6 +2,8 @@
 
 namespace Tests\Unit\UseCase\Video;
 
+use Core\Domain\Entity\Video as Entity;
+use Core\Domain\Enum\Rating;
 use Core\Domain\Repository\VideoRepositoryInterface;
 use Core\Domain\ValueObject\Uuid;
 use Core\UseCase\Video\List\ListVideoUseCase;
@@ -18,7 +20,7 @@ class ListVideoUseCaseUnitTest extends TestCase
     public function test_list()
     {
         // Arrange
-        $uuid = Uuid::random();
+        $id = Uuid::random();
 
         $useCase = new ListVideoUseCase(
             repository: $this->mockRepository()
@@ -26,9 +28,7 @@ class ListVideoUseCaseUnitTest extends TestCase
 
         // Act
         $output = $useCase->exec(
-            input: $this->mockInputDTO(
-                $uuid
-            )
+            input: $this->mockInputDTO($id)
         );
 
 
@@ -36,14 +36,32 @@ class ListVideoUseCaseUnitTest extends TestCase
         $this->assertInstanceOf(ListVideoOutputDto::class, $output);
     }
 
-    private function mockInputDTO()
+    private function mockInputDTO(string $id)
     {
-        return Mockery::mock(ListVideoInputDTO::class);
+        return Mockery::mock(ListVideoInputDTO::class, [$id]);
     }
 
     private function mockRepository()
     {
-        return Mockery::mock(stdClass::class, VideoRepositoryInterface::class);
+        $mock =  Mockery::mock(stdClass::class, VideoRepositoryInterface::class);
+
+        $mock->shouldReceive('findById')
+            ->once()
+            ->andReturn($this->getEntity());
+
+        return $mock;
+    }
+
+    private function getEntity(): Entity
+    {
+        return new Entity(
+            title: 'Test',
+            description: 'Test Description',
+            yearLaunched: 2022,
+            duration: 120,
+            opened: true,
+            rating: Rating::L,
+        );
     }
 
     protected function tearDown(): void
