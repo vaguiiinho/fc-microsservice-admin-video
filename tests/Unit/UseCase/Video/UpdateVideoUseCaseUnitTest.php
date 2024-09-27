@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\UseCase\Video;
 
-use Core\Domain\Enum\Rating;
 use Core\Domain\ValueObject\Uuid;
 use Core\UseCase\Video\Update\UpdateVideoUseCase;
 use Core\UseCase\Video\Update\DTO\{
@@ -48,10 +47,6 @@ class UpdateVideoUseCaseUnitTest extends BaseVideoUseCaseUnitTest
             Uuid::random(),
             'Test Video',
             'Test Description',
-            2022,
-            120,
-            true,
-            Rating::RATE10,
             $categoriesIds,
             $genresIds,
             $castMembersId,
