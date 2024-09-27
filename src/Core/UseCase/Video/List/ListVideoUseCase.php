@@ -3,6 +3,10 @@
 namespace Core\UseCase\Video\List;
 
 use Core\Domain\Repository\VideoRepositoryInterface;
+use Core\UseCase\Video\List\DTO\{
+    ListVideoInputDto,
+    ListVideoOutputDto
+};
 
 class ListVideoUseCase
 {
@@ -10,5 +14,10 @@ class ListVideoUseCase
         private VideoRepositoryInterface $repository
     ) {
         
+    }
+
+    public function exec(ListVideoInputDto $input): ListVideoOutputDto
+    {
+
     }
 }
