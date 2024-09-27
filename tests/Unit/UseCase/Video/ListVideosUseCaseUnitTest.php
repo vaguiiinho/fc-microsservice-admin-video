@@ -30,7 +30,6 @@ class ListVideosUseCaseUnitTest extends TestCase
             input: $this->mockInputDto()
         );
 
-
         // Assert
         $this->assertInstanceOf(PaginateVideosOutputDto::class, $response);
     }
