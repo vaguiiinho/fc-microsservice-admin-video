@@ -10,12 +10,9 @@ use Core\UseCase\Video\List\DTO\{
 
 class ListVideoUseCase
 {
-    protected $repository;
-
-    public function __construct(VideoRepositoryInterface $repository)
-    {
-        $this->repository = $repository;
-    }
+    public function __construct(
+        private VideoRepositoryInterface $repository
+    ) {}
 
     public function exec(ListVideoInputDto $input): ListVideoOutputDto
     {
