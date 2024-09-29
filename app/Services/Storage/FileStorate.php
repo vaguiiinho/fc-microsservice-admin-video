@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Storate;
+namespace App\Services\Storage;
 
 use Core\UseCase\Interfaces\FileStorageInterface;
 
