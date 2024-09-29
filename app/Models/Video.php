@@ -21,6 +21,7 @@ class Video extends Model
         'opened',
         'rating',
         'duration',
+        'created_at',
     ];
 
     public $incrementing = false;
