@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Events\VideoCreated;
 use Illuminate\Support\ServiceProvider;
+use App\Events\VideoEvent;
 use App\Repositories\Transaction\DBTransaction;
 use App\Services\Storage\FileStorage;
 use Core\UseCase\Video\Interfaces\VideoEventManagerInterface;
@@ -43,7 +43,7 @@ class CleanArchServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             VideoEventManagerInterface::class,
-            VideoCreated::class
+            VideoEvent::class
         );
 
         $this->app->bind(
