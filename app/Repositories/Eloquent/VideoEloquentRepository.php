@@ -8,6 +8,7 @@ use Core\Domain\Entity\{
     Video,
 };
 use Core\Domain\Enum\Rating;
+use Core\Domain\Exception\NotFoundException;
 use Core\Domain\Repository\PaginationInterface;
 use Core\Domain\Repository\VideoRepositoryInterface;
 use Core\Domain\ValueObject\Uuid;
@@ -38,7 +39,14 @@ class VideoEloquentRepository implements VideoRepositoryInterface
         return $this->convertObjectToEntity($entityDb);
     }
 
-    public function findById(string $id): Entity {}
+    public function findById(string $id): Entity 
+    {
+        if (!$entityDb = $this->model->find($id)) {
+            throw new NotFoundException('Video not found');
+        }
+
+        return $this->convertObjectToEntity($entityDb);
+    }
 
     public function findAll(string $filter = '', $order = 'DESC'): array {}
 
