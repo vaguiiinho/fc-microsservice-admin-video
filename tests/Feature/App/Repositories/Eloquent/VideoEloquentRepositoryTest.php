@@ -246,4 +246,13 @@ class VideoEloquentRepositoryTest extends TestCase
 
         $this->repository->delete('fake_id');
     }
+
+    public function testDelete()
+    {
+        $video = Model::factory()->create();
+
+        $this->repository->delete($video->id);
+
+        $this->assertSoftDeleted('videos', ['id' => $video->id]);
+    }
 }
