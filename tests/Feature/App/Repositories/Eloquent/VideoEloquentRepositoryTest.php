@@ -12,6 +12,7 @@ use App\Repositories\Eloquent\VideoEloquentRepository;
 use Core\Domain\Entity\Video as Entity;
 use Core\Domain\Enum\Rating;
 use Core\Domain\Exception\NotFoundException;
+use Core\Domain\ValueObject\Uuid;
 use Tests\TestCase;
 
 class VideoEloquentRepositoryTest extends TestCase
@@ -177,7 +178,6 @@ class VideoEloquentRepositoryTest extends TestCase
         $this->expectException(NotFoundException::class);
 
         $entity = new Entity(
-
             title: 'Updated Test Video',
             description: 'Updated Test Description',
             yearLaunched: 2022,
@@ -186,6 +186,33 @@ class VideoEloquentRepositoryTest extends TestCase
             rating: Rating::L,
         );
 
-        $this->repository->update($entity, 'fake_id');
+        $this->repository->update($entity);
+    }
+
+    public function testUpdate()
+    {
+        $video = Model::factory()->create();
+
+        $this->assertDatabaseHas('videos', [
+            'title' => $video->title,
+        ]);
+
+        $entity = new Entity(
+            id: new Uuid($video->id),
+            title: 'Updated Test Video',
+            description: 'Updated Test Description',
+            yearLaunched: 2022,
+            duration: 120,
+            opened: true,
+            rating: Rating::L,
+        );
+
+        $this->repository->update($entity);
+
+        $this->assertDatabaseHas('videos', [
+            'id' => $video->id,
+            'title' => 'Updated Test Video',
+            'description' => 'Updated Test Description'
+        ]);
     }
 }
