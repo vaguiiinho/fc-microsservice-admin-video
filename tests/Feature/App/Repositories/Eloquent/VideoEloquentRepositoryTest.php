@@ -23,12 +23,12 @@ class VideoEloquentRepositoryTest extends TestCase
         parent::setUp();
         $this->repository = new VideoEloquentRepository(new Model());
     }
-    public function test_implements_interface()
+    public function testImplementsInterface()
     {
         $this->assertInstanceOf(VideoEloquentRepository::class, $this->repository);
     }
 
-    public function test_insert()
+    public function testInsert()
     {
         $entity = new Entity(
             title: 'Test Video',
@@ -48,7 +48,7 @@ class VideoEloquentRepositoryTest extends TestCase
         ]);
     }
 
-    public function test_insert_with_relationships()
+    public function testInsertWithRelationships()
     {
         $categories = Category::factory()->count(4)->create();
         $genres = Genre::factory()->count(4)->create();
@@ -92,10 +92,20 @@ class VideoEloquentRepositoryTest extends TestCase
         $this->assertEquals($castMembers->pluck('id')->toArray(), $entityInDb->castMembersId);
     }
 
-    public function test_not_found_video()
+    public function testNoFoundVideo()
     {
         $this->expectException(NotFoundException::class);
 
         $this->repository->findById('fake_id');
+    }
+
+    public function testFindById()
+    {
+        $video = Model::factory()->create();
+
+        $response = $this->repository->findById($video->id);
+
+        $this->assertEquals($video->id, $response->id());
+        $this->assertEquals($video->title, $response->title);
     }
 }
