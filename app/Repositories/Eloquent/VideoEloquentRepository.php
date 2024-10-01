@@ -68,8 +68,7 @@ class VideoEloquentRepository implements VideoRepositoryInterface
         $order = 'DESC',
         int $page = 1,
         int $totalPage = 15
-    ): PaginationInterface 
-    {
+    ): PaginationInterface {
         $query = $this->model->query();
 
         if (!empty($filter)) {
@@ -77,7 +76,11 @@ class VideoEloquentRepository implements VideoRepositoryInterface
         }
 
         $query->orderBy('title', $order);
-        $pagination = $query->paginate($totalPage, $page);
+
+        $pagination = $query->paginate(
+            perPage: $totalPage,
+            page: $page
+        );
 
         return new PaginationPresenter($pagination);
     }
