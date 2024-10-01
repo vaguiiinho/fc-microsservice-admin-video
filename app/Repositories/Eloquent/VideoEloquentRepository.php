@@ -3,6 +3,7 @@
 namespace App\Repositories\Eloquent;
 
 use App\Models\Video as Model;
+use App\Repositories\Presenter\PaginationPresenter;
 use Core\Domain\Entity\{
     Entity,
     Video,
@@ -12,7 +13,6 @@ use Core\Domain\Exception\NotFoundException;
 use Core\Domain\Repository\PaginationInterface;
 use Core\Domain\Repository\VideoRepositoryInterface;
 use Core\Domain\ValueObject\Uuid;
-use PhpParser\Node\Stmt\Return_;
 
 class VideoEloquentRepository implements VideoRepositoryInterface
 {
@@ -68,7 +68,19 @@ class VideoEloquentRepository implements VideoRepositoryInterface
         $order = 'DESC',
         int $page = 1,
         int $totalPage = 15
-    ): PaginationInterface {}
+    ): PaginationInterface 
+    {
+        $query = $this->model->query();
+
+        if (!empty($filter)) {
+            $query->where('title', 'LIKE', "%{$filter}%");
+        }
+
+        $query->orderBy('title', $order);
+        $pagination = $query->paginate($totalPage, $page);
+
+        return new PaginationPresenter($pagination);
+    }
 
     public function update(Entity $entity): Entity {}
 
