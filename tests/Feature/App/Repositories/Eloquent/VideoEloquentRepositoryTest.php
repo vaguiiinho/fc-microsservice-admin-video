@@ -171,4 +171,21 @@ class VideoEloquentRepositoryTest extends TestCase
             ],
         ];
     }
+
+    public function testUpdateNotFoundId()
+    {
+        $this->expectException(NotFoundException::class);
+
+        $entity = new Entity(
+
+            title: 'Updated Test Video',
+            description: 'Updated Test Description',
+            yearLaunched: 2022,
+            duration: 120,
+            opened: true,
+            rating: Rating::L,
+        );
+
+        $this->repository->update($entity, 'fake_id');
+    }
 }
