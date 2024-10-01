@@ -99,9 +99,11 @@ class VideoEloquentRepository implements VideoRepositoryInterface
             'opened' => $entity->opened,
             'rating' => $entity->rating->value,
         ]);
-
+        
         $entityDb->refresh();
-
+        
+        $this->syncRelationships($entityDb, $entity);
+        
         return $this->convertObjectToEntity($entityDb);
     }
 
