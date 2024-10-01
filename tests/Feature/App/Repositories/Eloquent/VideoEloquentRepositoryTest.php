@@ -40,10 +40,10 @@ class VideoEloquentRepositoryTest extends TestCase
         );
 
         $this->repository->insert($entity);
-        
+
         $this->assertDatabaseHas('videos', [
             'id' => $entity->id(),
-            'title' => 'Test Video', 
+            'title' => 'Test Video',
             'description' => 'Test Description'
         ]);
     }
@@ -53,7 +53,7 @@ class VideoEloquentRepositoryTest extends TestCase
         $categories = Category::factory()->count(4)->create();
         $genres = Genre::factory()->count(4)->create();
         $castMembers = CastMember::factory()->count(4)->create();
-        
+
         $entity = new Entity(
             title: 'Test Video',
             description: 'Test Description',
@@ -66,11 +66,11 @@ class VideoEloquentRepositoryTest extends TestCase
         foreach ($categories as $category) {
             $entity->addCategory($category->id);
         }
-        
+
         foreach ($genres as $genre) {
             $entity->addGenre($genre->id);
         }
-        
+
         foreach ($castMembers as $castMember) {
             $entity->addCastMember($castMember->id);
         }
@@ -79,7 +79,7 @@ class VideoEloquentRepositoryTest extends TestCase
 
         $this->assertDatabaseHas('videos', [
             'id' => $entity->id(),
-            'title' => 'Test Video', 
+            'title' => 'Test Video',
             'description' => 'Test Description'
         ]);
 
@@ -107,5 +107,27 @@ class VideoEloquentRepositoryTest extends TestCase
 
         $this->assertEquals($video->id, $response->id());
         $this->assertEquals($video->title, $response->title);
+    }
+
+    public function testFindAll()
+    {
+        Model::factory()->count(50)->create();
+
+        $response = $this->repository->findAll();
+
+        $this->assertCount(50, $response);
+    }
+
+    public function testFindAllWithFilter()
+    {
+        Model::factory()->count(10)->create();
+        Model::factory()->count(20)->create(['title' => 'Test']);
+
+        $response = $this->repository->findAll(
+            filter: 'Test'
+        );
+
+        $this->assertCount(20, $response);
+        $this->assertDatabaseCount('videos', 30);
     }
 }

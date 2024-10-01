@@ -12,6 +12,7 @@ use Core\Domain\Exception\NotFoundException;
 use Core\Domain\Repository\PaginationInterface;
 use Core\Domain\Repository\VideoRepositoryInterface;
 use Core\Domain\ValueObject\Uuid;
+use PhpParser\Node\Stmt\Return_;
 
 class VideoEloquentRepository implements VideoRepositoryInterface
 {
@@ -39,7 +40,7 @@ class VideoEloquentRepository implements VideoRepositoryInterface
         return $this->convertObjectToEntity($entityDb);
     }
 
-    public function findById(string $id): Entity 
+    public function findById(string $id): Entity
     {
         if (!$entityDb = $this->model->find($id)) {
             throw new NotFoundException('Video not found');
@@ -48,7 +49,19 @@ class VideoEloquentRepository implements VideoRepositoryInterface
         return $this->convertObjectToEntity($entityDb);
     }
 
-    public function findAll(string $filter = '', $order = 'DESC'): array {}
+    public function findAll(string $filter = '', $order = 'DESC'): array
+    {
+        $videos = $this->model
+            ->where(function ($query) use ($filter) {
+                if ($filter) {
+                    $query->where('title', 'LIKE', "%{$filter}%");
+                }
+            })
+            ->orderBy('title', $order)
+            ->get();
+
+        return $videos->toArray();
+    }
 
     public function paginate(
         string $filter = '',
@@ -82,15 +95,15 @@ class VideoEloquentRepository implements VideoRepositoryInterface
             rating: Rating::from($model->rating),
         );
 
-        foreach($model->categories as $category) {
+        foreach ($model->categories as $category) {
             $entity->addCategory($category->id);
         }
 
-        foreach($model->genres as $genre) {
+        foreach ($model->genres as $genre) {
             $entity->addGenre($genre->id);
         }
 
-        foreach($model->castMembers as $castMember) {
+        foreach ($model->castMembers as $castMember) {
             $entity->addCastMember($castMember->id);
         }
 
