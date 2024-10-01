@@ -2,7 +2,12 @@
 
 namespace Tests\Feature\App\Repositories\Eloquent;
 
-use App\Models\Video as Model;
+use App\Models\{
+    CastMember,
+    Category,
+    Genre,
+    Video as Model,
+};
 use App\Repositories\Eloquent\VideoEloquentRepository;
 use Core\Domain\Entity\Video as Entity;
 use Core\Domain\Enum\Rating;
@@ -40,5 +45,45 @@ class VideoEloquentRepositoryTest extends TestCase
             'title' => 'Test Video', 
             'description' => 'Test Description'
         ]);
+    }
+
+    public function test_insert_with_relationships()
+    {
+        $categories = Category::factory()->count(4)->create();
+        $genres = Genre::factory()->count(4)->create();
+        $castMembers = CastMember::factory()->count(4)->create();
+        
+        $entity = new Entity(
+            title: 'Test Video',
+            description: 'Test Description',
+            yearLaunched: 2022,
+            duration: 120,
+            opened: true,
+            rating: Rating::L,
+        );
+
+        foreach ($categories as $category) {
+            $entity->addCategory($category->id);
+        }
+        
+        foreach ($genres as $genre) {
+            $entity->addGenre($genre->id);
+        }
+        
+        foreach ($castMembers as $castMember) {
+            $entity->addCastMember($castMember->id);
+        }
+
+        $this->repository->insert($entity);
+
+        $this->assertDatabaseHas('videos', [
+            'id' => $entity->id(),
+            'title' => 'Test Video', 
+            'description' => 'Test Description'
+        ]);
+
+        $this->assertDatabaseCount('category_video', 4);
+        $this->assertDatabaseCount('genre_video', 4);
+        $this->assertDatabaseCount('cast_member_video', 4);
     }
 }

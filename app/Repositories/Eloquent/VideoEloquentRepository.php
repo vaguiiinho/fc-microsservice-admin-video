@@ -33,6 +33,8 @@ class VideoEloquentRepository implements VideoRepositoryInterface
             'rating' => $entity->rating->value,
         ]);
 
+        $this->syncRelationships($entityDb, $entity);
+
         return $this->convertObjectToEntity($entityDb);
     }
 
@@ -52,6 +54,13 @@ class VideoEloquentRepository implements VideoRepositoryInterface
     public function delete(string $id): bool {}
 
     public function updateMedia(Entity $entity): Entity {}
+
+    protected function syncRelationships(Model $model, Entity $entity)
+    {
+        $model->categories()->sync($entity->categoriesId);
+        $model->genres()->sync($entity->genresId);
+        $model->castMembers()->sync($entity->castMembersId);
+    }
 
     protected function convertObjectToEntity(object $object): Video
     {
