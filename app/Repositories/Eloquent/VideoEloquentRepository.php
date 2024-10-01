@@ -62,16 +62,30 @@ class VideoEloquentRepository implements VideoRepositoryInterface
         $model->castMembers()->sync($entity->castMembersId);
     }
 
-    protected function convertObjectToEntity(object $object): Video
+    protected function convertObjectToEntity(object $model): Video
     {
-        return new Video(
-            id: new Uuid($object->id),
-            title: $object->title,
-            description: $object->description,
-            yearLaunched: (int) $object->year_launched,
-            duration: (bool) $object->duration,
-            opened: $object->opened,
-            rating: Rating::from($object->rating),
+        $entity = new Video(
+            id: new Uuid($model->id),
+            title: $model->title,
+            description: $model->description,
+            yearLaunched: (int) $model->year_launched,
+            duration: (bool) $model->duration,
+            opened: $model->opened,
+            rating: Rating::from($model->rating),
         );
+
+        foreach($model->categories as $category) {
+            $entity->addCategory($category->id);
+        }
+
+        foreach($model->genres as $genre) {
+            $entity->addGenre($genre->id);
+        }
+
+        foreach($model->castMembers as $castMember) {
+            $entity->addCastMember($castMember->id);
+        }
+
+        return $entity;
     }
 }
