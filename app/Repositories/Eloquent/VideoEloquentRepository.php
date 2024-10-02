@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Eloquent;
 
+use App\Enums\MediaTypes;
 use App\Models\Video as Model;
 use App\Repositories\Presenter\PaginationPresenter;
 use Core\Domain\Entity\{
@@ -126,7 +127,8 @@ class VideoEloquentRepository implements VideoRepositoryInterface
             $entityDb->trailer()->updateOrCreate([
                 'file_path' => $trailer->filePath,
                 'media_status' => $trailer->mediaStatus->value,
-                'encode_path' => $trailer->encodePath
+                'encode_path' => $trailer->encodePath,
+                'type' => MediaTypes::VIDEO->value,
             ]);
         }
 

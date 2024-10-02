@@ -10,9 +10,15 @@ use App\Models\{
 };
 use App\Repositories\Eloquent\VideoEloquentRepository;
 use Core\Domain\Entity\Video as Entity;
-use Core\Domain\Enum\Rating;
+use Core\Domain\Enum\{
+    Rating,
+    MediaStatus
+};
+use Core\Domain\ValueObject\{
+    Media,
+    Uuid
+};
 use Core\Domain\Exception\NotFoundException;
-use Core\Domain\ValueObject\Uuid;
 use Tests\TestCase;
 
 class VideoEloquentRepositoryTest extends TestCase
@@ -254,5 +260,32 @@ class VideoEloquentRepositoryTest extends TestCase
         $this->repository->delete($video->id);
 
         $this->assertSoftDeleted('videos', ['id' => $video->id]);
+    }
+
+    public function testInsertWithMediaTrailer()
+    {
+        $entity = new Entity(
+            title: 'Updated Test Video',
+            description: 'Updated Test Description',
+            yearLaunched: 2022,
+            duration: 120,
+            opened: true,
+            rating: Rating::L,
+            trailerFile: new Media(
+                filePath: 'trailer.mp4',
+                mediaStatus: MediaStatus::PROCESSING,
+            )
+        );
+
+        $this->repository->insert($entity);
+
+        $this->assertDatabaseCount('medias_video', 0);
+        $this->repository->updateMedia($entity);
+        $this->assertDatabaseCount('medias_video', 1);
+        $this->assertDatabaseHas('medias_video', [
+            'video_id' => $entity->id(),
+            'file_path' => 'trailer.mp4',
+            'media_status' => MediaStatus::PROCESSING->value,
+        ]);
     }
 }
