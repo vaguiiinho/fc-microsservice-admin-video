@@ -178,6 +178,14 @@ class VideoEloquentRepository implements VideoRepositoryInterface
             $entity->addCastMember($castMember->id);
         }
 
+        if ($video = $model->media) {
+            $entity->setVideoFile(new Media(
+                filePath: $video->file_path,
+                mediaStatus: MediaStatus::from($video->media_status),
+                encodedPath: $video->encoded_path,
+            ));
+        }
+
         if ($trailer = $model->trailer) {
             $entity->setTrailerFile(new Media(
                 filePath: $trailer->file_path,

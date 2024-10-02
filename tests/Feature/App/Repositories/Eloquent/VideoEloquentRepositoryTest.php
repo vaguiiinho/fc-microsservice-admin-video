@@ -398,6 +398,6 @@ class VideoEloquentRepositoryTest extends TestCase
             'encoded_path' => 'test2enconde.mp4',
         ]);
 
-        // $this->assertNotNull($entityDb->videoFile());
+        $this->assertNotNull($entityDb->videoFile());
     }
 }
