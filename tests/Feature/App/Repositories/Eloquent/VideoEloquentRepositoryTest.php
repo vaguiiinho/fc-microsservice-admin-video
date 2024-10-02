@@ -443,4 +443,47 @@ class VideoEloquentRepositoryTest extends TestCase
 
         $this->assertNotNull($entityDb->thumbFile());
     }
+
+    public function testInsertWithImageThumbHalf()
+    {
+        $entity = new Entity(
+            title: 'Updated Test Video',
+            description: 'Updated Test Description',
+            yearLaunched: 2022,
+            duration: 120,
+            opened: true,
+            rating: Rating::L,
+            thumbHalf  : new Image(
+                path: 'thumb.jpg',
+            )
+        );
+
+        $this->repository->insert($entity);
+
+        $this->assertDatabaseCount('images_video', 0);
+        $this->repository->updateMedia($entity);
+        $this->assertDatabaseHas('images_video', [
+            'video_id' => $entity->id(),
+            'path' => 'thumb.jpg',
+            'type' => ImageTypes::THUMB_HALF->value,
+        ]);
+
+        $entity->setThumbHalf(
+            new Image(
+                path: 'thumb_half_updated.jpg',
+            )
+        );
+
+        $entityDb = $this->repository->updateMedia($entity);
+        
+        $this->assertDatabaseHas('images_video', [
+            'video_id' => $entity->id(),
+            'path' => 'thumb_half_updated.jpg',
+            'type' => ImageTypes::THUMB_HALF->value,
+        ]);
+        
+        $this->assertDatabaseCount('images_video', 1);
+
+        $this->assertNotNull($entityDb->thumbHalf());
+    }
 }
