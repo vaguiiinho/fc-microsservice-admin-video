@@ -99,15 +99,15 @@ class VideoEloquentRepository implements VideoRepositoryInterface
             'opened' => $entity->opened,
             'rating' => $entity->rating->value,
         ]);
-        
+
         $entityDb->refresh();
-        
+
         $this->syncRelationships($entityDb, $entity);
 
         return $this->convertObjectToEntity($entityDb);
     }
 
-    public function delete(string $id): bool 
+    public function delete(string $id): bool
     {
         if (!$entityDb = $this->model->find($id)) {
             throw new NotFoundException('Video not found');
@@ -116,7 +116,22 @@ class VideoEloquentRepository implements VideoRepositoryInterface
         return $entityDb->delete();
     }
 
-    public function updateMedia(Entity $entity): Entity {}
+    public function updateMedia(Entity $entity): Entity
+    {
+        if (!$entityDb = $this->model->find($entity->id())) {
+            throw new NotFoundException('Video not found');
+        }
+
+        if ($trailer = $entity->trailerFile()) {
+            $entityDb->trailer()->updateOrCreate([
+                'file_path' => $trailer->filePath,
+                'media_status' => $trailer->mediaStatus->value,
+                'encode_path' => $trailer->encodePath
+            ]);
+        }
+
+        return $this->convertObjectToEntity($entityDb);
+    }
 
     protected function syncRelationships(Model $model, Entity $entity)
     {
