@@ -138,6 +138,8 @@ class VideoEloquentRepository implements VideoRepositoryInterface
             throw new NotFoundException('Video not found');
         }
 
+        $this->updateMediaVideo($entity, $entityDb);
+
         $this->updateMediaTrailer($entity, $entityDb);
 
         $this->updateImageBanner($entity, $entityDb);

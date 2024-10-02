@@ -11,9 +11,17 @@ use Core\Domain\Entity\Video as Entity;
 
 trait VideoTrait
 {
-    public function updateMediaVideo(): void
+    public function updateMediaVideo(Entity $entity, Model $model): void
     {
-
+        if ($video = $entity->videoFile()) {
+            $action = $model->media()->first() ? 'update' : 'create';
+            $model->media()->{$action}([
+                'file_path' => $video->filePath,
+                'media_status' => $video->mediaStatus->value,
+                'encoded_path' => $video->encodedPath,
+                'type' => MediaTypes::VIDEO->value,
+            ]);
+        }
     }
 
     public function updateMediaTrailer(Entity $entity, Model $model): void
