@@ -142,6 +142,8 @@ class VideoEloquentRepository implements VideoRepositoryInterface
 
         $this->updateMediaTrailer($entity, $entityDb);
 
+        $this->updateImageThumb($entity, $entityDb);
+
         $this->updateImageBanner($entity, $entityDb);
 
         return $this->convertObjectToEntity($entityDb);
@@ -192,6 +194,10 @@ class VideoEloquentRepository implements VideoRepositoryInterface
                 mediaStatus: MediaStatus::from($trailer->media_status),
                 encodedPath: $trailer->encoded_path,
             ));
+        }
+
+        if ($thumb = $model->thumb) {
+            $entity->setThumbFile(new Image($thumb->path));
         }
 
         if ($banner = $model->banner) {

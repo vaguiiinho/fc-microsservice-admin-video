@@ -38,9 +38,15 @@ trait VideoTrait
 
     }
 
-    public function updateImageThumb(): void
+    public function updateImageThumb(Entity $entity, Model $model): void
     {
-
+        if ($thumb = $entity->thumbFile()) {
+            $action = $model->thumb()->first() ? 'update' : 'create';
+            $model->thumb()->{$action}([
+                'path' => $thumb->path(),
+                'type' => ImageTypes::THUMB->value,
+            ]);
+        }
     }
 
     public function updateImageThumbHalf(): void
@@ -50,7 +56,6 @@ trait VideoTrait
 
     public function updateImageBanner(Entity $entity, Model $model): void
     {
-
         if ($banner = $entity->bannerFile()) {
             $action = $model->banner()->first() ? 'update' : 'create';
             $model->banner()->{$action}([
