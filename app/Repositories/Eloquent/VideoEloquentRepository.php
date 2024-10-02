@@ -2,10 +2,6 @@
 
 namespace App\Repositories\Eloquent;
 
-use App\Enums\{
-    ImageTypes,
-    MediaTypes
-};
 use App\Models\Video as Model;
 use App\Repositories\Eloquent\Traits\VideoTrait;
 use App\Repositories\Presenter\PaginationPresenter;
@@ -32,12 +28,9 @@ class VideoEloquentRepository implements VideoRepositoryInterface
 {
     use VideoTrait;
 
-    protected $model;
-
-    public function __construct(Model $model)
-    {
-        $this->model = $model;
-    }
+    public function __construct(
+        protected Model $model
+    ) {}
 
     public function insert(Entity $entity): Entity
     {
