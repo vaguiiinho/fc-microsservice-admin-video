@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\App\Repositories\Eloquent;
 
+use App\Enums\ImageTypes;
 use App\Models\{
     CastMember,
     Category,
@@ -15,6 +16,7 @@ use Core\Domain\Enum\{
     MediaStatus
 };
 use Core\Domain\ValueObject\{
+    Image,
     Media,
     Uuid
 };
@@ -307,5 +309,30 @@ class VideoEloquentRepositoryTest extends TestCase
         ]);
 
         $this->assertNotNull($entityDb->trailerFile());
+    }
+
+    public function testInsertWithImageBanner()
+    {
+        $entity = new Entity(
+            title: 'Updated Test Video',
+            description: 'Updated Test Description',
+            yearLaunched: 2022,
+            duration: 120,
+            opened: true,
+            rating: Rating::L,
+            bannerFile: new Image(
+                path: 'banner.jpg',
+            )
+        );
+
+        $this->repository->insert($entity);
+
+        $this->assertDatabaseCount('images_video', 0);
+        $this->repository->updateMedia($entity);
+        $this->assertDatabaseHas('images_video', [
+            'video_id' => $entity->id(),
+            'path' => 'banner.jpg',
+            'type' => ImageTypes::BANNER->value,
+        ]);
     }
 }

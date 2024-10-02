@@ -2,7 +2,10 @@
 
 namespace App\Repositories\Eloquent;
 
-use App\Enums\MediaTypes;
+use App\Enums\{
+    ImageTypes,
+    MediaTypes
+};
 use App\Models\Video as Model;
 use App\Repositories\Presenter\PaginationPresenter;
 use Core\Domain\Entity\{
@@ -138,6 +141,14 @@ class VideoEloquentRepository implements VideoRepositoryInterface
                 'media_status' => $trailer->mediaStatus->value,
                 'encoded_path' => $trailer->encodedPath,
                 'type' => MediaTypes::TRAILER->value,
+            ]);
+        }
+
+        if ($banner = $entity->bannerFile()) {
+            $action = $entityDb->banner()->first() ? 'update' : 'create'; 
+            $entityDb->banner()->{$action}([
+                'path' => $banner->path(),
+                'type' => ImageTypes::BANNER->value,
             ]);
         }
 
