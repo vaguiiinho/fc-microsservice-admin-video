@@ -22,6 +22,7 @@ use Core\Domain\Repository\{
     PaginationInterface
 };
 use Core\Domain\ValueObject\{
+    Image,
     Media,
     Uuid
 };
@@ -135,7 +136,7 @@ class VideoEloquentRepository implements VideoRepositoryInterface
         }
 
         if ($trailer = $entity->trailerFile()) {
-            $action = $entityDb->trailer()->first() ? 'update' : 'create'; 
+            $action = $entityDb->trailer()->first() ? 'update' : 'create';
             $entityDb->trailer()->{$action}([
                 'file_path' => $trailer->filePath,
                 'media_status' => $trailer->mediaStatus->value,
@@ -145,7 +146,7 @@ class VideoEloquentRepository implements VideoRepositoryInterface
         }
 
         if ($banner = $entity->bannerFile()) {
-            $action = $entityDb->banner()->first() ? 'update' : 'create'; 
+            $action = $entityDb->banner()->first() ? 'update' : 'create';
             $entityDb->banner()->{$action}([
                 'path' => $banner->path(),
                 'type' => ImageTypes::BANNER->value,
@@ -193,7 +194,11 @@ class VideoEloquentRepository implements VideoRepositoryInterface
                 encodedPath: $trailer->encoded_path,
             ));
         }
-        
+
+        if ($banner = $model->banner) {
+            $entity->setBannerFile(new Image($banner->path));
+        }
+
         return $entity;
     }
 }
