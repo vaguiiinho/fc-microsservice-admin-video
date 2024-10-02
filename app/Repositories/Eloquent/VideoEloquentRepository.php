@@ -144,6 +144,8 @@ class VideoEloquentRepository implements VideoRepositoryInterface
 
         $this->updateImageThumb($entity, $entityDb);
 
+        $this->updateImageThumbHalf($entity, $entityDb);
+
         $this->updateImageBanner($entity, $entityDb);
 
         return $this->convertObjectToEntity($entityDb);
@@ -198,6 +200,10 @@ class VideoEloquentRepository implements VideoRepositoryInterface
 
         if ($thumb = $model->thumb) {
             $entity->setThumbFile(new Image($thumb->path));
+        }
+
+        if ($thumbHalf = $model->thumbHalf) {
+            $entity->setThumbHalf(new Image($thumbHalf->path));
         }
 
         if ($banner = $model->banner) {
