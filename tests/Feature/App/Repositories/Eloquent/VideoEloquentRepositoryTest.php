@@ -295,8 +295,8 @@ class VideoEloquentRepositoryTest extends TestCase
             )
         );
 
-        $this->repository->updateMedia($entity);
-        
+        $entityDb = $this->repository->updateMedia($entity);
+
         $this->assertDatabaseCount('medias_video', 1);
 
         $this->assertDatabaseHas('medias_video', [
@@ -305,5 +305,7 @@ class VideoEloquentRepositoryTest extends TestCase
             'media_status' => MediaStatus::COMPLETED->value,
             'encoded_path' => 'test2enconde.mp4',
         ]);
+
+        $this->assertNotNull($entityDb->trailerFile());
     }
 }

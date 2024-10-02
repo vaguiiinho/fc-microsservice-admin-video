@@ -9,11 +9,19 @@ use Core\Domain\Entity\{
     Entity,
     Video,
 };
-use Core\Domain\Enum\Rating;
+use Core\Domain\Enum\{
+    Rating,
+    MediaStatus
+};
 use Core\Domain\Exception\NotFoundException;
-use Core\Domain\Repository\PaginationInterface;
-use Core\Domain\Repository\VideoRepositoryInterface;
-use Core\Domain\ValueObject\Uuid;
+use Core\Domain\Repository\{
+    VideoRepositoryInterface,
+    PaginationInterface
+};
+use Core\Domain\ValueObject\{
+    Media,
+    Uuid
+};
 
 class VideoEloquentRepository implements VideoRepositoryInterface
 {
@@ -167,6 +175,14 @@ class VideoEloquentRepository implements VideoRepositoryInterface
             $entity->addCastMember($castMember->id);
         }
 
+        if ($trailer = $model->trailer) {
+            $entity->setTrailerFile(new Media(
+                filePath: $trailer->file_path,
+                mediaStatus: MediaStatus::from($trailer->media_status),
+                encodedPath: $trailer->encoded_path,
+            ));
+        }
+        
         return $entity;
     }
 }
