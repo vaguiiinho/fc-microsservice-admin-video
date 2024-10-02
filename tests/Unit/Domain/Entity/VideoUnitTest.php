@@ -301,7 +301,7 @@ class VideoUnitTest extends TestCase
         $trailerFile = new Media(
             filePath: 'path/trailer.mp4',
             mediaStatus: MediaStatus::PENDING,
-            encodePath: 'path/encoded.extension'
+            encodedPath: 'path/encoded.extension'
         );
 
         $entity = new Video(
