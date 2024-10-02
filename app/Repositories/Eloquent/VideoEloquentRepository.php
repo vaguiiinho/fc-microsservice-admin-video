@@ -7,6 +7,7 @@ use App\Enums\{
     MediaTypes
 };
 use App\Models\Video as Model;
+use App\Repositories\Eloquent\Traits\VideoTrait;
 use App\Repositories\Presenter\PaginationPresenter;
 use Core\Domain\Entity\{
     Entity,
@@ -29,6 +30,8 @@ use Core\Domain\ValueObject\{
 
 class VideoEloquentRepository implements VideoRepositoryInterface
 {
+    use VideoTrait;
+
     protected $model;
 
     public function __construct(Model $model)
@@ -135,23 +138,9 @@ class VideoEloquentRepository implements VideoRepositoryInterface
             throw new NotFoundException('Video not found');
         }
 
-        if ($trailer = $entity->trailerFile()) {
-            $action = $entityDb->trailer()->first() ? 'update' : 'create';
-            $entityDb->trailer()->{$action}([
-                'file_path' => $trailer->filePath,
-                'media_status' => $trailer->mediaStatus->value,
-                'encoded_path' => $trailer->encodedPath,
-                'type' => MediaTypes::TRAILER->value,
-            ]);
-        }
+        $this->updateMediaTrailer($entity, $entityDb);
 
-        if ($banner = $entity->bannerFile()) {
-            $action = $entityDb->banner()->first() ? 'update' : 'create';
-            $entityDb->banner()->{$action}([
-                'path' => $banner->path(),
-                'type' => ImageTypes::BANNER->value,
-            ]);
-        }
+        $this->updateImageBanner($entity, $entityDb);
 
         return $this->convertObjectToEntity($entityDb);
     }
