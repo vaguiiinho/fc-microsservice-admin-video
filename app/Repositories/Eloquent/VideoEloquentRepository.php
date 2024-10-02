@@ -124,11 +124,12 @@ class VideoEloquentRepository implements VideoRepositoryInterface
         }
 
         if ($trailer = $entity->trailerFile()) {
-            $entityDb->trailer()->updateOrCreate([
+            $action = $entityDb->trailer()->first() ? 'update' : 'create'; 
+            $entityDb->trailer()->{$action}([
                 'file_path' => $trailer->filePath,
                 'media_status' => $trailer->mediaStatus->value,
-                'encode_path' => $trailer->encodePath,
-                'type' => MediaTypes::VIDEO->value,
+                'encoded_path' => $trailer->encodePath,
+                'type' => MediaTypes::TRAILER->value,
             ]);
         }
 

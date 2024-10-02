@@ -281,6 +281,7 @@ class VideoEloquentRepositoryTest extends TestCase
 
         $this->assertDatabaseCount('medias_video', 0);
         $this->repository->updateMedia($entity);
+        $this->repository->updateMedia($entity);
         $this->assertDatabaseCount('medias_video', 1);
         $this->assertDatabaseHas('medias_video', [
             'video_id' => $entity->id(),
