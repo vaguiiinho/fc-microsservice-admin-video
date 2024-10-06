@@ -22,8 +22,23 @@ class FileStorageTest extends TestCase
         $filePath = (new FileStorage())
             ->store('videos', $file);
 
-        $this->assertTrue(true);
-
         Storage::assertExists($filePath);
+
+        Storage::delete($filePath);
+    }
+
+
+    public function test_delete()
+    {
+        $file = UploadedFile::fake()->create('video.mp4', 1, 'video.mp4');
+
+        $path = $file->store('videos');
+
+        Storage::assertExists($path);
+
+        (new FileStorage())
+            ->delete($path);
+
+        Storage::assertMissing($path);
     }
 }
