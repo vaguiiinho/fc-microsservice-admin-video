@@ -2,21 +2,65 @@
 
 namespace Tests\Feature\Core\UseCase\Video\Create;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Models\{
+    CastMember,
+    Category,
+    Genre,
+    Video as Model,
+};
+use Core\Domain\Enum\Rating;
+use Core\Domain\Repository\{
+    CastMemberRepositoryInterface,
+    GenreRepositoryInterface,
+    VideoRepositoryInterface,
+    CategoryRepositoryInterface
+};
+use Core\UseCase\Interfaces\{
+    FileStorageInterface,
+    TransactionInterface
+};
+use Core\UseCase\Video\Create\CreateVideoUseCase;
+use Core\UseCase\Video\Create\DTO\CreateInputVideoDTO;
+use Core\UseCase\Video\Interfaces\VideoEventManagerInterface;
 use Tests\TestCase;
 
 class CreateVideoUseCaseTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function test_example()
+    public function test_create()
     {
-        $response = $this->get('/');
+        $useCase = new CreateVideoUseCase(
+            $this->app->make(VideoRepositoryInterface::class),
+            $this->app->make(TransactionInterface::class),
+            $this->app->make(FileStorageInterface::class),
+            $this->app->make(VideoEventManagerInterface::class),
+            $this->app->make(CategoryRepositoryInterface::class),
+            $this->app->make(GenreRepositoryInterface::class),
+            $this->app->make(CastMemberRepositoryInterface::class)
+        );
 
-        $response->assertStatus(200);
+        $categoriesIds = Category::factory()->count(3)->create()->pluck('id')->toArray();
+        $genresIds = Genre::factory()->count(3)->create()->pluck('id')->toArray();
+        $castMemberIds = CastMember::factory()->count(3)->create()->pluck('id')->toArray();
+
+        $input = new CreateInputVideoDTO(
+            title: 'Test Video',
+            description: 'Test Description',
+            yearLaunched: 2022,
+            duration: 120,
+            opened: true,
+            rating: Rating::L,
+            categories: $categoriesIds,
+            genres: $genresIds,
+            castMembers: $castMemberIds,
+        );
+
+        $response = $useCase->exec(input: $input);
+
+        $this->assertEquals($input->title, $response->title);
+        $this->assertEquals($input->description, $response->description);
+        $this->assertEquals($input->yearLaunched, $response->yearLaunched);
+        $this->assertEquals($input->duration, $response->duration);
+        $this->assertEquals($input->opened, $response->opened);
+        $this->assertEquals($input->rating, $response->rating);
     }
 }
