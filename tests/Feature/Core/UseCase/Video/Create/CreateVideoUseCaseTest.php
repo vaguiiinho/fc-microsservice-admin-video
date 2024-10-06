@@ -23,6 +23,7 @@ use Core\UseCase\Video\Create\CreateVideoUseCase;
 use Core\UseCase\Video\Create\DTO\CreateInputVideoDTO;
 use Core\UseCase\Video\Interfaces\VideoEventManagerInterface;
 use Illuminate\Http\UploadedFile;
+use Tests\Stubs\UploadFileStub;
 use Tests\TestCase;
 
 class CreateVideoUseCaseTest extends TestCase
@@ -43,7 +44,8 @@ class CreateVideoUseCaseTest extends TestCase
         $useCase = new CreateVideoUseCase(
             $this->app->make(VideoRepositoryInterface::class),
             $this->app->make(TransactionInterface::class),
-            $this->app->make(FileStorageInterface::class),
+            // $this->app->make(FileStorageInterface::class),
+            new UploadFileStub(),
             $this->app->make(VideoEventManagerInterface::class),
             $this->app->make(CategoryRepositoryInterface::class),
             $this->app->make(GenreRepositoryInterface::class),
