@@ -33,7 +33,12 @@ class CreateVideoUseCaseTest extends TestCase
     public function test_create(
         int $categories,
         int $genres,
-        int $castMembers
+        int $castMembers,
+        bool $withMediaVideo = false,
+        bool $withMediaTrailer = false,
+        bool $withMediaThumb = false,
+        bool $withMediaHalf = false,
+        bool $withMediaBanner = false
     ) {
         $useCase = new CreateVideoUseCase(
             $this->app->make(VideoRepositoryInterface::class),
@@ -68,7 +73,11 @@ class CreateVideoUseCaseTest extends TestCase
             categories: $categoriesIds,
             genres: $genresIds,
             castMembers: $castMemberIds,
-            videoFile: $file,
+            videoFile: $withMediaVideo ? $file : null,
+            trailerFile: $withMediaTrailer ? $file : null,
+            thumbFile: $withMediaThumb ? $file : null,
+            thumbHalf: $withMediaHalf ? $file : null,
+            bannerFile: $withMediaBanner ? $file : null,
         );
 
         $response = $useCase->exec(input: $input);
@@ -87,26 +96,51 @@ class CreateVideoUseCaseTest extends TestCase
         $this->assertCount($castMembers, $response->castMembers);
         $this->assertEqualsCanonicalizing($input->castMembers, $response->castMembers);
 
-        $this->assertNotNull($response->videoFile);
-        $this->assertNull($response->trailerFile);
-        $this->assertNull($response->thumbFile);
-        $this->assertNull($response->thumbHalf);
-        $this->assertNull($response->bannerFile);
+        $this->assertTrue($withMediaVideo ? $response->videoFile !== null : $response->videoFile === null);
+        $this->assertTrue($withMediaTrailer? $response->trailerFile!== null : $response->trailerFile === null);
+        $this->assertTrue($withMediaThumb? $response->thumbFile!== null : $response->thumbFile === null);
+        $this->assertTrue($withMediaHalf? $response->thumbHalf!== null : $response->thumbHalf === null);
+        $this->assertTrue($withMediaBanner? $response->bannerFile!== null : $response->bannerFile === null);
     }
 
     protected function provider(): array
     {
         return [
-            'Test With all Ids' => [
+            'Test With all Ids and media video' => [
                 'categories' => 3,
                 'genres' => 3,
                 'castMembers' => 3,
+                'withMediaVideo' => true,
+                'withMediaTrailer' => false,
+                'withMediaThumb' => false,
+                'withMediaHalf' => false,
+                'withMediaBanner' => false,
             ],
-            'Test With categories and genres' => [
+            'Test With categories and genres and without files' => [
                 'categories' => 3,
                 'genres' => 3,
                 'castMembers' => 0,
-            ]
+            ],
+            'Test With all Ids and all media' => [
+                'categories' => 2,
+                'genres' => 2,
+                'castMembers' => 2,
+                'withMediaVideo' => true,
+                'withMediaTrailer' => true,
+                'withMediaThumb' => true,
+                'withMediaHalf' => true,
+                'withMediaBanner' => true,
+            ],
+            'Test Without Ids and all media' => [
+                'categories' => 0,
+                'genres' => 0,
+                'castMembers' => 0,
+                'withMediaVideo' => true,
+                'withMediaTrailer' => true,
+                'withMediaThumb' => true,
+                'withMediaHalf' => true,
+                'withMediaBanner' => true,
+            ],
         ];
     }
 }
