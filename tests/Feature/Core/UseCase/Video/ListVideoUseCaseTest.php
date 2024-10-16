@@ -25,4 +25,16 @@ class ListVideoUseCaseTest extends TestCase
         $this->assertEquals($video->title, $response->title);
         $this->assertEquals($video->description, $response->description);
     }
+
+    public function test_list_not_found()
+    {
+        $this->expectException(NotFoundException::class);
+        $this->expectExceptionMessage('Video not found');
+
+        $useCase = new ListVideoUseCase(
+            $this->app->make(VideoRepositoryInterface::class),
+        );
+
+        $useCase->exec(new ListVideoInputDto('fake_id'));
+    }
 }
