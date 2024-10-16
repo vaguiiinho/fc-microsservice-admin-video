@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Core\UseCase\Video\Create;
+namespace Tests\Feature\Core\UseCase\Video;
 
 use App\Models\{
     CastMember,
@@ -78,16 +78,6 @@ abstract class BaseVideoUseCase extends TestCase
             'type' => $fakeFile->getMimeType(),
             'error' => $fakeFile->getError(),
         ];
-
-        $input = new CreateInputVideoDTO(
-            title: 'Test Video',
-            description: 'Test Description',
-            yearLaunched: 2022,
-            duration: 120,
-            opened: true,
-            rating: Rating::L,
-        
-        );
 
         $input = $this->inputDto(
             categoriesIds: $categoriesIds,
