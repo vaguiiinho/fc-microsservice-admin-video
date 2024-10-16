@@ -27,8 +27,20 @@ use Tests\Stubs\UploadFileStub;
 use Tests\Stubs\VideoEventStub;
 use Tests\TestCase;
 
-class CreateVideoUseCaseTest extends TestCase
+abstract class BaseVideoUseCase extends TestCase
 {
+    abstract function useCase(): string;
+
+    abstract function inputDto(
+        array $categoriesIds = [],
+        array $genresIds = [],
+        array $castMemberIds = [],
+        ?array $videoFile = null,
+        ?array $trailerFile = null,
+        ?array $thumbFile = null,
+        ?array $thumbHalf = null,
+        ?array $bannerFile = null,
+    ): object;
     /**
      * @dataProvider provider
      */
@@ -42,7 +54,7 @@ class CreateVideoUseCaseTest extends TestCase
         bool $withMediaHalf = false,
         bool $withMediaBanner = false
     ) {
-        $useCase = new CreateVideoUseCase(
+        $useCase = new ($this->useCase())(
             $this->app->make(VideoRepositoryInterface::class),
             $this->app->make(TransactionInterface::class),
             // $this->app->make(FileStorageInterface::class),
@@ -74,14 +86,18 @@ class CreateVideoUseCaseTest extends TestCase
             duration: 120,
             opened: true,
             rating: Rating::L,
-            categories: $categoriesIds,
-            genres: $genresIds,
-            castMembers: $castMemberIds,
-            videoFile: $withMediaVideo ? $file : null,
-            trailerFile: $withMediaTrailer ? $file : null,
-            thumbFile: $withMediaThumb ? $file : null,
-            thumbHalf: $withMediaHalf ? $file : null,
-            bannerFile: $withMediaBanner ? $file : null,
+        
+        );
+
+        $input = $this->inputDto(
+            categoriesIds: $categoriesIds,
+            genresIds: $genresIds,
+            castMemberIds: $castMemberIds,
+            videoFile: $withMediaVideo? $file : null,
+            trailerFile: $withMediaTrailer? $file : null,
+            thumbFile: $withMediaThumb? $file : null,
+            thumbHalf: $withMediaHalf? $file : null,
+            bannerFile: $withMediaBanner? $file : null,
         );
 
         $response = $useCase->exec(input: $input);
@@ -101,10 +117,10 @@ class CreateVideoUseCaseTest extends TestCase
         $this->assertEqualsCanonicalizing($input->castMembers, $response->castMembers);
 
         $this->assertTrue($withMediaVideo ? $response->videoFile !== null : $response->videoFile === null);
-        $this->assertTrue($withMediaTrailer? $response->trailerFile!== null : $response->trailerFile === null);
-        $this->assertTrue($withMediaThumb? $response->thumbFile!== null : $response->thumbFile === null);
-        $this->assertTrue($withMediaHalf? $response->thumbHalf!== null : $response->thumbHalf === null);
-        $this->assertTrue($withMediaBanner? $response->bannerFile!== null : $response->bannerFile === null);
+        $this->assertTrue($withMediaTrailer ? $response->trailerFile !== null : $response->trailerFile === null);
+        $this->assertTrue($withMediaThumb ? $response->thumbFile !== null : $response->thumbFile === null);
+        $this->assertTrue($withMediaHalf ? $response->thumbHalf !== null : $response->thumbHalf === null);
+        $this->assertTrue($withMediaBanner ? $response->bannerFile !== null : $response->bannerFile === null);
     }
 
     protected function provider(): array
