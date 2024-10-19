@@ -63,4 +63,29 @@ class CreateVideoUseCaseTest extends BaseVideoUseCase
             $this->assertDatabaseCount('videos', 0);
         }
     }
+
+    /**
+     * @test
+     */
+    public function uploadFilesException()
+    {
+        Event::listen(UploadFileStub::class, function () {
+            dd('dfdfsd');
+        });
+
+        $sut = $this->makeSut();
+
+        $input = $this->inputDto(
+            videoFile: [
+                'name' => 'video.mp4',
+                'type' => 'video/mp4',
+                'tmp_name' => 'non_existent_file',
+                'error' => 0
+            ]
+        );
+
+        $sut->execute($input);
+
+        $this->assertDatabaseCount('videos', 0);
+    }
 }
