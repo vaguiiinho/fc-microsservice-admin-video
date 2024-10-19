@@ -21,8 +21,6 @@ class VideoController extends Controller
             )
         );
 
-        dd($response->items);
-
         return VideoResource::collection(collect($response->items))
             ->additional([
                 'meta' => [
