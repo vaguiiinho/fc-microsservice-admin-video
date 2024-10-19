@@ -24,7 +24,6 @@ class VideoApiTest extends TestCase
         Video::factory()->count(30)->create();
 
         $response = $this->getJson($this->endPoint);
-
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonCount(15, 'data');
     }

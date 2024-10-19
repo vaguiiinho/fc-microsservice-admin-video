@@ -85,6 +85,13 @@ class VideoEloquentRepository implements VideoRepositoryInterface
             $query->where('title', 'LIKE', "%{$filter}%");
         }
 
+        $query->with([
+            'media',
+            'trailer',
+            'thumb',
+            'thumbHalf',
+            'banner',
+        ]);
         $query->orderBy('title', $order);
 
         $pagination = $query->paginate(
@@ -184,7 +191,7 @@ class VideoEloquentRepository implements VideoRepositoryInterface
             $builder->addMediaVideo(
                 path: $video->file_path,
                 mediaStatus: MediaStatus::from($video->media_status),
-                encodedPath: $video->encoded_path?? null,
+                encodedPath: $video->encoded_path ?? null,
             );
         }
 
