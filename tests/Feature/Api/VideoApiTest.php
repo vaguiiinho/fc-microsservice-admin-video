@@ -36,7 +36,7 @@ class VideoApiTest extends TestCase
     ) {
         Video::factory()->count($total)->create();
 
-        $response = $this->getJson($this->endPoint);
+        $response = $this->getJson("$this->endPoint?page=$page");
         // $response->assertStatus(Response::HTTP_OK);
         $response->assertOk();
         $response->assertJsonCount($currentPage, 'data');
@@ -86,6 +86,12 @@ class VideoApiTest extends TestCase
                 'total' => 0,
                 'currentPage' => 0,
                 'page' => 1,
+                'perPage' => 15,
+            ],
+            [
+                'total' => 20,
+                'currentPage' => 5,
+                'page' => 2,
                 'perPage' => 15,
             ],
 
