@@ -6,9 +6,7 @@ use App\Models\{
     CastMember,
     Category,
     Genre,
-    Video as Model,
 };
-use Core\Domain\Enum\Rating;
 use Core\Domain\Repository\{
     CastMemberRepositoryInterface,
     GenreRepositoryInterface,
@@ -16,18 +14,16 @@ use Core\Domain\Repository\{
     CategoryRepositoryInterface
 };
 use Core\UseCase\Interfaces\{
-    FileStorageInterface,
     TransactionInterface
 };
-use Core\UseCase\Video\Create\CreateVideoUseCase;
-use Core\UseCase\Video\Create\DTO\CreateInputVideoDTO;
-use Core\UseCase\Video\Interfaces\VideoEventManagerInterface;
 use Exception;
 use Illuminate\Database\Events\TransactionBeginning;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Event;
-use Tests\Stubs\UploadFileStub;
-use Tests\Stubs\VideoEventStub;
+use Tests\Stubs\{
+    UploadFileStub,
+    VideoEventStub
+};
 use Tests\TestCase;
 use Throwable;
 
