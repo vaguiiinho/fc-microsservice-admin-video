@@ -19,7 +19,8 @@ class VideoApiTest extends TestCase
     {
         $response = $this->getJson($this->endPoint);
 
-        $response->assertStatus(Response::HTTP_OK);
+        // $response->assertStatus(Response::HTTP_OK);
+        $response->assertOk();
     }
 
     /**
@@ -30,9 +31,11 @@ class VideoApiTest extends TestCase
         Video::factory()->count(30)->create();
 
         $response = $this->getJson($this->endPoint);
-        $response->assertStatus(Response::HTTP_OK);
+        // $response->assertStatus(Response::HTTP_OK);
+        $response->assertOk();
         $response->assertJsonCount(15, 'data');
-
+        $response->assertJsonPath('meta.current_page', 1);
+        $response->assertJsonPath('meta.per_page', 15);
         $response->assertJsonStructure([
             'data' => [
                 '*' => [
