@@ -15,6 +15,6 @@ class VideoApitest extends TestCase
     {
         $response = $this->getJson($this->endPoint);
 
-        $response->assertStatus(Response::HTTP_NOT_FOUND);
+        $response->assertStatus(Response::HTTP_OK);
     }
 }
