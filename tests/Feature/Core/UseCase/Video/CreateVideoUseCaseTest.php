@@ -9,6 +9,7 @@ use Exception;
 use Illuminate\Database\Events\TransactionBeginning;
 use Illuminate\Support\Facades\Event;
 use Tests\Feature\Core\UseCase\Video\BaseVideoUseCase;
+use Tests\Stubs\UploadFileStub;
 use Throwable;
 
 class CreateVideoUseCaseTest extends BaseVideoUseCase
@@ -70,22 +71,25 @@ class CreateVideoUseCaseTest extends BaseVideoUseCase
     public function uploadFilesException()
     {
         Event::listen(UploadFileStub::class, function () {
-            dd('dfdfsd');
+            throw new Exception('Upload file');
         });
 
-        $sut = $this->makeSut();
+        try {
+            $sut = $this->makeSut();
 
-        $input = $this->inputDto(
-            videoFile: [
-                'name' => 'video.mp4',
-                'type' => 'video/mp4',
-                'tmp_name' => 'non_existent_file',
-                'error' => 0
-            ]
-        );
+            $input = $this->inputDto(
+                videoFile: [
+                    'name' => 'video.mp4',
+                    'type' => 'video/mp4',
+                    'tmp_name' => 'non_existent_file',
+                    'error' => 0
+                ]
+            );
 
-        $sut->execute($input);
-
-        $this->assertDatabaseCount('videos', 0);
+            $sut->execute($input);
+            $this->assertTrue(false);
+        } catch (\Throwable $th) {
+            $this->assertDatabaseCount('videos', 0);
+        }
     }
 }

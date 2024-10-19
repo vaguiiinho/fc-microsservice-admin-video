@@ -8,7 +8,7 @@ class UploadFileStub implements FileStorageInterface
 {
     public function __construct()
     {
-        event(UploadFileStub::class);
+        event($this);
     }
 
     public function store(string $path, array $file): string
