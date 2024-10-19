@@ -14,7 +14,7 @@ class VideoController extends Controller
     {
         $response = $UseCase->exec(
             input: new PaginateVideosInputDto(
-                filter: $request->get('filter', ''),
+                filter: $request->filter ?? '',
                 order: $request->get('order', 'DESC'),
                 page: (int) $request->get('page', 1),
                 totalPage: (int) $request->get('totalPage', 15)
