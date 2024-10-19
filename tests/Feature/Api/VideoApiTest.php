@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\Response;
 use Tests\TestCase;
 
-class VideoApitest extends TestCase
+class VideoApiTest extends TestCase
 {
     protected $endPoint = '/api/videos';
 
