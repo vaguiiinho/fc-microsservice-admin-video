@@ -25,17 +25,23 @@ class VideoApiTest extends TestCase
 
     /**
      *  @test 
+     * @dataProvider dataProviderPagination
      */
-    public function pagination()
-    {
-        Video::factory()->count(30)->create();
+    public function pagination(
+        int $total,
+        int $currentPage,
+        int $page = 1,
+        int $perPage = 15
+
+    ) {
+        Video::factory()->count($total)->create();
 
         $response = $this->getJson($this->endPoint);
         // $response->assertStatus(Response::HTTP_OK);
         $response->assertOk();
-        $response->assertJsonCount(15, 'data');
-        $response->assertJsonPath('meta.current_page', 1);
-        $response->assertJsonPath('meta.per_page', 15);
+        $response->assertJsonCount($currentPage, 'data');
+        $response->assertJsonPath('meta.current_page', $page);
+        $response->assertJsonPath('meta.per_page', $perPage);
         $response->assertJsonStructure([
             'data' => [
                 '*' => [
@@ -59,5 +65,30 @@ class VideoApiTest extends TestCase
                 'from'
             ],
         ]);
+    }
+
+    protected function dataProviderPagination()
+    {
+        return [
+            [
+                'total' => 20,
+                'currentPage' => 15,
+                'page' => 1,
+                'perPage' => 15,
+            ],
+            [
+                'total' => 10,
+                'currentPage' => 10,
+                'page' => 1,
+                'perPage' => 15,
+            ],
+            [
+                'total' => 0,
+                'currentPage' => 0,
+                'page' => 1,
+                'perPage' => 15,
+            ],
+
+        ];
     }
 }
