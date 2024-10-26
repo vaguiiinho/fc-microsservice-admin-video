@@ -4,8 +4,14 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\VideoResource;
-use Core\UseCase\Video\Paginate\DTO\PaginateVideosInputDto;
-use Core\UseCase\Video\Paginate\ListVideosUseCase;
+use Core\UseCase\Video\List\{
+    ListVideoUseCase,
+    DTO\ListVideoInputDto
+};
+use Core\UseCase\Video\Paginate\{
+    ListVideosUseCase,
+    DTO\PaginateVideosInputDto
+};
 use Illuminate\Http\Request;
 
 class VideoController extends Controller
@@ -33,5 +39,14 @@ class VideoController extends Controller
                     'from' => $response->from
                 ]
             ]);
+    }
+
+    public function show(ListVideoUseCase $UseCase, $id)
+    {
+        $response = $UseCase->exec(
+            input: new ListVideoInputDto($id)
+        );
+        // dd($response);
+        return new VideoResource($response);
     }
 }
