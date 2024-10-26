@@ -139,4 +139,15 @@ class VideoApiTest extends TestCase
             'data' => $this->serializedFields
         ]);
     }
+
+    /**
+     *  @test 
+     */
+    public function show_not_found()
+    {
+        $response = $this->getJson("$this->endPoint/fake_id");
+
+        $response->assertNotFound();
+        $response->assertJson(['message' => 'Video not found']);
+    }
 }
