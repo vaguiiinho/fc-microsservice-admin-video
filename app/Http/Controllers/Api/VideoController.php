@@ -55,6 +55,16 @@ class VideoController extends Controller
 
     public function store(CreateVideoUseCase $UseCase, Request $request)
     {
+        if ($file = $request->file('video_file'))
+        {
+            $videoFile = [
+                'name' => $file->getClientOriginalName(),
+                'tmp_name' => $file->getPathname(),
+                'type' => $file->getType(),
+               'size' => $file->getSize(),
+                'error' => $file->getError()
+            ];
+        }
 
         $response = $UseCase->exec(
             input: new CreateInputVideoDTO(
@@ -67,6 +77,7 @@ class VideoController extends Controller
                 categories: $request->categories,
                 genres: $request->genres,
                 castMembers: $request->cast_members,
+                videoFile: $videoFile ?? null,
             )
         );
 
