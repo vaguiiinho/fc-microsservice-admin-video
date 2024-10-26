@@ -3,6 +3,7 @@
 namespace Tests\Feature\Api;
 
 use App\Models\Video;
+use Core\Domain\Enum\Rating;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\Response;
@@ -149,5 +150,28 @@ class VideoApiTest extends TestCase
 
         $response->assertNotFound();
         $response->assertJson(['message' => 'Video not found']);
+    }
+
+    /**
+     *  @test 
+     */
+    public function store()
+    {
+        $data = [
+            'title' => 'Test Video',
+            'description' => 'Test Description',
+            'year_launched' => 2022,
+            'duration' => 1,
+            'opened' => true,
+            'rating' => 'L',
+            'categories' => [],
+            'genres' => [],
+            'cast_members' => [],
+        ];
+
+        $response = $this->postJson($this->endPoint, $data);
+
+        $response->assertCreated();
+        $this->assertDatabaseCount('videos', 1);
     }
 }
