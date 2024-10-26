@@ -155,7 +155,7 @@ class VideoApiTest extends TestCase
      */
     public function store()
     {
-        $videoFile = UploadedFile::fake()->create('video.mp4', 1, 'video/mp4');
+        $mediaVideoFile = UploadedFile::fake()->create('video.mp4', 1, 'video/mp4');
         $data = [
             'title' => 'Test Video',
             'description' => 'Test Description',
@@ -166,7 +166,8 @@ class VideoApiTest extends TestCase
             'categories' => [],
             'genres' => [],
             'cast_members' => [],
-            'video_file' => $videoFile
+            'video_file' => $mediaVideoFile,
+            'trailer' => $mediaVideoFile,
         ];
 
         $response = $this->postJson($this->endPoint, $data);
@@ -181,5 +182,6 @@ class VideoApiTest extends TestCase
         ]);
 
         Storage::assertExists($response->json('data.video'));
+        Storage::assertExists($response->json('data.trailer'));
     }
 }

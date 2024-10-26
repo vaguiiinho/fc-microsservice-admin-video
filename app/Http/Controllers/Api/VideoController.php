@@ -66,6 +66,17 @@ class VideoController extends Controller
             ];
         }
 
+        if ($file = $request->file('trailer'))
+        {
+            $trailer = [
+                'name' => $file->getClientOriginalName(),
+                'tmp_name' => $file->getPathname(),
+                'type' => $file->getType(),
+               'size' => $file->getSize(),
+                'error' => $file->getError()
+            ];
+        }
+
         $response = $UseCase->exec(
             input: new CreateInputVideoDTO(
                 title: $request->title,
@@ -78,6 +89,7 @@ class VideoController extends Controller
                 genres: $request->genres,
                 castMembers: $request->cast_members,
                 videoFile: $videoFile ?? null,
+                trailerFile: $trailer ?? null,
             )
         );
 
