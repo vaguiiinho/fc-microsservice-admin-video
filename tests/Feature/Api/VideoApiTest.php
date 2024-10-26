@@ -190,5 +190,7 @@ class VideoApiTest extends TestCase
         Storage::assertExists($response->json('data.banner'));
         Storage::assertExists($response->json('data.thumb'));
         Storage::assertExists($response->json('data.thumb_half'));
+
+        Storage::deleteDirectory($response->json('data.id'));
     }
 }
