@@ -26,8 +26,8 @@ class VideoController extends Controller
             input: new PaginateVideosInputDto(
                 filter: $request->filter ?? '',
                 order: $request->get('order', 'DESC'),
-                page: (int) $request->get('page', 1),
-                totalPage: (int) $request->get('totalPage', 15)
+                page: (int) $request->get('page'),
+                totalPage: (int) $request->get('totalPage')
             )
         );
 

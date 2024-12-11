@@ -38,7 +38,7 @@ class CastMemberController extends Controller
             input: new ListCastMembersInputDto(
                 filter: $request->get('filter', ''),
                 order: $request->get('order', 'DESC'),
-                page: (int) $request->get('page', 1),
+                page: (int) $request->get('page'),
                 totalPage: (int) $request->get('totalPage')
             )
         );
