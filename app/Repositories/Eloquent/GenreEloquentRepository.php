@@ -84,14 +84,14 @@ class GenreEloquentRepository implements GenreRepositoryInterface
         int $totalPage = 15
     ): PaginationInterface {
 
-        $result = $this->model
+        $result = $this->model->query()
             ->where(function ($query) use ($filter) {
                 if ($filter) {
                     $query->where('name', 'LIKE', "%{$filter}%");
                 }
             })
             ->orderBy('name', $order)
-            ->paginate($totalPage);
+            ->paginate(perPage: $totalPage, page: $page);
 
         return new PaginationPresenter($result);
     }

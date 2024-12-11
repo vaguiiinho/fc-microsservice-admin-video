@@ -94,10 +94,7 @@ class VideoEloquentRepository implements VideoRepositoryInterface
         ]);
         $query->orderBy('title', $order);
 
-        $pagination = $query->paginate(
-            perPage: $totalPage,
-            page: $page
-        );
+        $pagination = $query->paginate(perPage: $totalPage, page: $page);
 
         return new PaginationPresenter($pagination);
     }

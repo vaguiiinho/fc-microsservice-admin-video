@@ -87,7 +87,7 @@ class CastMemberRepository implements CastMemberRepositoryInterface
 
         $query->orderBy('name', $order);
 
-        $paginator = $query->paginate($totalPage);
+        $paginator = $query->paginate(perPage: $totalPage, page: $page);
 
         return new PaginationPresenter($paginator);
     }
