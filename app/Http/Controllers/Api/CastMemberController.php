@@ -106,6 +106,7 @@ class CastMemberController extends Controller
             input: new UpdateCastMemberInputDto(
                 id: $id,
                 name: $request->name,
+                type: (int) $request->type,
             )
         );
 

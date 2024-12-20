@@ -29,6 +29,9 @@ class UpdateCastMemberRequest extends FormRequest
                 'min:3',
                 'max:255',
             ],
+            'type' => [
+                'int',
+            ],
         ];
     }
 }

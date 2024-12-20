@@ -23,6 +23,7 @@ class UpdateCastMemberUseCase
         $castMember = $this->repository->findById($input->id);
         $castMember->update(
             name: $input->name,
+            type: $input->type,
         );
         $response = $this->repository->update($castMember);
         return new UpdateCastMemberOutputDto(
