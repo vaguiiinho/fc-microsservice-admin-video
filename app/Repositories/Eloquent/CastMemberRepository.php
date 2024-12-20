@@ -80,8 +80,10 @@ class CastMemberRepository implements CastMemberRepositoryInterface
         int $totalPage = 15
     ): PaginationInterface {
         $query = $this->model->query();
-
-        if (!empty($filter)) {
+        if($filter == '1' || $filter == '2'){
+            $query->where('type', 'LIKE', "%{$filter}%");
+        }
+        elseif (!empty($filter)) {
             $query->where('name', 'LIKE', "%{$filter}%");
         }
 

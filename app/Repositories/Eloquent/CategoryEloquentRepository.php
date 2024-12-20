@@ -65,14 +65,26 @@ class CategoryEloquentRepository implements CategoryRepositoryInterface
     public function paginate(string $filter = '', $order = 'DESC', int $page = 1, int $totalPage = 15): PaginationInterface
     {
         $query = $this->model->query();
-        if ($filter) {
+
+        if ($filter === 'true' || $filter === 'false') {
+            $isActive = filter_var($filter, FILTER_VALIDATE_BOOLEAN);
+            $query->where('is_active', $isActive);
+        }
+
+        // Filtrar por nome
+        elseif ($filter) {
             $query->where('name', 'LIKE', "%{$filter}%");
         }
+
+        // Ordenação
         $query->orderBy('id', $order);
+
+        // Paginação
         $paginator = $query->paginate(perPage: $totalPage, page: $page);
 
         return new PaginationPresenter($paginator);
     }
+
     public function update(Entity $entityCategory): Entity
     {
         if (!$category = $this->model->find($entityCategory->id)) {
