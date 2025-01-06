@@ -296,4 +296,13 @@ class VideoApiTest extends TestCase
             'id' => $video->id,
         ]);
     }
+
+    /**
+     * @test
+     */
+    public function destroyNotFound()
+    {
+        $response = $this->deleteJson("$this->endPoint/fake_id");
+        $response->assertNotFound();
+    }
 }
