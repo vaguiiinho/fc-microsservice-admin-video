@@ -80,56 +80,6 @@ class VideoController extends Controller
 
     public function update(UpdateVideoUseCase $useCase, UpdateVideoRequest $request, $id)
     {
-        if ($file = $request->file('video_file')) {
-            $videoFile = [
-                'name' => $file->getClientOriginalName(),
-                'tmp_name' => $file->getPathname(),
-                'type' => $file->getType(),
-                'size' => $file->getSize(),
-                'error' => $file->getError()
-            ];
-        }
-
-        if ($file = $request->file('trailer_file')) {
-            $trailer = [
-                'name' => $file->getClientOriginalName(),
-                'tmp_name' => $file->getPathname(),
-                'type' => $file->getType(),
-                'size' => $file->getSize(),
-                'error' => $file->getError()
-            ];
-        }
-
-        if ($file = $request->file('banner_file')) {
-            $bannerFile = [
-                'name' => $file->getClientOriginalName(),
-                'tmp_name' => $file->getPathname(),
-                'type' => $file->getType(),
-                'size' => $file->getSize(),
-                'error' => $file->getError()
-            ];
-        }
-
-        if ($file = $request->file('thumb_file')) {
-            $thumbFile = [
-                'name' => $file->getClientOriginalName(),
-                'tmp_name' => $file->getPathname(),
-                'type' => $file->getType(),
-                'size' => $file->getSize(),
-                'error' => $file->getError()
-            ];
-        }
-
-        if ($file = $request->file('thumb_half_file')) {
-            $thumb_halfFile = [
-                'name' => $file->getClientOriginalName(),
-                'tmp_name' => $file->getPathname(),
-                'type' => $file->getType(),
-                'size' => $file->getSize(),
-                'error' => $file->getError()
-            ];
-        }
-
         $response = $useCase->exec(
             input: new UpdateInputVideoDTO(
                 id: $id,
@@ -138,11 +88,11 @@ class VideoController extends Controller
                 categories: $request->categories,
                 genres: $request->genres,
                 castMembers: $request->cast_members,
-                videoFile: $videoFile ?? null,
-                trailerFile: $trailer ?? null,
-                bannerFile: $bannerFile ?? null,
-                thumbFile: $thumbFile ?? null,
-                thumbHalf: $thumb_halfFile ?? null,
+                videoFile: getArrayFile($request->file('video_file')),
+                trailerFile: getArrayFile($request->file('trailer_file')),
+                bannerFile: getArrayFile($request->file('banner_file')),
+                thumbFile: getArrayFile($request->file('thumb_file')),
+                thumbHalf: getArrayFile($request->file('thumb_half_file')),
             )
         );
 
