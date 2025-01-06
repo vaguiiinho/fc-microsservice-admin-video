@@ -88,9 +88,12 @@ class VideoEloquentRepository implements VideoRepositoryInterface
         $query->with([
             'media',
             'trailer',
+            'banner',
             'thumb',
             'thumbHalf',
-            'banner',
+            'categories',
+            'castMembers',
+            'genres',
         ]);
         $query->orderBy('title', $order);
 
