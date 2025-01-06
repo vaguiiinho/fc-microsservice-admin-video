@@ -13,6 +13,10 @@ use Core\UseCase\Video\Create\{
     CreateVideoUseCase,
     DTO\CreateInputVideoDTO
 };
+use Core\UseCase\Video\Delete\{
+    DeleteVideoUseCase,
+    DTO\DeleteVideoInputDto
+};
 use Core\UseCase\Video\List\{
     ListVideoUseCase,
     DTO\ListVideoInputDto
@@ -210,5 +214,12 @@ class VideoController extends Controller
         );
 
         return new VideoResource($response);
+    }
+
+    public function destroy(DeleteVideoUseCase $useCase, $id)
+    {
+        $useCase->execute(new DeleteVideoInputDto(id: $id));
+
+        return response()->noContent();
     }
 }
