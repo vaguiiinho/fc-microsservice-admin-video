@@ -19,7 +19,7 @@ class VideoResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'year_launched' => $this->year_launched ?? $this->yearLaunched,
-            'opened' => (boolean) $this->opened,
+            'opened' => (bool) $this->opened,
             'rating' => $this->rating,
             'duration' => $this->duration,
             'created_at' => $this->created_at ?? $this->createdAt,
@@ -28,6 +28,9 @@ class VideoResource extends JsonResource
             'banner' => $this->bannerFile ?? '',
             'thumb' => $this->thumbFile ?? '',
             'thumb_half' => $this->thumbHalfFile ?? '',
+            'categories' => $this->categories,
+            'genres' => $this->genres,
+            'cast_members' => $this->cast_members ?? $this->castMembers ?? [],
         ];
     }
 }
