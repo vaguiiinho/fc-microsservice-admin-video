@@ -281,4 +281,19 @@ class VideoApiTest extends TestCase
             'cast_members',
         ]);
     }
+
+     /**
+     * @test
+     */
+    public function destroy()
+    {
+        $video = Video::factory()->create();
+
+        $response = $this->deleteJson("$this->endPoint/{$video->id}");
+        $response->assertNoContent();
+
+        $this->assertSoftDeleted('videos', [
+            'id' => $video->id,
+        ]);
+    }
 }
