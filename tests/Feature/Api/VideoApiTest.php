@@ -2,7 +2,12 @@
 
 namespace Tests\Feature\Api;
 
-use App\Models\Video;
+use App\Models\{
+    CastMember,
+    Category,
+    Genre,
+    Video
+};
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
@@ -157,6 +162,11 @@ class VideoApiTest extends TestCase
     {
         $mediaVideoFile = UploadedFile::fake()->create('video.mp4', 1, 'video/mp4');
         $imageVideoFile = UploadedFile::fake()->image('image.png');
+
+        $categoriesIds = Category::factory()->count(3)->create()->pluck('id')->toArray();
+        $genresIds = Genre::factory()->count(3)->create()->pluck('id')->toArray();
+        $castMembersIds = CastMember::factory()->count(3)->create()->pluck('id')->toArray();
+
         $data = [
             'title' => 'Test Video',
             'description' => 'Test Description',
@@ -164,10 +174,9 @@ class VideoApiTest extends TestCase
             'duration' => 1,
             'opened' => true,
             'rating' => 'L',
-            'categories' => [],
-            'genres' => [],
-            'cast_members' => [],
-            'video_file' => $mediaVideoFile,
+            'categories' => $categoriesIds,
+            'genres' => $genresIds,
+            'cast_members' => $castMembersIds, 'video_file' => $mediaVideoFile,
             'trailer_file' => $mediaVideoFile,
             'banner_file' => $imageVideoFile,
             'thumb_file' => $imageVideoFile,
@@ -194,7 +203,7 @@ class VideoApiTest extends TestCase
         Storage::deleteDirectory($response->json('data.id'));
     }
 
-      /**
+    /**
      * @test
      */
     // #[Test]
@@ -215,5 +224,4 @@ class VideoApiTest extends TestCase
             'cast_members',
         ]);
     }
-
 }
