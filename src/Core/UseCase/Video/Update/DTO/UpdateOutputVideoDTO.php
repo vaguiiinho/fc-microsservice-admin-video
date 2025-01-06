@@ -17,6 +17,7 @@ class UpdateOutputVideoDTO
         public array $categories = [],
         public array $genres = [],
         public array $castMembers = [],
+        public ?string $createdAt = null,
         public ?string $videoFile = null,
         public ?string $trailerFile = null,
         public ?string $thumbFile = null,

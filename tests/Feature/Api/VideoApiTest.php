@@ -234,7 +234,7 @@ class VideoApiTest extends TestCase
             'thumb_file' => $imageVideoFile,
             'thumb_half_file' => $imageVideoFile,
         ];
-        $response = $this->putJson("$this->endpoint/{$video->id}", $data);
+        $response = $this->putJson("$this->endPoint/{$video->id}", $data);
         $response->assertOk();
         $response->assertJsonStructure([
             'data' => $this->serializedFields,
