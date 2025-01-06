@@ -2,13 +2,10 @@
 
 namespace Tests\Unit\UseCase\Video;
 
-
+use Core\Domain\Repository\PaginationInterface;
 use Core\Domain\Repository\VideoRepositoryInterface;
 use Core\UseCase\Video\Paginate\ListVideosUseCase;
-use Core\UseCase\Video\Paginate\DTO\{
-    PaginateVideosInputDto,
-    PaginateVideosOutputDto
-};
+use Core\UseCase\Video\Paginate\DTO\PaginateVideosInputDto;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -31,7 +28,7 @@ class ListVideosUseCaseUnitTest extends TestCase
         );
 
         // Assert
-        $this->assertInstanceOf(PaginateVideosOutputDto::class, $response);
+        $this->assertInstanceOf(PaginationInterface::class, $response);
     }
 
     private function mockRepository()

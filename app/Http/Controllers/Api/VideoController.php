@@ -47,16 +47,16 @@ class VideoController extends Controller
             )
         );
 
-        return VideoResource::collection(collect($response->items))
+        return VideoResource::collection(collect($response->items()))
             ->additional([
                 'meta' => [
-                    'total' => (int) $response->total,
-                    'current_page' => $response->current_page,
-                    'first_page' => $response->first_page,
-                    'last_page' => $response->last_page,
-                    'per_page' => $response->per_page,
-                    'to' => $response->to,
-                    'from' => $response->from
+                    'total' => (int) $response->total(),
+                    'current_page' => $response->currentPage(),
+                    'first_page' => $response->firstPage(),
+                    'last_page' => $response->lastPage(),
+                    'per_page' => $response->perPage(),
+                    'to' => $response->to(),
+                    'from' => $response->from()
                 ]
             ]);
     }
