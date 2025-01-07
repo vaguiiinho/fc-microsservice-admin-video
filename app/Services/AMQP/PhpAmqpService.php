@@ -67,7 +67,27 @@ class PhpAmqpService implements AMQPInterface
         $this->closeConnection();
     }
 
-    public function consumer(string $queue, string $exchange, Closure $callback): void {}
+    public function consumer(string $queue, string $exchange, Closure $callback): void 
+    {
+        $this->channel->queue_declare(
+            queue: $queue,
+            durable: true,
+            auto_delete: false
+        );
+
+        $this->channel->queue_bind(
+            queue: $queue,
+            exchange: $exchange,
+            routing_key: config('microservices.queue_name')
+        );
+
+        while ($this->channel->is_consuming()) {
+            $this->channel->wait();
+        }
+
+        $this->closeChannel();
+        $this->closeConnection();
+    }
 
     private function closeChannel(): void
     {
