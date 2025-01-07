@@ -15,6 +15,7 @@
         "laravel/tinker": "^2.7",
         "php-amqplib/php-amqplib": "^3.7",
         "rakit/validation": "^1.4",
+        "robsontenorio/laravel-keycloak-guard": "^1.6",
         "spatie/laravel-google-cloud-storage": "^2.3"
     },
     "require-dev": {
