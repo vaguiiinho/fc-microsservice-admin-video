@@ -40,7 +40,7 @@ class RabbitMQCommand extends Command
         $closure = function ($message) {
             $body = json_decode($message->body);
 
-            
+            dump($body);
         };
 
         $this->amqp->consumer(
