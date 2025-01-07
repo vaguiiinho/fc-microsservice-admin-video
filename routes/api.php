@@ -24,3 +24,10 @@ Route::apiResource(
 Route::get('/', function () {
     return response()->json(['message' => 'success']);
 });
+
+
+Route::middleware(['auth:api'])->group(function () {
+    Route::get('/me', function () {
+        return true;
+    });
+});
