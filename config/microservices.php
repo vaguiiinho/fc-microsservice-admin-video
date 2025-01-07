@@ -18,5 +18,6 @@ return [
     'micro_encoder_go' => [
         'exchange' => 'dlx',
         'queue_name' => 'video',
+        'exchange_producer' => 'amq.direct',
     ],
 ];

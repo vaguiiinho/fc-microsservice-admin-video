@@ -50,7 +50,7 @@ class PhpAmqpService implements AMQPInterface
             ]
         );
 
-        $this->channel->basic_publish($message);
+        $this->channel->basic_publish($message, $exchange);
 
         $this->closeChannel();
         $this->closeConnection();
