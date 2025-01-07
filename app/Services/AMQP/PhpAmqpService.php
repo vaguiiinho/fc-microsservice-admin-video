@@ -33,7 +33,38 @@ class PhpAmqpService implements AMQPInterface
 
     public function producer(string $queue, array $payload, string $exchange): void {}
 
-    public function producerFanout(array $payload, string $exchange): void {}
+    public function producerFanout(array $payload, string $exchange): void
+    {
+        $this->channel->exchange_declare(
+            exchange: $exchange,
+            type: AMQPExchangeType::FANOUT,
+            passive: false,
+            durable: true,
+            auto_delete: false,
+        );
+
+        $message = new AMQPMessage(
+            json_encode($payload),
+            [
+                'content_type' => 'text/plain',
+            ]
+        );
+
+        $this->channel->basic_publish($message);
+
+        $this->closeChannel();
+        $this->closeConnection();
+    }
 
     public function consumer(string $queue, string $exchange, Closure $callback): void {}
+
+    private function closeChannel(): void
+    {
+        $this->channel->close();
+    }
+
+    private function closeConnection(): void
+    {
+        $this->connection->close();
+    }
 }
