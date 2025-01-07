@@ -13,6 +13,10 @@ use App\Repositories\Eloquent\{
     GenreEloquentRepository,
     VideoEloquentRepository,
 };
+use App\Services\AMQP\{
+    AMQPInterface,
+    PhpAmqpService
+};
 use Core\Domain\Repository\{
     CastMemberRepositoryInterface,
     CategoryRepositoryInterface,
@@ -49,6 +53,14 @@ class CleanArchServiceProvider extends ServiceProvider
         $this->app->bind(
             TransactionInterface::class,
             DBTransaction::class
+        );
+
+          /**
+         * Services
+         */
+        $this->app->bind(
+            AMQPInterface::class,
+            PhpAmqpService::class,
         );
     }
 
