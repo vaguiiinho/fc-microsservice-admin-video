@@ -2,36 +2,28 @@
 
 namespace Tests\Feature\Core\UseCase\Video;
 
-use App\Models\{
-    CastMember,
-    Category,
-    Genre,
-};
-use Core\Domain\Repository\{
-    CastMemberRepositoryInterface,
-    GenreRepositoryInterface,
-    VideoRepositoryInterface,
-    CategoryRepositoryInterface
-};
-use Core\UseCase\Interfaces\{
-    TransactionInterface
-};
+use App\Models\CastMember;
+use App\Models\Category;
+use App\Models\Genre;
+use Core\Domain\Repository\CastMemberRepositoryInterface;
+use Core\Domain\Repository\CategoryRepositoryInterface;
+use Core\Domain\Repository\GenreRepositoryInterface;
+use Core\Domain\Repository\VideoRepositoryInterface;
+use Core\UseCase\Interfaces\TransactionInterface;
 use Exception;
 use Illuminate\Database\Events\TransactionBeginning;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Event;
-use Tests\Stubs\{
-    UploadFileStub,
-    VideoEventStub
-};
+use Tests\Stubs\UploadFileStub;
+use Tests\Stubs\VideoEventStub;
 use Tests\TestCase;
 use Throwable;
 
 abstract class BaseVideoUseCase extends TestCase
 {
-    abstract function useCase(): string;
+    abstract public function useCase(): string;
 
-    abstract function inputDto(
+    abstract public function inputDto(
         array $categoriesIds = [],
         array $genresIds = [],
         array $castMemberIds = [],
@@ -41,6 +33,7 @@ abstract class BaseVideoUseCase extends TestCase
         ?array $thumbHalf = null,
         ?array $bannerFile = null,
     ): object;
+
     /**
      * @dataProvider provider
      */
@@ -151,20 +144,19 @@ abstract class BaseVideoUseCase extends TestCase
             $this->app->make(VideoRepositoryInterface::class),
             $this->app->make(TransactionInterface::class),
             // $this->app->make(FileStorageInterface::class),
-            new UploadFileStub(),
+            new UploadFileStub,
             // $this->app->make(VideoEventManagerInterface::class),
-            new VideoEventStub(),
+            new VideoEventStub,
             $this->app->make(CategoryRepositoryInterface::class),
             $this->app->make(GenreRepositoryInterface::class),
             $this->app->make(CastMemberRepositoryInterface::class)
         );
     }
 
-
     /**
      * @test
      */
-    public function transactionExcepition()
+    public function transaction_excepition()
     {
         Event::listen(TransactionBeginning::class, function () {
             throw new Exception('Begin transaction');
@@ -183,7 +175,7 @@ abstract class BaseVideoUseCase extends TestCase
     /**
      * @test
      */
-    public function uploadFilesException()
+    public function upload_files_exception()
     {
         Event::listen(UploadFileStub::class, function () {
             throw new Exception('Upload file');
@@ -197,7 +189,7 @@ abstract class BaseVideoUseCase extends TestCase
                     'name' => 'video.mp4',
                     'type' => 'video/mp4',
                     'tmp_name' => 'non_existent_file',
-                    'error' => 0
+                    'error' => 0,
                 ]
             );
 
@@ -211,7 +203,7 @@ abstract class BaseVideoUseCase extends TestCase
     /**
      * @test
      */
-    public function eventException()
+    public function event_exception()
     {
         Event::listen(VideoEventStub::class, function () {
             throw new Exception('Event exception');
@@ -225,7 +217,7 @@ abstract class BaseVideoUseCase extends TestCase
                     'name' => 'video.mp4',
                     'type' => 'video/mp4',
                     'tmp_name' => 'non_existent_file',
-                    'error' => 0
+                    'error' => 0,
                 ]
             );
 

@@ -4,8 +4,8 @@ namespace Tests\Unit\UseCase\Video;
 
 use Core\Domain\Repository\PaginationInterface;
 use Core\Domain\Repository\VideoRepositoryInterface;
-use Core\UseCase\Video\Paginate\ListVideosUseCase;
 use Core\UseCase\Video\Paginate\DTO\PaginateVideosInputDto;
+use Core\UseCase\Video\Paginate\ListVideosUseCase;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -14,6 +14,7 @@ use Tests\Unit\UseCase\UseCaseTrait;
 class ListVideosUseCaseUnitTest extends TestCase
 {
     use UseCaseTrait;
+
     public function test_list_paginate()
     {
         // Arrange

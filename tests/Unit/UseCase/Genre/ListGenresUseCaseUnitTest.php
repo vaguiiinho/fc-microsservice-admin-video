@@ -4,18 +4,15 @@ namespace Tests\Unit\UseCase\Genre;
 
 use Core\Domain\Repository\GenreRepositoryInterface;
 use Core\Domain\Repository\PaginationInterface;
-use Core\UseCase\DTO\Genre\List\{
-    ListGenresInputDto,
-    ListGenresOutputDto
-};
-use PHPUnit\Framework\TestCase;
+use Core\UseCase\DTO\Genre\List\ListGenresInputDto;
+use Core\UseCase\DTO\Genre\List\ListGenresOutputDto;
 use Core\UseCase\Genre\ListGenresUseCase;
 use Mockery;
+use PHPUnit\Framework\TestCase;
 use stdClass;
 
 class ListGenresUseCaseUnitTest extends TestCase
 {
-
     public function test_list_genres()
     {
         $mockPagination = $this->mockPagination();
@@ -23,17 +20,16 @@ class ListGenresUseCaseUnitTest extends TestCase
         $mockRepository = Mockery::mock(stdClass::class, GenreRepositoryInterface::class);
 
         $mockRepository->shouldReceive('paginate')
-            ->with('test', "desc", 1, 15)
+            ->with('test', 'desc', 1, 15)
             ->times(1)
             ->andReturn($mockPagination);
 
         $mockDtoInput = Mockery::mock(ListGenresInputDto::class, [
             'test',
-            "desc",
+            'desc',
             1,
-            15
+            15,
         ]);
-
 
         $useCase = new ListGenresUseCase($mockRepository);
 
@@ -55,6 +51,7 @@ class ListGenresUseCaseUnitTest extends TestCase
         $mockPagination->shouldReceive('perPage')->andReturn(1);
         $mockPagination->shouldReceive('to')->andReturn(1);
         $mockPagination->shouldReceive('from')->andReturn(1);
+
         return $mockPagination;
     }
 }

@@ -2,51 +2,52 @@
 
 namespace Tests\Unit\App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use PHPUnit\Framework\TestCase;
 
 abstract class ModelTestCase extends TestCase
 {
-   abstract protected function model(): Model;
-   abstract protected function traits(): array;
-   abstract protected function fillable(): array;
-   abstract protected function casts(): array;
+    abstract protected function model(): Model;
 
-   abstract protected function incrementing(): bool;
+    abstract protected function traits(): array;
 
-   public function testIfUsedTraits()
-   {
-       $traitsNeeds = $this->traits();
+    abstract protected function fillable(): array;
 
-       $traitsUsed = array_keys(class_uses($this->model()));
+    abstract protected function casts(): array;
 
-       $this->assertEquals($traitsNeeds, $traitsUsed);
-   }
+    abstract protected function incrementing(): bool;
 
-   public function testFillable()
-   {
-       $expected = $this->fillable();
+    public function test_if_used_traits()
+    {
+        $traitsNeeds = $this->traits();
 
-       $fillable = $this->model()->getFillable();
+        $traitsUsed = array_keys(class_uses($this->model()));
 
-       $this->assertEquals($expected, $fillable);
-       
-   }
+        $this->assertEquals($traitsNeeds, $traitsUsed);
+    }
 
-   public function testIncrementingIsFalse()
-   {
-      
-       $this->assertFalse($this->incrementing());
-   }
+    public function test_fillable()
+    {
+        $expected = $this->fillable();
 
-   public function testCasts()
-   {
-       $expectedCasts = $this->casts();
+        $fillable = $this->model()->getFillable();
 
-       $casts = $this->model()->getCasts();
+        $this->assertEquals($expected, $fillable);
 
-       $this->assertEquals($expectedCasts, $casts);
-   }
+    }
+
+    public function test_incrementing_is_false()
+    {
+
+        $this->assertFalse($this->incrementing());
+    }
+
+    public function test_casts()
+    {
+        $expectedCasts = $this->casts();
+
+        $casts = $this->model()->getCasts();
+
+        $this->assertEquals($expectedCasts, $casts);
+    }
 }

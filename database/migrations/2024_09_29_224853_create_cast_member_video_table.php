@@ -22,7 +22,7 @@ return new class extends Migration
             $table->foreign('video_id')
                 ->references('id')
                 ->on('videos');
-                
+
             $table->unique(['cast_member_id', 'video_id']);
         });
     }

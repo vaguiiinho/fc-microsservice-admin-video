@@ -2,7 +2,6 @@
 
 namespace Core\UseCase\DTO\CastMember\Create;
 
-
 class CreateCastMemberInputDto
 {
     public function __construct(

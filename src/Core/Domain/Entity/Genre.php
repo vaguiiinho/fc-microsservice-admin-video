@@ -11,8 +11,6 @@ class Genre
 {
     use MethodsMagicsTrait;
 
-
-
     public function __construct(
         protected string $name,
         protected ?Uuid $id = null,
@@ -21,7 +19,7 @@ class Genre
         protected ?DateTime $createdAt = null
     ) {
         $this->id = $this->id ?? Uuid::random();
-        $this->createdAt = $this->createdAt ?? new DateTime();
+        $this->createdAt = $this->createdAt ?? new DateTime;
         $this->validate();
     }
 

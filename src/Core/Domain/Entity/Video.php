@@ -13,7 +13,9 @@ use DateTime;
 class Video extends Entity
 {
     protected array $categoriesId = [];
+
     protected array $genresId = [];
+
     protected array $castMembersId = [];
 
     public function __construct(
@@ -34,14 +36,15 @@ class Video extends Entity
     ) {
         parent::__construct();
         $this->id = $this->id ?? Uuid::random();
-        $this->createdAt = $this->createdAt ?? new DateTime();
+        $this->createdAt = $this->createdAt ?? new DateTime;
         $this->validation();
     }
+
     public function update(string $title, string $description): void
     {
         $this->title = $title;
         $this->description = $description;
-        
+
         $this->validation();
     }
 

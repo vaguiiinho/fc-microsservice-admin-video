@@ -5,18 +5,15 @@ namespace Tests\Unit\UseCase\Category;
 use Core\Domain\Repository\CategoryRepositoryInterface;
 use Core\Domain\Repository\PaginationInterface;
 use Core\UseCase\Category\ListCategoriesUseCase;
-use Core\UseCase\DTO\Category\ListCategories\{
-    ListCategoriesInputDto,
-    ListCategoriesOutputDto
-};
+use Core\UseCase\DTO\Category\ListCategories\ListCategoriesInputDto;
+use Core\UseCase\DTO\Category\ListCategories\ListCategoriesOutputDto;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
-
 class ListCategoriesUseCaseUnitTest extends TestCase
 {
-    public function testListCategoriesEmpty()
+    public function test_list_categories_empty()
     {
         $mockPagination = $this->mockPagination();
 
@@ -41,9 +38,9 @@ class ListCategoriesUseCaseUnitTest extends TestCase
         $this->assertEquals(1, $response->from);
     }
 
-    public function testListCategories()
+    public function test_list_categories()
     {
-        $register = new stdClass();
+        $register = new stdClass;
         $register->id = '123';
         $register->name = 'New cat';
         $register->description = 'New cat description';
@@ -69,7 +66,7 @@ class ListCategoriesUseCaseUnitTest extends TestCase
 
         $this->assertInstanceOf(ListCategoriesOutputDto::class, $response);
         $this->assertCount(1, $response->items);
-       $this->assertInstanceOf(stdClass::class, $response->items[0]);
+        $this->assertInstanceOf(stdClass::class, $response->items[0]);
     }
 
     protected function mockPagination(array $items = [])
@@ -83,8 +80,10 @@ class ListCategoriesUseCaseUnitTest extends TestCase
         $this->mockPagination->shouldReceive('perPage')->andReturn(1);
         $this->mockPagination->shouldReceive('to')->andReturn(1);
         $this->mockPagination->shouldReceive('from')->andReturn(1);
+
         return $this->mockPagination;
     }
+
     protected function teardown(): void
     {
         Mockery::close();

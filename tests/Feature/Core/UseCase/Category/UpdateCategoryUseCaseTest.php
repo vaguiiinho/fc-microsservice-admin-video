@@ -14,7 +14,7 @@ class UpdateCategoryUseCaseTest extends TestCase
     {
         $category = CategoryModel::factory()->create();
 
-        $repository = new CategoryEloquentRepository(new CategoryModel());
+        $repository = new CategoryEloquentRepository(new CategoryModel);
         $useCase = new UpdateCategoryUseCase($repository);
         $response = $useCase->execute(
             new CategoryUpdateInputDto(

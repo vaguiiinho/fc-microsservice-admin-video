@@ -3,23 +3,19 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\{
-    StoreGenreRequest,
-    UpdateGenreRequest
-};
+use App\Http\Requests\StoreGenreRequest;
+use App\Http\Requests\UpdateGenreRequest;
 use App\Http\Resources\GenreResource;
-use Core\UseCase\Genre\{
-    CreateGenreUseCase,
-    ListGenresUseCase,
-    ListGenreUseCase,
-    UpdateGenreUseCase,
-    DeleteGenreUseCase
-};
 use Core\UseCase\DTO\Genre\Create\CreateGenreInputDto;
 use Core\UseCase\DTO\Genre\Delete\DeleteGenreInputDto;
-use Core\UseCase\DTO\Genre\List\ListGenresInputDto;
 use Core\UseCase\DTO\Genre\List\ListGenreInputDto;
+use Core\UseCase\DTO\Genre\List\ListGenresInputDto;
 use Core\UseCase\DTO\Genre\Update\UpdateGenreInputDto;
+use Core\UseCase\Genre\CreateGenreUseCase;
+use Core\UseCase\Genre\DeleteGenreUseCase;
+use Core\UseCase\Genre\ListGenresUseCase;
+use Core\UseCase\Genre\ListGenreUseCase;
+use Core\UseCase\Genre\UpdateGenreUseCase;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -50,8 +46,8 @@ class GenreController extends Controller
                     'last_page' => $response->last_page,
                     'per_page' => $response->per_page,
                     'to' => $response->to,
-                    'from' => $response->from
-                ]
+                    'from' => $response->from,
+                ],
             ]);
     }
 

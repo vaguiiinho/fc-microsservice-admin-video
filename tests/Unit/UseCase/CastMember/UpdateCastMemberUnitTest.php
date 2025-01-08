@@ -7,10 +7,8 @@ use Core\Domain\Enum\CastMemberType;
 use Core\Domain\Repository\CastMemberRepositoryInterface;
 use Core\Domain\ValueObject\Uuid as ValueObjectUuid;
 use Core\UseCase\CastMember\UpdateCastMemberUseCase;
-use Core\UseCase\DTO\CastMember\Update\{
-    UpdateCastMemberInputDto,
-    UpdateCastMemberOutputDto
-};
+use Core\UseCase\DTO\CastMember\Update\UpdateCastMemberInputDto;
+use Core\UseCase\DTO\CastMember\Update\UpdateCastMemberOutputDto;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
@@ -18,7 +16,7 @@ use stdClass;
 
 class UpdateCastMemberUnitTest extends TestCase
 {
-    public function testUpdate()
+    public function test_update()
     {
         // Arrange
         $uuid = (string) Uuid::uuid4();
@@ -26,21 +24,21 @@ class UpdateCastMemberUnitTest extends TestCase
         $mockEntity = Mockery::mock(CastMember::class, [
             'new cast member',
             CastMemberType::ACTOR,
-            new ValueObjectUuid($uuid)
+            new ValueObjectUuid($uuid),
         ]);
         $mockEntity->shouldReceive('id')->andReturn(new ValueObjectUuid($uuid));
         $mockEntity->shouldReceive('createdAt')->andReturn(date('Y-m-d H:i:s'));
         $mockEntity->shouldReceive('update')->once();
-            
+
         $mockRepository = Mockery::mock(
             stdClass::class,
             CastMemberRepositoryInterface::class
         );
 
         $mockRepository->shouldReceive('findById')
-        ->once()
-        ->with($uuid)
-        ->andReturn($mockEntity);
+            ->once()
+            ->with($uuid)
+            ->andReturn($mockEntity);
 
         $mockRepository->shouldReceive('update')
             ->once()

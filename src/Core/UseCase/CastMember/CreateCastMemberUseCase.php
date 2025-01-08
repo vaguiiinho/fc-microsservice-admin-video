@@ -5,10 +5,8 @@ namespace Core\UseCase\CastMember;
 use Core\Domain\Entity\CastMember;
 use Core\Domain\Enum\CastMemberType;
 use Core\Domain\Repository\CastMemberRepositoryInterface;
-use Core\UseCase\DTO\CastMember\Create\{
-    CreateCastMemberInputDto,
-    CreateCastMemberOutputDto
-};
+use Core\UseCase\DTO\CastMember\Create\CreateCastMemberInputDto;
+use Core\UseCase\DTO\CastMember\Create\CreateCastMemberOutputDto;
 
 class CreateCastMemberUseCase
 {

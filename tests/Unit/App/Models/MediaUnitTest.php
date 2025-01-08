@@ -3,15 +3,15 @@
 namespace Tests\Unit\App\Models;
 
 use App\Models\Media;
+use App\Models\Traits\UuidTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Traits\UuidTrait;
 
 class MediaUnitTest extends ModelTestCase
 {
     protected function model(): Model
     {
-        return new Media();
+        return new Media;
     }
 
     protected function traits(): array

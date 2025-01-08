@@ -3,10 +3,8 @@
 namespace Core\UseCase\CastMember;
 
 use Core\Domain\Repository\CastMemberRepositoryInterface;
-use Core\UseCase\DTO\CastMember\Update\{
-    UpdateCastMemberInputDto,
-    UpdateCastMemberOutputDto
-};
+use Core\UseCase\DTO\CastMember\Update\UpdateCastMemberInputDto;
+use Core\UseCase\DTO\CastMember\Update\UpdateCastMemberOutputDto;
 
 class UpdateCastMemberUseCase
 {
@@ -26,6 +24,7 @@ class UpdateCastMemberUseCase
             type: $input->type,
         );
         $response = $this->repository->update($castMember);
+
         return new UpdateCastMemberOutputDto(
             id: $response->id(),
             name: $response->name,

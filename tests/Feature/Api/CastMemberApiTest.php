@@ -10,7 +10,7 @@ use Tests\Traits\WithoutMiddlewareTrait;
 class CastMemberApiTest extends TestCase
 {
     use WithoutMiddlewareTrait;
-    
+
     private $endPoint = '/api/cast_members';
 
     public function test_get_all_empty()
@@ -37,7 +37,7 @@ class CastMemberApiTest extends TestCase
                 'first_page',
                 'per_page',
                 'to',
-                'from'
+                'from',
             ],
         ]);
     }
@@ -86,7 +86,7 @@ class CastMemberApiTest extends TestCase
                 'name',
                 'type',
                 'created_at',
-            ]
+            ],
         ]);
     }
 
@@ -141,7 +141,7 @@ class CastMemberApiTest extends TestCase
 
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
         $response->assertJsonStructure([
-           'message',
+            'message',
             'errors' => ['name'],
         ]);
     }

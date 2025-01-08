@@ -6,7 +6,6 @@ use Core\Domain\Enum\CastMemberType;
 use Core\Domain\Validation\DomainValidation;
 use Core\Domain\ValueObject\Uuid;
 use DateTime;
-use Faker\Core\Number;
 
 class CastMember extends Entity
 {
@@ -15,16 +14,16 @@ class CastMember extends Entity
         protected CastMemberType $type,
         protected ?Uuid $id = null,
         protected ?DateTime $createdAt = null,
-    ){
+    ) {
         $this->id = $this->id ?? Uuid::random();
-        $this->createdAt = $this->createdAt ?? new DateTime();
+        $this->createdAt = $this->createdAt ?? new DateTime;
         $this->validate();
     }
 
     public function update(string $name, ?int $type = null): void
     {
         $this->name = $name;
-        if($type) {
+        if ($type) {
             $this->type = CastMemberType::from($type);
         }
         $this->validate();

@@ -19,14 +19,13 @@ class FileStorageTest extends TestCase
             'error' => $fakeFile->getError(),
         ];
 
-        $filePath = (new FileStorage())
+        $filePath = (new FileStorage)
             ->store('videos', $file);
 
         Storage::assertExists($filePath);
 
         Storage::delete($filePath);
     }
-
 
     public function test_delete()
     {
@@ -36,7 +35,7 @@ class FileStorageTest extends TestCase
 
         Storage::assertExists($path);
 
-        (new FileStorage())
+        (new FileStorage)
             ->delete($path);
 
         Storage::assertMissing($path);

@@ -5,13 +5,14 @@ namespace Core\Domain\Notification;
 class Notification
 {
     private $errors = [];
+
     public function getErrors(): array
     {
         return $this->errors;
     }
 
     /**
-     * @param $error array[context, message]
+     * @param  $error  array[context, message]
      */
     public function addErrors(array $errors): void
     {
@@ -28,8 +29,9 @@ class Notification
         $messages = '';
 
         foreach ($this->errors as $error) {
-            if ($context === '' || $error['context'] == $context)
+            if ($context === '' || $error['context'] == $context) {
                 $messages .= "{$error['context']}: {$error['message']},";
+            }
         }
 
         return $messages;

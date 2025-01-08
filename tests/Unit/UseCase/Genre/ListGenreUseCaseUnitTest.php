@@ -5,10 +5,8 @@ namespace Tests\Unit\UseCase\Genre;
 use Core\Domain\Entity\Genre;
 use Core\Domain\Repository\GenreRepositoryInterface;
 use Core\Domain\ValueObject\Uuid as ValueObjectUuid;
-use Core\UseCase\DTO\Genre\List\{
-    ListGenreInputDto,
-    ListGenreOutputDto
-};
+use Core\UseCase\DTO\Genre\List\ListGenreInputDto;
+use Core\UseCase\DTO\Genre\List\ListGenreOutputDto;
 use Core\UseCase\Genre\ListGenreUseCase;
 use Mockery;
 use PHPUnit\Framework\TestCase;
@@ -17,10 +15,9 @@ use stdClass;
 
 class ListGenreUseCaseUnitTest extends TestCase
 {
-
     public function test_list_genre()
     {
-        $uuid =  new ValueObjectUuid(Uuid::uuid4());
+        $uuid = new ValueObjectUuid(Uuid::uuid4());
 
         $mockEntity = Mockery::mock(Genre::class, [
             'Test Genre',

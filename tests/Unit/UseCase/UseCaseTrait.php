@@ -19,6 +19,7 @@ trait UseCaseTrait
         $mockPagination->shouldReceive('perPage')->andReturn(1);
         $mockPagination->shouldReceive('to')->andReturn(1);
         $mockPagination->shouldReceive('from')->andReturn(1);
+
         return $mockPagination;
     }
 }

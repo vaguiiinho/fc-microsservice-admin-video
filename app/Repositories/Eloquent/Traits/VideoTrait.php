@@ -2,10 +2,8 @@
 
 namespace App\Repositories\Eloquent\Traits;
 
-use App\Enums\{
-    ImageTypes,
-    MediaTypes
-};
+use App\Enums\ImageTypes;
+use App\Enums\MediaTypes;
 use App\Models\Video as Model;
 use Core\Domain\Entity\Video as Entity;
 

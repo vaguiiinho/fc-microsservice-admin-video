@@ -36,7 +36,7 @@ class UpdateGenreRequest extends FormRequest
             'categories_id' => [
                 'required',
                 'array',
-                'exists:categories,id,deleted_at,NULL'
+                'exists:categories,id,deleted_at,NULL',
             ],
         ];
     }

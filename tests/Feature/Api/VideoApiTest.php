@@ -2,12 +2,10 @@
 
 namespace Tests\Feature\Api;
 
-use App\Models\{
-    CastMember,
-    Category,
-    Genre,
-    Video
-};
+use App\Models\CastMember;
+use App\Models\Category;
+use App\Models\Genre;
+use App\Models\Video;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
@@ -18,6 +16,7 @@ class VideoApiTest extends TestCase
     use WithoutMiddlewareTrait;
 
     protected $endPoint = '/api/videos';
+
     protected $serializedFields = [
         'id',
         'title',
@@ -26,11 +25,11 @@ class VideoApiTest extends TestCase
         'duration',
         'opened',
         'rating',
-        'created_at'
+        'created_at',
     ];
 
     /**
-     *  @test 
+     *  @test
      */
     public function index()
     {
@@ -41,7 +40,8 @@ class VideoApiTest extends TestCase
     }
 
     /**
-     *  @test 
+     *  @test
+     *
      * @dataProvider dataProviderPagination
      */
     public function pagination(
@@ -74,7 +74,7 @@ class VideoApiTest extends TestCase
         $response->assertJsonPath('meta.per_page', $perPage);
         $response->assertJsonStructure([
             'data' => [
-                '*' => $this->serializedFields
+                '*' => $this->serializedFields,
             ],
             'meta' => [
                 'total',
@@ -83,7 +83,7 @@ class VideoApiTest extends TestCase
                 'first_page',
                 'per_page',
                 'to',
-                'from'
+                'from',
             ],
         ]);
     }
@@ -133,7 +133,7 @@ class VideoApiTest extends TestCase
     }
 
     /**
-     *  @test 
+     *  @test
      */
     public function show()
     {
@@ -143,12 +143,12 @@ class VideoApiTest extends TestCase
 
         $response->assertOk();
         $response->assertJsonStructure([
-            'data' => $this->serializedFields
+            'data' => $this->serializedFields,
         ]);
     }
 
     /**
-     *  @test 
+     *  @test
      */
     public function show_not_found()
     {
@@ -159,7 +159,7 @@ class VideoApiTest extends TestCase
     }
 
     /**
-     *  @test 
+     *  @test
      */
     public function store()
     {
@@ -180,7 +180,7 @@ class VideoApiTest extends TestCase
             'categories' => $categoriesIds,
             'genres' => $genresIds,
             'cast_members' => $castMembersIds,
-            //'video_file' => $mediaVideoFile,
+            // 'video_file' => $mediaVideoFile,
             'trailer_file' => $mediaVideoFile,
             'banner_file' => $imageVideoFile,
             'thumb_file' => $imageVideoFile,
@@ -191,18 +191,18 @@ class VideoApiTest extends TestCase
 
         $response->assertCreated();
         $response->assertJsonStructure([
-            'data' => $this->serializedFields
+            'data' => $this->serializedFields,
         ]);
-        //$this->assertDatabaseCount('videos', 1);
+        // $this->assertDatabaseCount('videos', 1);
         $this->assertDatabaseHas('videos', [
-            'id' => $response->json('data.id')
+            'id' => $response->json('data.id'),
         ]);
 
         $this->assertEquals($categoriesIds, $response->json('data.categories'));
         $this->assertEquals($genresIds, $response->json('data.genres'));
         $this->assertEquals($castMembersIds, $response->json('data.cast_members'));
 
-        //Storage::assertExists($response->json('data.video'));
+        // Storage::assertExists($response->json('data.video'));
         Storage::assertExists($response->json('data.trailer'));
         Storage::assertExists($response->json('data.banner'));
         Storage::assertExists($response->json('data.thumb'));
@@ -210,7 +210,6 @@ class VideoApiTest extends TestCase
 
         Storage::deleteDirectory($response->json('data.id'));
     }
-
 
     /**
      * @test
@@ -268,7 +267,7 @@ class VideoApiTest extends TestCase
      * @test
      */
     // #[Test]
-    public function storeValidation()
+    public function store_validation()
     {
         $response = $this->postJson($this->endPoint, []);
 
@@ -304,7 +303,7 @@ class VideoApiTest extends TestCase
     /**
      * @test
      */
-    public function destroyNotFound()
+    public function destroy_not_found()
     {
         $response = $this->deleteJson("$this->endPoint/fake_id");
         $response->assertNotFound();

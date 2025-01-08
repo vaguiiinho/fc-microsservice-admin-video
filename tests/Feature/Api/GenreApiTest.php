@@ -2,10 +2,8 @@
 
 namespace Tests\Feature\Api;
 
-use App\Models\{
-    Category,
-    Genre,
-};
+use App\Models\Category;
+use App\Models\Genre;
 use Illuminate\Http\Response;
 use Tests\TestCase;
 use Tests\Traits\WithoutMiddlewareTrait;
@@ -13,8 +11,9 @@ use Tests\Traits\WithoutMiddlewareTrait;
 class GenreApiTest extends TestCase
 {
     use WithoutMiddlewareTrait;
-    
+
     protected $endpoint = '/api/genres';
+
     public function test_list_empty()
     {
         $response = $this->getJson($this->endpoint);
@@ -39,7 +38,7 @@ class GenreApiTest extends TestCase
                 'first_page',
                 'per_page',
                 'to',
-                'from'
+                'from',
             ],
         ]);
         $response->assertJsonCount(15, 'data');
@@ -47,7 +46,7 @@ class GenreApiTest extends TestCase
 
     public function test_store()
     {
-        $categories =  Category::factory()->count(10)->create();
+        $categories = Category::factory()->count(10)->create();
         $categoriesId = $categories->pluck('id')->toArray();
 
         $response = $this->postJson($this->endpoint, [
@@ -69,7 +68,7 @@ class GenreApiTest extends TestCase
 
     public function test_validation_store()
     {
-        $categories =  Category::factory()->count(2)->create();
+        $categories = Category::factory()->count(2)->create();
         $categoriesId = $categories->pluck('id')->toArray();
 
         $data = [
@@ -82,7 +81,7 @@ class GenreApiTest extends TestCase
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
         $response->assertJsonStructure([
             'message',
-            'errors' => ['name']
+            'errors' => ['name'],
         ]);
     }
 
@@ -103,8 +102,8 @@ class GenreApiTest extends TestCase
             'data' => [
                 'id',
                 'name',
-                'is_active'
-            ]
+                'is_active',
+            ],
         ]);
 
         $this->assertEquals($genre->id, $response['data']['id']);
@@ -140,8 +139,8 @@ class GenreApiTest extends TestCase
             'data' => [
                 'id',
                 'name',
-                'is_active'
-            ]
+                'is_active',
+            ],
         ]);
 
         $this->assertEquals('Updated Genre', $response['data']['name']);
@@ -163,8 +162,8 @@ class GenreApiTest extends TestCase
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
 
         $response->assertJsonStructure([
-           'message',
-            'errors' => ['categories_id']
+            'message',
+            'errors' => ['categories_id'],
         ]);
     }
 

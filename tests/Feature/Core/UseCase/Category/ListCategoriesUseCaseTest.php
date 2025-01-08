@@ -26,8 +26,9 @@ class ListCategoriesUseCaseTest extends TestCase
 
     protected function createUseCase()
     {
-        $repository = new CategoryEloquentRepository(new CategoryModel());
+        $repository = new CategoryEloquentRepository(new CategoryModel);
         $useCase = new ListCategoriesUseCase($repository);
-        return $useCase->execute(new ListCategoriesInputDto());
+
+        return $useCase->execute(new ListCategoriesInputDto);
     }
 }

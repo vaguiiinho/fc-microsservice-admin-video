@@ -21,7 +21,7 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
         VideoCreatedEvent::class => [
-            SendVideoToMicroEncoder::class
+            SendVideoToMicroEncoder::class,
         ],
     ];
 

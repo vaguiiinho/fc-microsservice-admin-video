@@ -27,7 +27,7 @@ class VideoFactory extends Factory
             'opened' => $this->faker->boolean(),
             'rating' => Rating::L,
             'duration' => 1,
-            'created_at' => now()
+            'created_at' => now(),
         ];
     }
 }

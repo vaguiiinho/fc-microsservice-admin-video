@@ -10,6 +10,5 @@ class CreateGenreOutputDto
         public bool $is_active,
         public array $categoriesId = [],
         public string $createdAt = ''
-    ) {
-    }
+    ) {}
 }

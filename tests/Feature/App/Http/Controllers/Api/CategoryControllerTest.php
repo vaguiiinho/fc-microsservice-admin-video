@@ -3,19 +3,15 @@
 namespace Tests\Feature\App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\CategoryController;
-use App\Http\Requests\{
-    StoreCategoryRequest,
-    UpdateCategoryRequest
-};
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category as ModelsCategory;
 use App\Repositories\Eloquent\CategoryEloquentRepository;
-use Core\UseCase\Category\{
-    CreateCategoryUseCase,
-    ListCategoriesUseCase,
-    ListCategoryUseCase,
-    UpdateCategoryUseCase,
-    DeleteCategoryUseCase
-};
+use Core\UseCase\Category\CreateCategoryUseCase;
+use Core\UseCase\Category\DeleteCategoryUseCase;
+use Core\UseCase\Category\ListCategoriesUseCase;
+use Core\UseCase\Category\ListCategoryUseCase;
+use Core\UseCase\Category\UpdateCategoryUseCase;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -26,11 +22,13 @@ use Tests\TestCase;
 class CategoryControllerTest extends TestCase
 {
     protected $repository;
+
     protected $controller;
+
     protected function setUp(): void
     {
         $this->repository = new CategoryEloquentRepository(new ModelsCategory);
-        $this->controller = new CategoryController();
+        $this->controller = new CategoryController;
         parent::setUp();
     }
 
@@ -48,7 +46,7 @@ class CategoryControllerTest extends TestCase
     public function test_store()
     {
         $useCase = new CreateCategoryUseCase($this->repository);
-        $request = new StoreCategoryRequest();
+        $request = new StoreCategoryRequest;
         $request->headers->set('Content-Type', 'application/json');
 
         $request->setJson(new ParameterBag([
@@ -78,7 +76,7 @@ class CategoryControllerTest extends TestCase
     {
         $category = ModelsCategory::factory()->create();
 
-        $request = new UpdateCategoryRequest();
+        $request = new UpdateCategoryRequest;
         $request->headers->set('Content-Type', 'application/json');
 
         $request->setJson(new ParameterBag([

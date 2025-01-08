@@ -2,22 +2,19 @@
 
 namespace Tests\Unit\UseCase\Category;
 
-
-use Core\UseCase\DTO\Category\CreateCategory\{
-    CategoryCreateInputDto,
-    CategoryCreateOutputDto
-};
-use Ramsey\Uuid\Uuid;
 use Core\Domain\Entity\Category;
 use Core\Domain\Repository\CategoryRepositoryInterface;
 use Core\UseCase\Category\CreateCategoryUseCase;
+use Core\UseCase\DTO\Category\CreateCategory\CategoryCreateInputDto;
+use Core\UseCase\DTO\Category\CreateCategory\CategoryCreateOutputDto;
 use Mockery;
 use PHPUnit\Framework\TestCase;
+use Ramsey\Uuid\Uuid;
 use stdClass;
 
 class CreateCategoryUseCaseUnitTest extends TestCase
 {
-    public function testNewCategory()
+    public function test_new_category()
     {
 
         $uuid = (string) Uuid::uuid4()->toString();
@@ -25,7 +22,7 @@ class CreateCategoryUseCaseUnitTest extends TestCase
 
         $this->mockEntity = Mockery::mock(Category::class, [
             $uuid,
-            $categoryName
+            $categoryName,
         ]);
 
         $this->mockEntity->shouldReceive('id')->andReturn($uuid);
@@ -37,7 +34,7 @@ class CreateCategoryUseCaseUnitTest extends TestCase
             ->andReturn($this->mockEntity);
 
         $this->mockInputDto = Mockery::mock(CategoryCreateInputDto::class, [
-            $categoryName
+            $categoryName,
         ]);
 
         $useCase = new CreateCategoryUseCase($this->mockRepo);

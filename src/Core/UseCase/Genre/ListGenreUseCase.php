@@ -3,10 +3,8 @@
 namespace Core\UseCase\Genre;
 
 use Core\Domain\Repository\GenreRepositoryInterface;
-use Core\UseCase\DTO\Genre\List\{
-    ListGenreInputDto,
-    ListGenreOutputDto
-};
+use Core\UseCase\DTO\Genre\List\ListGenreInputDto;
+use Core\UseCase\DTO\Genre\List\ListGenreOutputDto;
 
 class ListGenreUseCase
 {
@@ -17,7 +15,7 @@ class ListGenreUseCase
         $this->repository = $repository;
     }
 
-     public function execute(ListGenreInputDto $input): ListGenreOutputDto
+    public function execute(ListGenreInputDto $input): ListGenreOutputDto
     {
 
         $genres = $this->repository->findById($input->id);
@@ -29,5 +27,4 @@ class ListGenreUseCase
             created_at: $genres->createdAt()
         );
     }
-
 }

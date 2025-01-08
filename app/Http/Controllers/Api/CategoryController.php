@@ -3,18 +3,14 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\{
-    StoreCategoryRequest,
-    UpdateCategoryRequest
-};
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 use App\Http\Resources\CategoryResource;
-use Core\UseCase\Category\{
-    CreateCategoryUseCase,
-    ListCategoriesUseCase,
-    ListCategoryUseCase,
-    UpdateCategoryUseCase,
-    DeleteCategoryUseCase
-};
+use Core\UseCase\Category\CreateCategoryUseCase;
+use Core\UseCase\Category\DeleteCategoryUseCase;
+use Core\UseCase\Category\ListCategoriesUseCase;
+use Core\UseCase\Category\ListCategoryUseCase;
+use Core\UseCase\Category\UpdateCategoryUseCase;
 use Core\UseCase\DTO\Category\CreateCategory\CategoryCreateInputDto;
 use Core\UseCase\DTO\Category\DeleteCategory\CategoryDeleteInputDto;
 use Core\UseCase\DTO\Category\ListCategories\ListCategoriesInputDto;
@@ -36,7 +32,6 @@ class CategoryController extends Controller
             )
         );
 
-
         return CategoryResource::collection(collect($response->items))
             ->additional([
                 'meta' => [
@@ -46,8 +41,8 @@ class CategoryController extends Controller
                     'last_page' => $response->last_page,
                     'per_page' => $response->per_page,
                     'to' => $response->to,
-                    'from' => $response->from
-                ]
+                    'from' => $response->from,
+                ],
             ]);
     }
 
@@ -82,8 +77,8 @@ class CategoryController extends Controller
             input: new CategoryUpdateInputDto(
                 id: $id,
                 name: $request->name,
-                description: $request->description?? '',
-                isActive: (bool) $request->is_active?? true,
+                description: $request->description ?? '',
+                isActive: (bool) $request->is_active ?? true,
             )
         );
 

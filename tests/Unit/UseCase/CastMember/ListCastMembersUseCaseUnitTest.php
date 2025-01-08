@@ -4,19 +4,18 @@ namespace Tests\Unit\UseCase\CastMember;
 
 use Core\Domain\Repository\CastMemberRepositoryInterface;
 use Core\UseCase\CastMember\ListCastMembersUseCase;
-use Core\UseCase\DTO\CastMember\List\{
-    ListCastMembersInputDto,
-    ListCastMembersOutputDto
-};
+use Core\UseCase\DTO\CastMember\List\ListCastMembersInputDto;
+use Core\UseCase\DTO\CastMember\List\ListCastMembersOutputDto;
 use Mockery;
+use PHPUnit\Framework\TestCase;
 use stdClass;
 use Tests\Unit\UseCase\UseCaseTrait;
-use PHPUnit\Framework\TestCase;
 
 class ListCastMembersUseCaseUnitTest extends TestCase
 {
     use UseCaseTrait;
-    public function testList()
+
+    public function test_list()
     {
         // Arrange
         $mockRepository = Mockery::mock(stdClass::class, CastMemberRepositoryInterface::class);
@@ -28,9 +27,9 @@ class ListCastMembersUseCaseUnitTest extends TestCase
 
         $mockInput = Mockery::mock(ListCastMembersInputDto::class, [
             'test',
-            "desc",
+            'desc',
             1,
-            15
+            15,
         ]);
         // Action
 

@@ -2,23 +2,20 @@
 
 namespace Core\UseCase\Genre;
 
-use Core\Domain\Entity\Genre;
 use Core\Domain\Exception\NotFoundException;
-use Core\Domain\Repository\{
-    GenreRepositoryInterface,
-    CategoryRepositoryInterface
-};
-use Core\UseCase\DTO\Genre\Update\{
-    UpdateGenreInputDto,
-    UpdateGenreOutputDto
-};
+use Core\Domain\Repository\CategoryRepositoryInterface;
+use Core\Domain\Repository\GenreRepositoryInterface;
+use Core\UseCase\DTO\Genre\Update\UpdateGenreInputDto;
+use Core\UseCase\DTO\Genre\Update\UpdateGenreOutputDto;
 use Core\UseCase\Interfaces\TransactionInterface;
 use Throwable;
 
 class UpdateGenreUseCase
 {
     protected $repository;
+
     protected $transaction;
+
     protected $categoryRepository;
 
     public function __construct(
@@ -47,6 +44,7 @@ class UpdateGenreUseCase
             $genreDb = $this->repository->update($genre);
 
             $this->transaction->commit();
+
             return new UpdateGenreOutputDto(
                 id: $genreDb->id(),
                 name: $genreDb->name,
@@ -54,7 +52,7 @@ class UpdateGenreUseCase
                 createdAt: $genreDb->createdAt()
             );
         } catch (Throwable $th) {
-            
+
             $this->transaction->rollback();
             throw $th;
         }

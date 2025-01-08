@@ -3,15 +3,15 @@
 namespace Tests\Unit\App\Models;
 
 use App\Models\ImageVideo;
+use App\Models\Traits\UuidTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Traits\UuidTrait;
 
 class ImageVideoUnitTest extends ModelTestCase
 {
     protected function model(): Model
     {
-        return new ImageVideo();
+        return new ImageVideo;
     }
 
     protected function traits(): array

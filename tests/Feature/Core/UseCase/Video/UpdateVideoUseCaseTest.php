@@ -1,11 +1,10 @@
 <?php
 
-namespace Tests\Feature\Core\UseCase\Video\Create;
+namespace Tests\Feature\Core\UseCase\Video;
 
 use App\Models\Video;
 use Core\UseCase\Video\Update\DTO\UpdateInputVideoDTO;
 use Core\UseCase\Video\Update\UpdateVideoUseCase;
-use Tests\Feature\Core\UseCase\Video\BaseVideoUseCase;
 
 class UpdateVideoUseCaseTest extends BaseVideoUseCase
 {
@@ -13,6 +12,7 @@ class UpdateVideoUseCaseTest extends BaseVideoUseCase
     {
         return UpdateVideoUseCase::class;
     }
+
     public function inputDto(
         array $categoriesIds = [],
         array $genresIds = [],

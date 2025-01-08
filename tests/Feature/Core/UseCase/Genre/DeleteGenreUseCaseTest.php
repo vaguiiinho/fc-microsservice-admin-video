@@ -10,16 +10,16 @@ use Tests\TestCase;
 
 class DeleteGenreUseCaseTest extends TestCase
 {
-    public function testDeleteGenre()
+    public function test_delete_genre()
     {
-        $genreRepository = new GenreEloquentRepository(new Genre());
+        $genreRepository = new GenreEloquentRepository(new Genre);
 
         $useCase = new DeleteGenreUseCase(
             $genreRepository,
         );
 
         $genre = Genre::factory()->create();
-        $response =  $useCase->execute(
+        $response = $useCase->execute(
             new DeleteGenreInputDto(
                 id: $genre->id
             )
@@ -27,7 +27,7 @@ class DeleteGenreUseCaseTest extends TestCase
 
         $this->assertTrue($response->success);
         $this->assertSoftDeleted('genres', [
-            'id' => $genre->id
+            'id' => $genre->id,
         ]);
     }
 }

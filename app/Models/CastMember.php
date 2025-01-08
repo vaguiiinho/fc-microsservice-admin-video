@@ -17,7 +17,7 @@ class CastMember extends Model
         'created_at',
     ];
 
-    public  $incrementing = false;
+    public $incrementing = false;
 
     protected $casts = [
         'id' => 'string',

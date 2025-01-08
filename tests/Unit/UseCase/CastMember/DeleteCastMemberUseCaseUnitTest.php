@@ -2,10 +2,7 @@
 
 namespace Tests\Unit\UseCase\CastMember;
 
-use Core\Domain\Entity\CastMember;
-use Core\Domain\Enum\CastMemberType;
 use Core\Domain\Repository\CastMemberRepositoryInterface;
-use Core\Domain\ValueObject\Uuid as ValueObjectUuid;
 use Core\UseCase\CastMember\DeleteCastMemberUseCase;
 use Core\UseCase\DTO\CastMember\Delete\DeleteCastMemberInputDto;
 use Core\UseCase\DTO\CastMember\Delete\DeleteCastMemberOutputDto;
@@ -16,7 +13,7 @@ use stdClass;
 
 class DeleteCastMemberUseCaseUnitTest extends TestCase
 {
-    public function testDelete()
+    public function test_delete()
     {
         // Arrange
         $uuid = (string) Uuid::uuid4();
@@ -33,7 +30,7 @@ class DeleteCastMemberUseCaseUnitTest extends TestCase
         $useCase = new DeleteCastMemberUseCase($mockRepository);
 
         // Action
-        $response =   $useCase->execute($mockInputDto);
+        $response = $useCase->execute($mockInputDto);
 
         // Assert
         $this->assertInstanceOf(DeleteCastMemberOutputDto::class, $response);

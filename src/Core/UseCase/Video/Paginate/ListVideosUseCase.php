@@ -4,10 +4,7 @@ namespace Core\UseCase\Video\Paginate;
 
 use Core\Domain\Repository\PaginationInterface;
 use Core\Domain\Repository\VideoRepositoryInterface;
-use Core\UseCase\Video\Paginate\DTO\{
-    PaginateVideosInputDto,
-    PaginateVideosOutputDto
-};
+use Core\UseCase\Video\Paginate\DTO\PaginateVideosInputDto;
 
 class ListVideosUseCase
 {

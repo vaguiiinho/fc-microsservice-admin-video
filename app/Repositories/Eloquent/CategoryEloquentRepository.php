@@ -32,10 +32,9 @@ class CategoryEloquentRepository implements CategoryRepositoryInterface
         return $this->toCategory($response);
     }
 
-
     public function findById(string $id): Entity
     {
-        if (!$category = $this->model->find($id)) {
+        if (! $category = $this->model->find($id)) {
             throw new NotFoundException('Category not found');
         }
 
@@ -60,8 +59,10 @@ class CategoryEloquentRepository implements CategoryRepositoryInterface
             })
             ->orderBy('id', $order)
             ->get();
+
         return $categories->toArray();
     }
+
     public function paginate(string $filter = '', $order = 'DESC', int $page = 1, int $totalPage = 15): PaginationInterface
     {
         $query = $this->model->query();
@@ -87,7 +88,7 @@ class CategoryEloquentRepository implements CategoryRepositoryInterface
 
     public function update(Entity $entityCategory): Entity
     {
-        if (!$category = $this->model->find($entityCategory->id)) {
+        if (! $category = $this->model->find($entityCategory->id)) {
             throw new NotFoundException('Category not found');
         }
 
@@ -102,13 +103,14 @@ class CategoryEloquentRepository implements CategoryRepositoryInterface
 
         return $this->toCategory($category);
     }
+
     public function delete(string $categoryId): bool
     {
-        if (!$category = $this->model->find($categoryId)) {
+        if (! $category = $this->model->find($categoryId)) {
             throw new NotFoundException('Category not found');
         }
 
-        return  $category->delete();
+        return $category->delete();
     }
 
     private function toCategory(object $entity): EntityCategory

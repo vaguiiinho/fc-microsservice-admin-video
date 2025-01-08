@@ -3,11 +3,9 @@
 namespace Tests\Unit\UseCase\Video;
 
 use Core\Domain\ValueObject\Uuid;
+use Core\UseCase\Video\Update\DTO\UpdateInputVideoDTO;
+use Core\UseCase\Video\Update\DTO\UpdateOutputVideoDTO;
 use Core\UseCase\Video\Update\UpdateVideoUseCase;
-use Core\UseCase\Video\Update\DTO\{
-    UpdateInputVideoDTO,
-    UpdateOutputVideoDTO
-};
 use Mockery;
 
 class UpdateVideoUseCaseUnitTest extends BaseVideoUseCaseUnitTest
@@ -16,7 +14,7 @@ class UpdateVideoUseCaseUnitTest extends BaseVideoUseCaseUnitTest
     {
         $this->createUseCase();
 
-        $response =   $this->useCase->exec(
+        $response = $this->useCase->exec(
             input: $this->createMockInputDto()
         );
 

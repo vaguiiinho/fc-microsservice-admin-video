@@ -7,10 +7,8 @@ use Core\Domain\Enum\CastMemberType;
 use Core\Domain\Repository\CastMemberRepositoryInterface;
 use Core\Domain\ValueObject\Uuid as ValueObjectUuid;
 use Core\UseCase\CastMember\ListCastMemberUseCase;
-use Core\UseCase\DTO\CastMember\List\{
-    ListCastMemberInputDto,
-    ListCastMemberOutputDto
-};
+use Core\UseCase\DTO\CastMember\List\ListCastMemberInputDto;
+use Core\UseCase\DTO\CastMember\List\ListCastMemberOutputDto;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
@@ -18,7 +16,7 @@ use stdClass;
 
 class ListCastMemberUseCaseUnitTest extends TestCase
 {
-    public function testList()
+    public function test_list()
     {
         // Arrange
         $uuid = (string) Uuid::uuid4();
@@ -31,7 +29,7 @@ class ListCastMemberUseCaseUnitTest extends TestCase
         ]);
 
         $mockEntity->shouldReceive('id')->andReturn(new ValueObjectUuid($uuid));
-        $mockEntity->shouldReceive('createdAt')->andReturn(Date('Y-m-d H:i:s'));
+        $mockEntity->shouldReceive('createdAt')->andReturn(date('Y-m-d H:i:s'));
 
         $mockRepository->shouldReceive('findById')
             ->once()
@@ -42,10 +40,8 @@ class ListCastMemberUseCaseUnitTest extends TestCase
 
         $useCase = new ListCastMemberUseCase($mockRepository);
 
-
-
         // Action
-        $response =   $useCase->execute($mockInputDto);
+        $response = $useCase->execute($mockInputDto);
         // Assert
         $this->assertInstanceOf(ListCastMemberOutputDto::class, $response);
         $this->assertEquals($uuid, $response->id);

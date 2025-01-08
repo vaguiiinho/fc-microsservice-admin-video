@@ -11,10 +11,12 @@ class DBTransaction implements TransactionInterface
     {
         DB::beginTransaction();
     }
+
     public function commit()
     {
         DB::commit();
     }
+
     public function rollback()
     {
         DB::rollback();

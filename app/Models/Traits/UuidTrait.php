@@ -4,9 +4,9 @@ namespace App\Models\Traits;
 
 use Illuminate\Support\Str;
 
-trait  UuidTrait
+trait UuidTrait
 {
-     /**
+    /**
      * The "booted" method of the model.
      */
     protected static function booted(): void

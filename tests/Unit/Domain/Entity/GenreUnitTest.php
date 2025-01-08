@@ -2,17 +2,16 @@
 
 namespace Tests\Unit\Domain\Entity;
 
-use PHPUnit\Framework\TestCase;
 use Core\Domain\Entity\Genre;
 use Core\Domain\Exception\EntityValidationException;
 use Core\Domain\ValueObject\Uuid as ValueObjectUuid;
 use DateTime;
+use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 
 class GenreUnitTest extends TestCase
 {
-
-    public function testAttributes()
+    public function test_attributes()
     {
         $uuid = (string) Uuid::uuid4();
         $date = date('Y-m-d H:i:s');
@@ -30,7 +29,7 @@ class GenreUnitTest extends TestCase
         $this->assertEquals($date, $genre->createdAt());
     }
 
-    public function testAttributesCreated()
+    public function test_attributes_created()
     {
         $genre = new Genre(
             name: 'New genre',
@@ -42,8 +41,7 @@ class GenreUnitTest extends TestCase
         $this->assertNotEmpty($genre->createdAt());
     }
 
-
-    public function testGenreDeactivate()
+    public function test_genre_deactivate()
     {
         $genre = new Genre(
             name: 'New genre',
@@ -56,7 +54,7 @@ class GenreUnitTest extends TestCase
         $this->assertFalse($genre->isActive);
     }
 
-    public function testGenreActivate()
+    public function test_genre_activate()
     {
         $genre = new Genre(
             name: 'New genre',
@@ -70,7 +68,7 @@ class GenreUnitTest extends TestCase
         $this->assertTrue($genre->isActive);
     }
 
-    public function testGenreUpdate()
+    public function test_genre_update()
     {
         $genre = new Genre(
             name: 'New genre',
@@ -85,7 +83,7 @@ class GenreUnitTest extends TestCase
         $this->assertEquals('Updated genre', $genre->name);
     }
 
-    public function testEntityException()
+    public function test_entity_exception()
     {
         $this->expectException(EntityValidationException::class);
         new Genre(
@@ -93,7 +91,7 @@ class GenreUnitTest extends TestCase
         );
     }
 
-    public function testEntityUpdateException()
+    public function test_entity_update_exception()
     {
         $this->expectException(EntityValidationException::class);
 
@@ -112,7 +110,7 @@ class GenreUnitTest extends TestCase
         );
     }
 
-    public function testAddCategoryToGenre()
+    public function test_add_category_to_genre()
     {
         $categoryId = (string) Uuid::uuid4();
 
@@ -134,7 +132,7 @@ class GenreUnitTest extends TestCase
         $this->assertCount(2, $genre->categoriesId);
     }
 
-    public function testRemoveCategoryFromGenre()
+    public function test_remove_category_from_genre()
     {
         $categoryId = (string) Uuid::uuid4();
         $categoryId2 = (string) Uuid::uuid4();

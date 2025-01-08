@@ -2,13 +2,9 @@
 
 namespace Tests\Unit\UseCase\Genre;
 
-use Core\Domain\Entity\Genre;
 use Core\Domain\Repository\GenreRepositoryInterface;
-use Core\Domain\ValueObject\Uuid as ValueObjectUuid;
-use Core\UseCase\DTO\Genre\Delete\{
-    DeleteGenreInputDto,
-    DeleteGenreOutputDto
-};
+use Core\UseCase\DTO\Genre\Delete\DeleteGenreInputDto;
+use Core\UseCase\DTO\Genre\Delete\DeleteGenreOutputDto;
 use Core\UseCase\Genre\DeleteGenreUseCase;
 use Mockery;
 use PHPUnit\Framework\TestCase;
@@ -17,7 +13,6 @@ use stdClass;
 
 class DeleteGenreUseCaseUnitTest extends TestCase
 {
-
     public function test_genre_delete()
     {
         $id = (string) Uuid::uuid4()->toString();

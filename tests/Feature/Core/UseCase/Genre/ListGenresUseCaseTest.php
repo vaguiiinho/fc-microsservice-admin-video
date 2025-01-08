@@ -10,15 +10,15 @@ use Tests\TestCase;
 
 class ListGenresUseCaseTest extends TestCase
 {
-    public function testFindAll()
+    public function test_find_all()
     {
         Model::factory()->count(100)->create();
 
-        $repository = new GenreEloquentRepository(new Model());
+        $repository = new GenreEloquentRepository(new Model);
 
         $useCase = new ListGenresUseCase($repository);
 
-        $response = $useCase->execute(new ListGenresInputDto());
+        $response = $useCase->execute(new ListGenresInputDto);
 
         $this->assertCount(15, $response->items);
         $this->assertEquals(100, $response->total);

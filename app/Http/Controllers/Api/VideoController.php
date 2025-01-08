@@ -4,35 +4,21 @@ namespace App\Http\Controllers\Api;
 
 use App\Adapters\ApiAdapter;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\{
-    StoreVideoRequest,
-    UpdateVideoRequest
-};
+use App\Http\Requests\StoreVideoRequest;
+use App\Http\Requests\UpdateVideoRequest;
 use Core\Domain\Enum\Rating;
-use Core\UseCase\Video\Create\{
-    CreateVideoUseCase,
-    DTO\CreateInputVideoDTO
-};
-use Core\UseCase\Video\Delete\{
-    DeleteVideoUseCase,
-    DTO\DeleteVideoInputDto
-};
-use Core\UseCase\Video\List\{
-    ListVideoUseCase,
-    DTO\ListVideoInputDto
-};
-use Core\UseCase\Video\Paginate\{
-    ListVideosUseCase,
-    DTO\PaginateVideosInputDto
-};
-use Core\UseCase\Video\Update\{
-    UpdateVideoUseCase,
-    DTO\UpdateInputVideoDTO
-};
-use Illuminate\Http\{
-    Request,
-    Response
-};
+use Core\UseCase\Video\Create\CreateVideoUseCase;
+use Core\UseCase\Video\Create\DTO\CreateInputVideoDTO;
+use Core\UseCase\Video\Delete\DeleteVideoUseCase;
+use Core\UseCase\Video\Delete\DTO\DeleteVideoInputDto;
+use Core\UseCase\Video\List\DTO\ListVideoInputDto;
+use Core\UseCase\Video\List\ListVideoUseCase;
+use Core\UseCase\Video\Paginate\DTO\PaginateVideosInputDto;
+use Core\UseCase\Video\Paginate\ListVideosUseCase;
+use Core\UseCase\Video\Update\DTO\UpdateInputVideoDTO;
+use Core\UseCase\Video\Update\UpdateVideoUseCase;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class VideoController extends Controller
 {
@@ -53,6 +39,7 @@ class VideoController extends Controller
     public function show(ListVideoUseCase $UseCase, $id)
     {
         $response = $UseCase->exec(input: new ListVideoInputDto($id));
+
         return ApiAdapter::json($response);
     }
 

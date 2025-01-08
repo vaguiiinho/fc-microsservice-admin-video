@@ -56,7 +56,7 @@ class Handler extends ExceptionHandler
         if ($exception instanceof NotificationException) {
             return $this->showError($exception->getMessage(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-        
+
         return parent::render($request, $exception);
     }
 
@@ -64,7 +64,7 @@ class Handler extends ExceptionHandler
     {
         return response()->json(
             [
-                'message' => $message
+                'message' => $message,
             ],
             $statusCode
         );

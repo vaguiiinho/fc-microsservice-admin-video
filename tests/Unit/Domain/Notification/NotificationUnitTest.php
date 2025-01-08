@@ -7,52 +7,52 @@ use PHPUnit\Framework\TestCase;
 
 class NotificationUnitTest extends TestCase
 {
-    public function testGetErrors()
+    public function test_get_errors()
     {
-        $notification = new Notification();
+        $notification = new Notification;
         $errors = $notification->getErrors();
 
         $this->assertIsArray($errors);
     }
 
-    public function testAddErrors()
+    public function test_add_errors()
     {
-        $notification = new Notification();
+        $notification = new Notification;
 
         $notification->addErrors([
             'context' => 'video',
-            'message' => 'video title is required'
+            'message' => 'video title is required',
         ]);
 
         $errors = $notification->getErrors();
         $this->assertCount(1, $errors);
     }
 
-    public function testHasError()
+    public function test_has_error()
     {
-        $notification = new Notification();
+        $notification = new Notification;
         $hasErrors = $notification->hasErrors();
         $this->assertFalse($hasErrors);
 
         $notification->addErrors([
             'context' => 'video',
-            'message' => 'video title is required'
+            'message' => 'video title is required',
         ]);
 
         $this->assertTrue($notification->hasErrors());
     }
 
-    public function testMessage()
+    public function test_message()
     {
-        $notification = new Notification();
+        $notification = new Notification;
         $notification->addErrors([
             'context' => 'video',
-            'message' => 'title is required'
+            'message' => 'title is required',
         ]);
 
         $notification->addErrors([
             'context' => 'video',
-            'message' => 'description is required'
+            'message' => 'description is required',
         ]);
 
         $message = $notification->messages();
@@ -64,17 +64,17 @@ class NotificationUnitTest extends TestCase
         );
     }
 
-    public function testMessageFilterContext()
+    public function test_message_filter_context()
     {
-        $notification = new Notification();
+        $notification = new Notification;
         $notification->addErrors([
             'context' => 'video',
-            'message' => 'title is required'
+            'message' => 'title is required',
         ]);
 
         $notification->addErrors([
             'context' => 'category',
-            'message' => 'name is required'
+            'message' => 'name is required',
         ]);
 
         $message = $notification->messages(

@@ -10,9 +10,6 @@ class VideoEventStub implements VideoEventManagerInterface
     {
         event($this);
     }
-    
-    public function dispatch(object $event): void
-    {
-        
-    }
+
+    public function dispatch(object $event): void {}
 }

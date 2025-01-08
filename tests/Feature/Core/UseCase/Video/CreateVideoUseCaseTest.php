@@ -1,11 +1,10 @@
 <?php
 
-namespace Tests\Feature\Core\UseCase\Video\Create;
+namespace Tests\Feature\Core\UseCase\Video;
 
 use Core\Domain\Enum\Rating;
 use Core\UseCase\Video\Create\CreateVideoUseCase;
 use Core\UseCase\Video\Create\DTO\CreateInputVideoDTO;
-use Tests\Feature\Core\UseCase\Video\BaseVideoUseCase;
 
 class CreateVideoUseCaseTest extends BaseVideoUseCase
 {
@@ -13,6 +12,7 @@ class CreateVideoUseCaseTest extends BaseVideoUseCase
     {
         return CreateVideoUseCase::class;
     }
+
     public function inputDto(
         array $categoriesIds = [],
         array $genresIds = [],

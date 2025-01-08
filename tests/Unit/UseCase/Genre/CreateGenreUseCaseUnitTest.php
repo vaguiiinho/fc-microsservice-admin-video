@@ -4,19 +4,15 @@ namespace Tests\Unit\UseCase\Genre;
 
 use Core\Domain\Entity\Genre;
 use Core\Domain\Exception\NotFoundException;
-use Core\Domain\Repository\{
-    GenreRepositoryInterface,
-    CategoryRepositoryInterface
-};
+use Core\Domain\Repository\CategoryRepositoryInterface;
+use Core\Domain\Repository\GenreRepositoryInterface;
 use Core\Domain\ValueObject\Uuid as ValueObjectUuid;
-use PHPUnit\Framework\TestCase;
+use Core\UseCase\DTO\Genre\Create\CreateGenreInputDto;
+use Core\UseCase\DTO\Genre\Create\CreateGenreOutputDto;
 use Core\UseCase\Genre\CreateGenreUseCase;
-use Core\UseCase\DTO\Genre\Create\{
-    CreateGenreInputDto,
-    CreateGenreOutputDto
-};
 use Core\UseCase\Interfaces\TransactionInterface;
 use Mockery;
+use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use stdClass;
 
@@ -90,6 +86,7 @@ class CreateGenreUseCaseUnitTest extends TestCase
         $mockTransaction = Mockery::mock(stdClass::class, TransactionInterface::class);
         $mockTransaction->shouldReceive('commit');
         $mockTransaction->shouldReceive('rollback');
+
         return $mockTransaction;
     }
 
@@ -98,7 +95,7 @@ class CreateGenreUseCaseUnitTest extends TestCase
         return Mockery::mock(CreateGenreInputDto::class, [
             'Test Genre',
             $categoriesId,
-            true
+            true,
         ]);
     }
 

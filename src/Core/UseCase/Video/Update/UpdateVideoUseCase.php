@@ -2,15 +2,11 @@
 
 namespace Core\UseCase\Video\Update;
 
-use Core\Domain\Builder\Video\{
-    UpdateVideoBuilder,
-    Builder
-};
+use Core\Domain\Builder\Video\Builder;
+use Core\Domain\Builder\Video\UpdateVideoBuilder;
 use Core\UseCase\Video\BaseVideoUseCase;
-use Core\UseCase\Video\Update\DTO\{
-    UpdateInputVideoDTO,
-    UpdateOutputVideoDTO
-};
+use Core\UseCase\Video\Update\DTO\UpdateInputVideoDTO;
+use Core\UseCase\Video\Update\DTO\UpdateOutputVideoDTO;
 use Throwable;
 
 class UpdateVideoUseCase extends BaseVideoUseCase
@@ -19,6 +15,7 @@ class UpdateVideoUseCase extends BaseVideoUseCase
     {
         return new UpdateVideoBuilder;
     }
+
     public function exec(UpdateInputVideoDTO $input): UpdateOutputVideoDTO
     {
         $this->validateAllIds($input);

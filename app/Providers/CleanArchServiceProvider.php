@@ -2,31 +2,23 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use App\Events\VideoEvent;
+use App\Repositories\Eloquent\CastMemberRepository;
+use App\Repositories\Eloquent\CategoryEloquentRepository;
+use App\Repositories\Eloquent\GenreEloquentRepository;
+use App\Repositories\Eloquent\VideoEloquentRepository;
 use App\Repositories\Transaction\DBTransaction;
+use App\Services\AMQP\AMQPInterface;
+use App\Services\AMQP\PhpAmqpService;
 use App\Services\Storage\FileStorage;
+use Core\Domain\Repository\CastMemberRepositoryInterface;
+use Core\Domain\Repository\CategoryRepositoryInterface;
+use Core\Domain\Repository\GenreRepositoryInterface;
+use Core\Domain\Repository\VideoRepositoryInterface;
+use Core\UseCase\Interfaces\FileStorageInterface;
+use Core\UseCase\Interfaces\TransactionInterface;
 use Core\UseCase\Video\Interfaces\VideoEventManagerInterface;
-use App\Repositories\Eloquent\{
-    CastMemberRepository,
-    CategoryEloquentRepository,
-    GenreEloquentRepository,
-    VideoEloquentRepository,
-};
-use App\Services\AMQP\{
-    AMQPInterface,
-    PhpAmqpService
-};
-use Core\Domain\Repository\{
-    CastMemberRepositoryInterface,
-    CategoryRepositoryInterface,
-    GenreRepositoryInterface,
-    VideoRepositoryInterface,
-};
-use Core\UseCase\Interfaces\{
-    FileStorageInterface,
-    TransactionInterface
-};
+use Illuminate\Support\ServiceProvider;
 
 class CleanArchServiceProvider extends ServiceProvider
 {
@@ -55,7 +47,7 @@ class CleanArchServiceProvider extends ServiceProvider
             DBTransaction::class
         );
 
-          /**
+        /**
          * Services
          */
         $this->app->bind(
@@ -90,7 +82,6 @@ class CleanArchServiceProvider extends ServiceProvider
             CastMemberRepositoryInterface::class,
             CastMemberRepository::class
         );
-
 
         $this->app->singleton(
             VideoRepositoryInterface::class,

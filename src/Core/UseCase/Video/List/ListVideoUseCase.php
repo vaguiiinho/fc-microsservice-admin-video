@@ -3,10 +3,8 @@
 namespace Core\UseCase\Video\List;
 
 use Core\Domain\Repository\VideoRepositoryInterface;
-use Core\UseCase\Video\List\DTO\{
-    ListVideoInputDto,
-    ListVideoOutputDto
-};
+use Core\UseCase\Video\List\DTO\ListVideoInputDto;
+use Core\UseCase\Video\List\DTO\ListVideoOutputDto;
 
 class ListVideoUseCase
 {

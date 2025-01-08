@@ -5,10 +5,8 @@ namespace Core\UseCase\Video\ChangeEncoded;
 use Core\Domain\Enum\MediaStatus;
 use Core\Domain\Repository\VideoRepositoryInterface;
 use Core\Domain\ValueObject\Media;
-use Core\UseCase\Video\ChangeEncoded\DTO\{
-    ChangeEncodedVideoDTO,
-    ChangeEncodedVideoOutputDTO
-};
+use Core\UseCase\Video\ChangeEncoded\DTO\ChangeEncodedVideoDTO;
+use Core\UseCase\Video\ChangeEncoded\DTO\ChangeEncodedVideoOutputDTO;
 
 class ChangeEncodedPathVideo
 {

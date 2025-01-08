@@ -4,25 +4,21 @@ namespace Tests\Unit\UseCase\Video;
 
 use Core\Domain\Repository\VideoRepositoryInterface;
 use Core\Domain\ValueObject\Uuid;
-use Core\UseCase\Video\Delete\DTO\{
-    DeleteVideoInputDto,
-    DeleteVideoOutputDto
-};
 use Core\UseCase\Video\Delete\DeleteVideoUseCase;
+use Core\UseCase\Video\Delete\DTO\DeleteVideoInputDto;
+use Core\UseCase\Video\Delete\DTO\DeleteVideoOutputDto;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
 class DeleteVideoUseCaseUnitTest extends TestCase
 {
-
     /**
      * @dataProvider dataProviders
      */
     public function test_delete(
         array $id,
-    )
-    {
+    ) {
         $useCase = new DeleteVideoUseCase(
             repository: $this->mockRepository($id['expected'])
         );

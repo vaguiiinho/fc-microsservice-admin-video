@@ -3,10 +3,8 @@
 namespace Core\UseCase\CastMember;
 
 use Core\Domain\Repository\CastMemberRepositoryInterface;
-use Core\UseCase\DTO\CastMember\List\{
-    ListCastMembersInputDto,
-    ListCastMembersOutputDto
-};
+use Core\UseCase\DTO\CastMember\List\ListCastMembersInputDto;
+use Core\UseCase\DTO\CastMember\List\ListCastMembersOutputDto;
 
 class ListCastMembersUseCase
 {

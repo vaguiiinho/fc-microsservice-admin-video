@@ -8,10 +8,10 @@ use Core\Domain\Validation\VideoRakitValidator;
 
 class VideoValidator
 {
-    public  static function create(): ValidatorInterface
+    public static function create(): ValidatorInterface
     {
         // return new VideoLaravelValidation();
 
-        return new VideoRakitValidator(); // Example with Rakit\Validation library
+        return new VideoRakitValidator; // Example with Rakit\Validation library
     }
 }

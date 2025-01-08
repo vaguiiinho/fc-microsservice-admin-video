@@ -6,6 +6,5 @@ class DeleteCastMemberInputDto
 {
     public function __construct(
         public string $id = '',
-    ) {
-    }
+    ) {}
 }

@@ -2,14 +2,10 @@
 
 namespace Tests\Feature\Core\UseCase\Genre;
 
-use App\Models\{
-    Category,
-    Genre,
-};
-use App\Repositories\Eloquent\{
-    GenreEloquentRepository,
-    CategoryEloquentRepository,
-};
+use App\Models\Category;
+use App\Models\Genre;
+use App\Repositories\Eloquent\CategoryEloquentRepository;
+use App\Repositories\Eloquent\GenreEloquentRepository;
 use App\Repositories\Transaction\DBTransaction;
 use Core\Domain\Exception\NotFoundException;
 use Core\UseCase\DTO\Genre\Update\UpdateGenreInputDto;
@@ -18,16 +14,16 @@ use Tests\TestCase;
 
 class UpdateGenreUseCaseTest extends TestCase
 {
-    public function testUpdateGenre()
+    public function test_update_genre()
     {
         $genre = Genre::factory()->create();
 
-        $repository = new GenreEloquentRepository(new Genre());
-        $categoryRepository = new CategoryEloquentRepository(new Category());
+        $repository = new GenreEloquentRepository(new Genre);
+        $categoryRepository = new CategoryEloquentRepository(new Category);
 
         $useCase = new UpdateGenreUseCase(
             $repository,
-            new DBTransaction(),
+            new DBTransaction,
             $categoryRepository,
         );
 
@@ -48,17 +44,17 @@ class UpdateGenreUseCaseTest extends TestCase
         $this->assertDatabaseCount('category_genre', 10);
     }
 
-    public function testExpectUpdateGenreWithCategoriesIdInvalid()
+    public function test_expect_update_genre_with_categories_id_invalid()
     {
         $this->expectException(NotFoundException::class);
 
-        $genreRepository = new GenreEloquentRepository(new Genre());
+        $genreRepository = new GenreEloquentRepository(new Genre);
 
-        $categoryRepository = new CategoryEloquentRepository(new Category());
+        $categoryRepository = new CategoryEloquentRepository(new Category);
 
         $useCase = new UpdateGenreUseCase(
             $genreRepository,
-            new DBTransaction(),
+            new DBTransaction,
             $categoryRepository,
         );
 
@@ -78,15 +74,15 @@ class UpdateGenreUseCaseTest extends TestCase
         );
     }
 
-    public function testTransactionInsert()
+    public function test_transaction_insert()
     {
-        $genreRepository = new GenreEloquentRepository(new Genre());
+        $genreRepository = new GenreEloquentRepository(new Genre);
 
-        $categoryRepository = new CategoryEloquentRepository(new Category());
+        $categoryRepository = new CategoryEloquentRepository(new Category);
 
         $useCase = new UpdateGenreUseCase(
             $genreRepository,
-            new DBTransaction(),
+            new DBTransaction,
             $categoryRepository,
         );
 

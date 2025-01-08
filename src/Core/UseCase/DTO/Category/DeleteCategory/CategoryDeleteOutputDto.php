@@ -7,6 +7,5 @@ class CategoryDeleteOutputDto
     public function __construct(
         public bool $success = true,
         public bool $error = false,
-    ) {
-    }
+    ) {}
 }

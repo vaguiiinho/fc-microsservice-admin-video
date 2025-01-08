@@ -5,26 +5,22 @@ namespace Tests\Unit\UseCase\Category;
 use Core\Domain\Entity\Category;
 use Core\Domain\Repository\CategoryRepositoryInterface;
 use Core\UseCase\Category\ListCategoryUseCase;
-use Core\UseCase\DTO\Category\ListCategory\{
-    CategoryInputDto,
-    CategoryOutputDto
-};
+use Core\UseCase\DTO\Category\ListCategory\CategoryInputDto;
+use Core\UseCase\DTO\Category\ListCategory\CategoryOutputDto;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use stdClass;
 
-
 class ListCategoryUseCaseUnitTest extends TestCase
 {
-
-    public function testGetById()
+    public function test_get_by_id()
     {
         $id = (string) Uuid::uuid4()->toString();
 
         $this->mockEntity = Mockery::mock(Category::class, [
             $id,
-            'name cat'
+            'name cat',
         ]);
 
         $this->mockEntity->shouldReceive('id')->andReturn($id);
@@ -36,9 +32,8 @@ class ListCategoryUseCaseUnitTest extends TestCase
             ->with($id)
             ->andReturn($this->mockEntity);
 
-
         $this->mockInputDto = Mockery::mock(CategoryInputDto::class, [
-            $id
+            $id,
         ]);
 
         $useCase = new ListCategoryUseCase($this->mockRepo);

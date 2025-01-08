@@ -40,7 +40,7 @@ class CategoryApiTest extends TestCase
                 'first_page',
                 'per_page',
                 'to',
-                'from'
+                'from',
             ],
         ]);
         $response->assertJsonCount(15, 'data');
@@ -78,8 +78,8 @@ class CategoryApiTest extends TestCase
             'data' => [
                 'id',
                 'name',
-                'description'
-            ]
+                'description',
+            ],
         ]);
 
         $this->assertEquals($category->id, $response['data']['id']);
@@ -91,7 +91,7 @@ class CategoryApiTest extends TestCase
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
         $response->assertJsonStructure([
             'message',
-            'errors' => ['name']
+            'errors' => ['name'],
         ]);
     }
 
@@ -108,8 +108,8 @@ class CategoryApiTest extends TestCase
                 'name',
                 'description',
                 'is_active',
-                'created_at'
-            ]
+                'created_at',
+            ],
         ]);
 
         $desc = 'New Category Description';
@@ -147,7 +147,7 @@ class CategoryApiTest extends TestCase
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
         $response->assertJsonStructure([
             'message',
-            'errors' => ['name']
+            'errors' => ['name'],
         ]);
     }
 
@@ -167,8 +167,8 @@ class CategoryApiTest extends TestCase
                 'name',
                 'description',
                 'is_active',
-                'created_at'
-            ]
+                'created_at',
+            ],
         ]);
         $this->assertEquals('Updated Name', $response['data']['name']);
         $this->assertDatabaseHas('categories', [

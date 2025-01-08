@@ -2,20 +2,16 @@
 
 namespace Core\UseCase\Video;
 
+use Core\Domain\Builder\Video\Builder;
 use Core\Domain\Enum\MediaStatus;
 use Core\Domain\Events\VideoCreatedEvent;
 use Core\Domain\Exception\NotFoundException;
-use Core\Domain\Repository\{
-    CategoryRepositoryInterface,
-    VideoRepositoryInterface,
-    GenreRepositoryInterface,
-    CastMemberRepositoryInterface,
-};
-use Core\UseCase\Interfaces\{
-    FileStorageInterface,
-    TransactionInterface
-};
-use Core\Domain\Builder\Video\Builder;
+use Core\Domain\Repository\CastMemberRepositoryInterface;
+use Core\Domain\Repository\CategoryRepositoryInterface;
+use Core\Domain\Repository\GenreRepositoryInterface;
+use Core\Domain\Repository\VideoRepositoryInterface;
+use Core\UseCase\Interfaces\FileStorageInterface;
+use Core\UseCase\Interfaces\TransactionInterface;
 use Core\UseCase\Video\Interfaces\VideoEventManagerInterface;
 
 abstract class BaseVideoUseCase
@@ -32,7 +28,7 @@ abstract class BaseVideoUseCase
         protected GenreRepositoryInterface $repositoryGenre,
         protected CastMemberRepositoryInterface $repositoryCastMember,
     ) {
-        $this->builder = $this->getBuilder();;
+        $this->builder = $this->getBuilder();
     }
 
     abstract protected function getBuilder(): Builder;
@@ -40,7 +36,7 @@ abstract class BaseVideoUseCase
     protected function storageFiles(object $input): void
     {
         $entity = $this->builder->getEntity();
-        $path =  $entity->id();
+        $path = $entity->id();
 
         if ($pathVideoFile = $this->storageFile($path, $input->videoFile)) {
             $this->builder->addMediaVideo($pathVideoFile, MediaStatus::PROCESSING);
@@ -64,10 +60,10 @@ abstract class BaseVideoUseCase
         }
     }
 
-    protected function storageFile(string $path, ?array $media = null): null|string
+    protected function storageFile(string $path, ?array $media = null): ?string
     {
         if ($media) {
-            return  $this->storage->store(
+            return $this->storage->store(
                 path: $path,
                 file: $media
             );
@@ -107,7 +103,7 @@ abstract class BaseVideoUseCase
         if (count($arrayDiff)) {
             $msg = sprintf(
                 '%s %s not found',
-                count($arrayDiff) > 1 ? $pluralLabel ?? $singularLabel . 's' : $singularLabel,
+                count($arrayDiff) > 1 ? $pluralLabel ?? $singularLabel.'s' : $singularLabel,
                 implode(', ', $arrayDiff)
             );
             throw new NotFoundException($msg);

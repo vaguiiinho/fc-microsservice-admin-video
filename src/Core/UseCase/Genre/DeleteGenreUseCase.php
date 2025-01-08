@@ -3,15 +3,11 @@
 namespace Core\UseCase\Genre;
 
 use Core\Domain\Repository\GenreRepositoryInterface;
-use Core\UseCase\DTO\Genre\Delete\{
-    DeleteGenreInputDto,
-    DeleteGenreOutputDto
-};
-
+use Core\UseCase\DTO\Genre\Delete\DeleteGenreInputDto;
+use Core\UseCase\DTO\Genre\Delete\DeleteGenreOutputDto;
 
 class DeleteGenreUseCase
 {
-
     protected $repository;
 
     public function __construct(GenreRepositoryInterface $repository)

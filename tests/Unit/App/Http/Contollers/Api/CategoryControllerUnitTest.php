@@ -11,8 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class CategoryControllerUnitTest extends TestCase
 {
-
-    public function testIndex()
+    public function test_index()
     {
         $mockRequest = Mockery::mock(Request::class);
         $mockRequest->shouldReceive('get')->andReturn('teste');
@@ -22,9 +21,9 @@ class CategoryControllerUnitTest extends TestCase
         $mockUseCase = Mockery::mock(ListCategoriesUseCase::class);
         $mockUseCase->shouldReceive('execute')->times(1)->andReturn($mockDtoOutput);
 
-        $controller = new CategoryController();
-        $response =  $controller->index($mockRequest, $mockUseCase);
-        
+        $controller = new CategoryController;
+        $response = $controller->index($mockRequest, $mockUseCase);
+
         $this->assertIsObject($response->resource);
         $this->assertArrayHasKey('meta', $response->additional);
 

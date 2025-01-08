@@ -6,6 +6,5 @@ class CategoryDeleteInputDto
 {
     public function __construct(
         public string $id = '',
-    ) {
-    }
+    ) {}
 }

@@ -3,11 +3,8 @@
 namespace Core\UseCase\Video\Delete;
 
 use Core\Domain\Repository\VideoRepositoryInterface;
-use Core\UseCase\Video\Delete\DTO\{
-    DeleteVideoInputDto,
-    DeleteVideoOutputDto
-};
-
+use Core\UseCase\Video\Delete\DTO\DeleteVideoInputDto;
+use Core\UseCase\Video\Delete\DTO\DeleteVideoOutputDto;
 
 class DeleteVideoUseCase
 {

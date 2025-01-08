@@ -2,17 +2,17 @@
 
 namespace Tests\Unit\Domain\Entity;
 
+use Core\Domain\Entity\CastMember;
 use Core\Domain\Enum\CastMemberType;
+use Core\Domain\Exception\EntityValidationException;
 use Core\Domain\ValueObject\Uuid as ValueObjectUuid;
 use DateTime;
 use PHPUnit\Framework\TestCase;
-use Core\Domain\Entity\CastMember;
-use Core\Domain\Exception\EntityValidationException;
 use Ramsey\Uuid\Uuid;
 
 class CastMemberUnitTest extends TestCase
 {
-    public function testAttributes()
+    public function test_attributes()
     {
         $uuid = (string) Uuid::uuid4();
 
@@ -29,7 +29,7 @@ class CastMemberUnitTest extends TestCase
         $this->assertNotEmpty($castMember->createdAt());
     }
 
-    public function testAttributesNewEntity()
+    public function test_attributes_new_entity()
     {
         $castMember = new CastMember(
             name: 'Cast Member Name',
@@ -42,7 +42,7 @@ class CastMemberUnitTest extends TestCase
         $this->assertNotEmpty($castMember->createdAt());
     }
 
-    public function testValidation()
+    public function test_validation()
     {
         $this->expectException(EntityValidationException::class);
 
@@ -52,7 +52,7 @@ class CastMemberUnitTest extends TestCase
         );
     }
 
-    public function testExceptionUpdate()
+    public function test_exception_update()
     {
         $this->expectException(EntityValidationException::class);
 
@@ -66,7 +66,7 @@ class CastMemberUnitTest extends TestCase
         );
     }
 
-    public function testUpdateEntity()
+    public function test_update_entity()
     {
         $castMember = new CastMember(
             name: 'Cast Member Name',
@@ -81,5 +81,4 @@ class CastMemberUnitTest extends TestCase
 
         $this->assertEquals('Updated Cast Member Name', $castMember->name);
     }
-
 }

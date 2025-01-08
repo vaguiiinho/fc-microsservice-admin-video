@@ -3,19 +3,15 @@
 namespace Tests\Feature\App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\CastMemberController;
-use App\Http\Requests\{
-    StoreCastMemberRequest,
-    UpdateCastMemberRequest
-};
+use App\Http\Requests\StoreCastMemberRequest;
+use App\Http\Requests\UpdateCastMemberRequest;
 use App\Models\CastMember as ModelsCastMember;
 use App\Repositories\Eloquent\CastMemberRepository;
-use Core\UseCase\CastMember\{
-    CreateCastMemberUseCase,
-    ListCastMemberUseCase,
-    UpdateCastMemberUseCase,
-    DeleteCastMemberUseCase,
-    ListCastMembersUseCase
-};
+use Core\UseCase\CastMember\CreateCastMemberUseCase;
+use Core\UseCase\CastMember\DeleteCastMemberUseCase;
+use Core\UseCase\CastMember\ListCastMembersUseCase;
+use Core\UseCase\CastMember\ListCastMemberUseCase;
+use Core\UseCase\CastMember\UpdateCastMemberUseCase;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -26,11 +22,13 @@ use Tests\TestCase;
 class CastMemberControllerTest extends TestCase
 {
     protected $repository;
+
     protected $controller;
+
     protected function setUp(): void
     {
         $this->repository = new CastMemberRepository(new ModelsCastMember);
-        $this->controller = new CastMemberController();
+        $this->controller = new CastMemberController;
         parent::setUp();
     }
 
@@ -48,12 +46,12 @@ class CastMemberControllerTest extends TestCase
     public function test_store()
     {
         $useCase = new CreateCastMemberUseCase($this->repository);
-        $request = new StoreCastMemberRequest();
+        $request = new StoreCastMemberRequest;
         $request->headers->set('Content-Type', 'application/json');
 
         $request->setJson(new ParameterBag([
             'name' => 'Test',
-            'type' => 1
+            'type' => 1,
         ]));
 
         $response = $this->controller->store($request, $useCase);
@@ -79,12 +77,12 @@ class CastMemberControllerTest extends TestCase
     {
         $castMember = ModelsCastMember::factory()->create();
 
-        $request = new UpdateCastMemberRequest();
+        $request = new UpdateCastMemberRequest;
         $request->headers->set('Content-Type', 'application/json');
 
         $request->setJson(new ParameterBag([
             'name' => 'Updated',
-            'type' => 1
+            'type' => 1,
         ]));
 
         $response = $this->controller->update(

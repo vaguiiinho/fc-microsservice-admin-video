@@ -6,11 +6,9 @@ use Core\Domain\Entity\Video as Entity;
 use Core\Domain\Enum\Rating;
 use Core\Domain\Repository\VideoRepositoryInterface;
 use Core\Domain\ValueObject\Uuid;
+use Core\UseCase\Video\List\DTO\ListVideoInputDto;
+use Core\UseCase\Video\List\DTO\ListVideoOutputDto;
 use Core\UseCase\Video\List\ListVideoUseCase;
-use Core\UseCase\Video\List\DTO\{
-    ListVideoInputDto,
-    ListVideoOutputDto
-};
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -31,7 +29,6 @@ class ListVideoUseCaseUnitTest extends TestCase
             input: $this->mockInputDTO($id)
         );
 
-
         // Assert
         $this->assertInstanceOf(ListVideoOutputDto::class, $output);
     }
@@ -43,7 +40,7 @@ class ListVideoUseCaseUnitTest extends TestCase
 
     private function mockRepository()
     {
-        $mock =  Mockery::mock(stdClass::class, VideoRepositoryInterface::class);
+        $mock = Mockery::mock(stdClass::class, VideoRepositoryInterface::class);
 
         $mock->shouldReceive('findById')
             ->once()

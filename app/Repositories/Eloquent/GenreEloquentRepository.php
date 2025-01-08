@@ -22,7 +22,7 @@ class GenreEloquentRepository implements GenreRepositoryInterface
 
     public function insert(EntityGenre $genre): EntityGenre
     {
-        $register =  $this->model->create([
+        $register = $this->model->create([
             'id' => $genre->id(),
             'name' => $genre->name,
             'is_active' => $genre->isActive,
@@ -38,7 +38,7 @@ class GenreEloquentRepository implements GenreRepositoryInterface
 
     public function findById(string $id): EntityGenre
     {
-        if (!$genre = $this->model->find($id)) {
+        if (! $genre = $this->model->find($id)) {
             throw new NotFoundException("Genre {$id} not found");
         }
 
@@ -98,7 +98,7 @@ class GenreEloquentRepository implements GenreRepositoryInterface
 
     public function update(EntityGenre $entity): EntityGenre
     {
-        if (!$genre = $this->model->find($entity->id())) {
+        if (! $genre = $this->model->find($entity->id())) {
             throw new NotFoundException("Genre {$entity->id()} not found");
         }
 
@@ -118,7 +118,7 @@ class GenreEloquentRepository implements GenreRepositoryInterface
 
     public function delete(string $id): bool
     {
-        if (!$genre = $this->model->find($id)) {
+        if (! $genre = $this->model->find($id)) {
             throw new NotFoundException("Genre {$id} not found");
         }
 
@@ -127,7 +127,7 @@ class GenreEloquentRepository implements GenreRepositoryInterface
 
     private function toGenre(Model $object): EntityGenre
     {
-        $entity =  new EntityGenre(
+        $entity = new EntityGenre(
             id: new Uuid($object->id),
             name: $object->name,
             createdAt: new DateTime($object->created_at),

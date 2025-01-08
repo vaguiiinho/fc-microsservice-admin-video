@@ -2,7 +2,6 @@
 
 namespace Core\UseCase\DTO\CastMember\Update;
 
-
 class UpdateCastMemberInputDto
 {
     public function __construct(

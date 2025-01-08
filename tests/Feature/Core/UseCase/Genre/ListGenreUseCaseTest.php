@@ -4,17 +4,15 @@ namespace Tests\Feature\Core\UseCase\Genre;
 
 use App\Models\Genre;
 use App\Repositories\Eloquent\GenreEloquentRepository;
-use App\Repositories\Transaction\DBTransaction;
-use Core\Domain\Exception\NotFoundException;
 use Core\UseCase\DTO\Genre\List\ListGenreInputDto;
 use Core\UseCase\Genre\ListGenreUseCase;
 use Tests\TestCase;
 
 class ListGenreUseCaseTest extends TestCase
 {
-    public function testFindById()
+    public function test_find_by_id()
     {
-        $genreRepository = new GenreEloquentRepository(new Genre());
+        $genreRepository = new GenreEloquentRepository(new Genre);
 
         $useCase = new ListGenreUseCase(
             $genreRepository,

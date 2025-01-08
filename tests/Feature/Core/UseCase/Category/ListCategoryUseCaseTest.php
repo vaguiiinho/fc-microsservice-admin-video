@@ -2,11 +2,11 @@
 
 namespace Tests\Feature\Core\UseCase\Category;
 
+use App\Models\Category as CategoryModel;
 use App\Repositories\Eloquent\CategoryEloquentRepository;
 use Core\UseCase\Category\ListCategoryUseCase;
 use Core\UseCase\DTO\Category\ListCategory\CategoryInputDto;
 use Tests\TestCase;
-use App\Models\Category as CategoryModel;
 
 class ListCategoryUseCaseTest extends TestCase
 {
@@ -14,7 +14,7 @@ class ListCategoryUseCaseTest extends TestCase
     {
         $categoryDb = CategoryModel::factory()->create();
 
-        $repository = new CategoryEloquentRepository(new CategoryModel());
+        $repository = new CategoryEloquentRepository(new CategoryModel);
         $useCase = new ListCategoryUseCase($repository);
         $response = $useCase->execute(new CategoryInputDto($categoryDb->id));
 

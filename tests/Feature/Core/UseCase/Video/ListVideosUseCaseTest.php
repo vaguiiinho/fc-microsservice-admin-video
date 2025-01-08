@@ -10,7 +10,6 @@ use Tests\TestCase;
 
 class ListVideosUseCaseTest extends TestCase
 {
-
     /**
      * @dataProvider provider
      */

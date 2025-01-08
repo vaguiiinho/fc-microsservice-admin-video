@@ -30,6 +30,7 @@ class AuthServiceProvider extends ServiceProvider
             $payload = json_decode(Auth::token());
             $realm_access = $payload->realm_access ?? null;
             $roles = $realm_access->roles ?? [];
+
             return in_array('admin-catalog', $roles);
         });
     }

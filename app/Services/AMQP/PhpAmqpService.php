@@ -10,9 +10,10 @@ use PhpAmqpLib\Message\AMQPMessage;
 class PhpAmqpService implements AMQPInterface
 {
     protected $connection = null;
+
     protected $channel = null;
 
-    public function producer(string $queue, array $payload, string $exchange): void 
+    public function producer(string $queue, array $payload, string $exchange): void
     {
         $this->connect();
 
@@ -52,7 +53,7 @@ class PhpAmqpService implements AMQPInterface
         $this->closeConnection();
     }
 
-    public function consumer(string $queue, string $exchange, Closure $callback): void 
+    public function consumer(string $queue, string $exchange, Closure $callback): void
     {
         $this->connect();
 

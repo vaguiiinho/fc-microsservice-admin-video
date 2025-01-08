@@ -4,21 +4,19 @@ namespace Core\UseCase\Genre;
 
 use Core\Domain\Entity\Genre;
 use Core\Domain\Exception\NotFoundException;
-use Core\Domain\Repository\{
-    GenreRepositoryInterface,
-    CategoryRepositoryInterface
-};
-use Core\UseCase\DTO\Genre\Create\{
-    CreateGenreInputDto,
-    CreateGenreOutputDto
-};
+use Core\Domain\Repository\CategoryRepositoryInterface;
+use Core\Domain\Repository\GenreRepositoryInterface;
+use Core\UseCase\DTO\Genre\Create\CreateGenreInputDto;
+use Core\UseCase\DTO\Genre\Create\CreateGenreOutputDto;
 use Core\UseCase\Interfaces\TransactionInterface;
 use Throwable;
 
 class CreateGenreUseCase
 {
     protected $repository;
+
     protected $transaction;
+
     protected $categoryRepository;
 
     public function __construct(
@@ -45,6 +43,7 @@ class CreateGenreUseCase
             $genreDb = $this->repository->insert($genre);
 
             $this->transaction->commit();
+
             return new CreateGenreOutputDto(
                 id: $genreDb->id(),
                 name: $genreDb->name,
@@ -52,7 +51,7 @@ class CreateGenreUseCase
                 createdAt: $genreDb->createdAt()
             );
         } catch (Throwable $th) {
-            
+
             $this->transaction->rollback();
             throw $th;
         }

@@ -29,14 +29,16 @@ class CastMemberRepository implements CastMemberRepositoryInterface
             'type' => $entity->type->value,
             'created_at' => $entity->createdAt(),
         ]);
+
         return $this->toEntity($modelDb);
     }
 
     public function findById(string $id): Entity
     {
-        if (!$modelDb = $this->model->find($id)) {
+        if (! $modelDb = $this->model->find($id)) {
             throw new NotFoundException("Cast member {$id} not found");
         }
+
         return $this->toEntity($modelDb);
     }
 
@@ -63,7 +65,7 @@ class CastMemberRepository implements CastMemberRepositoryInterface
 
         $query = $this->model->query();
 
-        if (!empty($filter)) {
+        if (! empty($filter)) {
             $query->where('name', 'LIKE', "%{$filter}%");
         }
 
@@ -80,10 +82,9 @@ class CastMemberRepository implements CastMemberRepositoryInterface
         int $totalPage = 15
     ): PaginationInterface {
         $query = $this->model->query();
-        if($filter == '1' || $filter == '2'){
+        if ($filter == '1' || $filter == '2') {
             $query->where('type', 'LIKE', "%{$filter}%");
-        }
-        elseif (!empty($filter)) {
+        } elseif (! empty($filter)) {
             $query->where('name', 'LIKE', "%{$filter}%");
         }
 
@@ -96,7 +97,7 @@ class CastMemberRepository implements CastMemberRepositoryInterface
 
     public function update(Entity $entity): Entity
     {
-        if (!$dataDb = $this->model->find($entity->id())) {
+        if (! $dataDb = $this->model->find($entity->id())) {
             throw new NotFoundException("Cast member {$entity->id()} not found");
         }
 
@@ -112,7 +113,7 @@ class CastMemberRepository implements CastMemberRepositoryInterface
 
     public function delete(string $entityId): bool
     {
-        if (!$dataDb = $this->model->find($entityId)) {
+        if (! $dataDb = $this->model->find($entityId)) {
             throw new NotFoundException("Cast member {$entityId} not found");
         }
 

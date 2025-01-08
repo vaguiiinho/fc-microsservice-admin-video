@@ -10,10 +10,9 @@ use Tests\TestCase;
 
 class CreateCategoryUseCaseTest extends TestCase
 {
-    
     public function test_create()
     {
-        $repository = new CategoryEloquentRepository(new CategoryModel());
+        $repository = new CategoryEloquentRepository(new CategoryModel);
         $useCase = new CreateCategoryUseCase($repository);
         $response = $useCase->execute(
             new CategoryCreateInputDto(
