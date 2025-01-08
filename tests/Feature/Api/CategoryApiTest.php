@@ -3,13 +3,13 @@
 namespace Tests\Feature\Api;
 
 use App\Models\Category;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\Response;
 use Tests\TestCase;
+use Tests\Traits\WithoutMiddlewareTrait;
 
 class CategoryApiTest extends TestCase
 {
+    use WithoutMiddlewareTrait;
 
     protected $endpoint = '/api/categories';
 
