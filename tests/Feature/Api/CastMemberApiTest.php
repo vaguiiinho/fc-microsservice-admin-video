@@ -11,7 +11,7 @@ class CastMemberApiTest extends TestCase
 {
     use WithoutMiddlewareTrait;
     
-    private $endPoint = '/api/cast-members';
+    private $endPoint = '/api/cast_members';
 
     public function test_get_all_empty()
     {

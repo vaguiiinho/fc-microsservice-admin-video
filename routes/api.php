@@ -16,7 +16,7 @@ Route::middleware(['auth:api', 'can:admin-catalog'])->group(function () {
         controller: GenreController::class
     );
     Route::apiResource(
-        name: '/cast-members',
+        name: '/cast_members',
         controller: CastMemberController::class
     );
 });
