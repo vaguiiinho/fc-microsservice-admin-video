@@ -11,9 +11,12 @@ use App\Models\{
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
+use Tests\Traits\WithoutMiddlewareTrait;
 
 class VideoApiTest extends TestCase
 {
+    use WithoutMiddlewareTrait;
+
     protected $endPoint = '/api/videos';
     protected $serializedFields = [
         'id',
@@ -176,7 +179,7 @@ class VideoApiTest extends TestCase
             'rating' => 'L',
             'categories' => $categoriesIds,
             'genres' => $genresIds,
-            'cast_members' => $castMembersIds, 
+            'cast_members' => $castMembersIds,
             //'video_file' => $mediaVideoFile,
             'trailer_file' => $mediaVideoFile,
             'banner_file' => $imageVideoFile,
@@ -208,7 +211,7 @@ class VideoApiTest extends TestCase
         Storage::deleteDirectory($response->json('data.id'));
     }
 
-    
+
     /**
      * @test
      */
@@ -283,7 +286,7 @@ class VideoApiTest extends TestCase
         ]);
     }
 
-     /**
+    /**
      * @test
      */
     public function destroy()
